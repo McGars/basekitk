@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">basekitk</string>
+    <string name="basekit_activity_simple_behavior">ru.altarix.basekit.library.tools.behavior.KitSimpleActivityBehavior</string>
+    <string name="basekit_one_more_back_to_exit">Для выхода нажмите еще раз</string>
+    <string name="ok">Ок</string>
+</resources>
