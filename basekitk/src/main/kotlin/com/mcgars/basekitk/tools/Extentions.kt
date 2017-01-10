@@ -2,7 +2,9 @@ package com.mcgars.basekitk.tools
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.support.annotation.IdRes
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -79,6 +81,12 @@ inline fun Context?.showKeyboard(etText: EditText?): Boolean? {
 inline fun toggleKeyboard(context: Context) {
     (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
             .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+}
+
+fun dpToPx(dp: Int): Int {
+    return Resources.getSystem().displayMetrics.run {
+        Math.round(dp * (xdpi / DisplayMetrics.DENSITY_DEFAULT))
+    }
 }
 
 /**
