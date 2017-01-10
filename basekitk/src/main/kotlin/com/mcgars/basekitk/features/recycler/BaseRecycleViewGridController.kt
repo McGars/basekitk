@@ -34,8 +34,8 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
 //        return ml
 //    }
     override fun initLayoutManager(): LinearLayoutManager {
-        val ml = GridLayoutManager(activity, 1)
-        setAutoSpan(1)
+        val ml = GridLayoutManager(activity, columnCount)
+        ml.spanSizeLookup = AutoSpanSizeLookup(columnCount)
         return ml
     }
 
@@ -56,6 +56,18 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
         setAutoSpan(getOptimalColumnsCount(itemWidth))
     }
 
+    fun setCustomLayoutManager(customLayoutManager: LinearLayoutManager) {
+        layoutManager = customLayoutManager
+        recyclerView?.layoutManager = customLayoutManager
+    }
+
+    fun getOptimalColumnsCount(itemWidth: Int): Int {
+        val width = resources?.displayMetrics?.widthPixels?.toFloat() ?: 0f
+        val padding = recyclerView?.run { paddingLeft + paddingRight } ?: 1
+        val count = Math.round(width / (itemWidth + padding))
+        return if (count == 0) 1 else count
+    }
+
     inner class AutoSpanSizeLookup(internal val mCount: Int) : GridLayoutManager.SpanSizeLookup() {
 
         override fun getSpanSize(position: Int): Int {
@@ -71,15 +83,4 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
         }
     }
 
-    fun setCustomLayoutManager(customLayoutManager: LinearLayoutManager) {
-        layoutManager = customLayoutManager
-        recyclerView?.layoutManager = customLayoutManager
-    }
-
-    fun getOptimalColumnsCount(itemWidth: Int): Int {
-        val width = resources?.displayMetrics?.widthPixels?.toFloat() ?: 0f
-        val padding = recyclerView?.run { paddingLeft + paddingRight } ?: 1
-        val count = Math.round(width / (itemWidth + padding))
-        return if (count == 0) 1 else count
-    }
 }
