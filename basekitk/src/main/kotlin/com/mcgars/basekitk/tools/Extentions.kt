@@ -1,14 +1,34 @@
 package com.mcgars.basekitk.tools
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
+import android.media.ExifInterface
+import android.net.ConnectivityManager
+import android.os.Build
 import android.support.annotation.IdRes
+import android.support.annotation.LayoutRes
+import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
+import android.util.Log
+import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import java.io.File
+import java.text.NumberFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.regex.Pattern
 
 /**
  * Created by gars on 02.01.2017.
@@ -20,6 +40,29 @@ fun Context.toast(@IdRes msg: Int, lenght: Int = Toast.LENGTH_SHORT) {
 
 fun Context.toast(msg: String, lenght: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, lenght).show()
+}
+
+inline fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG, f: Snackbar.() -> Unit) {
+    val snack = Snackbar.make(this, message, length)
+    snack.f()
+    snack.show()
+}
+
+
+fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
+    return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+}
+
+inline fun EditText?.txt(): String? {
+    return this?.text.toString()
+}
+
+inline fun EditText?.toInt(defVal: Int = 0): Int {
+    return if (txt()?.isEmpty() ?: true) defVal else txt()!!.toInt()
+}
+
+inline fun EditText?.toFloat(defVal: Float = 0f): Float {
+    return if (txt()?.isEmpty() ?: true) defVal else txt()!!.toFloat()
 }
 
 inline fun trying(func: () -> Unit): Boolean {
@@ -67,9 +110,13 @@ inline fun Context?.hideKeyboard(hostView: View?): Boolean? {
     var isHide: Boolean = false
     hostView?.windowToken?.run {
         isHide = (this@hideKeyboard?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(hostView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                .hideSoftInputFromWindow(this, InputMethodManager.HIDE_NOT_ALWAYS)
     }
     return isHide
+}
+
+inline fun Activity?.hideKeyboard(): Boolean? {
+    return this?.run { hideKeyboard(window.decorView) } ?: false
 }
 
 inline fun Context?.showKeyboard(etText: EditText?): Boolean? {
@@ -78,15 +125,30 @@ inline fun Context?.showKeyboard(etText: EditText?): Boolean? {
     return imm?.showSoftInput(etText, InputMethodManager.SHOW_IMPLICIT)
 }
 
-inline fun toggleKeyboard(context: Context) {
-    (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-            .toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+inline fun Context?.toggleKeyboard() {
+    (this?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)?.run {
+        toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
 }
 
 fun dpToPx(dp: Int): Int {
     return Resources.getSystem().displayMetrics.run {
         Math.round(dp * (xdpi / DisplayMetrics.DENSITY_DEFAULT))
     }
+}
+
+fun Context?.isServiceRunning(serviceClass: Class<*>): Boolean {
+    return this?.run {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                println("isServiceRunning " + serviceClass.toString() + " true")
+                return true
+            }
+        }
+        println("isServiceRunning " + serviceClass.toString() + " false")
+        return false
+    } ?: false
 }
 
 /**
@@ -97,3 +159,143 @@ fun dpToPx(dp: Int): Int {
 inline fun <C : View> View.find(id: Int) = findViewById(id) as C
 
 inline fun <C : View> Activity.find(id: Int) = findViewById(id) as C
+
+inline fun ViewGroup.forEach(action: View.() -> Unit) {
+    (0..childCount).forEach { getChildAt(it).action() }
+}
+
+/**
+ * @param format
+ * @return current formated date
+ */
+inline fun Calendar.getDate(format: String): String {
+    return time.formatToString(format)
+}
+
+inline fun Date.formatToString(format: String) = SimpleDateFormat(format).format(date)
+
+fun getDateFromString(format: String, date: String): Date? {
+    val _format = SimpleDateFormat(format)
+    try {
+        return _format.parse(date)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return null
+}
+
+inline fun View?.startAnimation(anim: Int, l: Animation.AnimationListener? = null): Animation? {
+    return this?.run {
+        clearAnimation()
+        val animation = AnimationUtils.loadAnimation(context, anim)
+        l?.apply { animation.setAnimationListener(l) }
+        startAnimation(animation)
+        return animation
+    }
+}
+
+/**
+ * @param secconds
+ * *
+ * @return
+ */
+fun getDuration(secconds: Int): String {
+    val buf = StringBuffer()
+    val millis = secconds * 1000
+    val hours = millis / (1000 * 60 * 60)
+    val minutes = millis % (1000 * 60 * 60) / (1000 * 60)
+    val seconds = millis % (1000 * 60 * 60) % (1000 * 60) / 1000
+
+    if (hours > 0) {
+        buf.append(String.format("%02d", hours)).append (":")
+    }
+    buf.append(String.format("%02d", minutes))
+            .append(":")
+            .append(String.format("%02d", seconds))
+
+    return buf.toString()
+}
+
+fun Double.formatCurrency(locale: Locale = Locale("ru", "RU")): String {
+    return NumberFormat.getCurrencyInstance(locale).apply {
+        isGroupingUsed = true
+        minimumFractionDigits = 0
+    }.format(this)
+}
+
+fun match(regexp: String, string: String): Boolean {
+    return Pattern.compile(regexp).matcher(string).find()
+}
+
+inline fun Context.isInternetAvailable(context: Context): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
+}
+
+/**
+ * Device name
+ */
+fun getDeviceName(): String? {
+    val manufacturer = Build.MANUFACTURER
+    val model = Build.MODEL
+    if (model.startsWith(manufacturer)) {
+        return model.capitalize()
+    } else {
+        return manufacturer.capitalize() + " " + model
+    }
+}
+
+/**
+ * Upper first letter of string
+ */
+fun String?.capitalize() = this?.apply {
+    return if (Character.isUpperCase(this[0])) this else {
+        return Character.toUpperCase(this[0]) + this.substring(1)
+    }
+}
+
+fun File.getImageOrientation(): Int {
+    var rotate = 0
+    trying {
+        val orientation = ExifInterface(absolutePath).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+        rotate = when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+            else -> 0
+        }
+    }
+    return rotate
+}
+
+/**
+ * Get id resource from attr
+ * @param attr
+ * @return
+ */
+fun Context.getAttributeResourceId(attr: Int): Int {
+    return trying2<Int> {
+        val typedValue = TypedValue()
+        val resIdAttr = intArrayOf(attr)
+        val a = obtainStyledAttributes(typedValue.data, resIdAttr)
+        val resId = a.getResourceId(0, 0)
+        a.recycle()
+        return resId
+    } ?: 0
+}
+
+/**
+ * Get simple color resource from attr
+ * @param attr
+ * @return
+ */
+fun Context.getColor(attr: Int) = ContextCompat.getColor(this, getAttributeResourceId(attr))
+
+/**
+ * Get simple drawable from attr
+ * @param contenxt
+ * @param attr
+ * @return
+ */
+fun Context.getDrawable(attr: Int) = ContextCompat.getDrawable(this, getAttributeResourceId(attr))

@@ -4,12 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.TextUtils
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.simple.BaseKitActivity
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.BaseKitConstants
+import java.io.Serializable
+import java.util.*
 
 
 /**
@@ -75,7 +78,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
             val1: Any? = null,
             val2: Any? = null,
             val3: Any? = null
-            ) {
+    ) {
         setView(view)
         startActivity(view, val1, val2, val3, code)
     }
@@ -91,7 +94,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         invalidate()
     }
 
-    fun startActivity(view: Class<out Controller>, `val`: Any?= null, val2: Any? = null, val3: Any? = null, codeResult: Int = 0) {
+    fun startActivity(view: Class<out Controller>, `val`: Any? = null, val2: Any? = null, val3: Any? = null, codeResult: Int = 0) {
         setView(view)
         getAnnotation(view, `val`, val2, val3)
         startActivityForResult(codeResult)
@@ -270,11 +273,11 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
     private fun setParamFromAnno(pageAnn: Page?, pos: Int, `val`: Any) {
         if (pageAnn != null) {
 
-            val key = when(pos) {
+            val key = when (pos) {
                 1 -> pageAnn.key1
                 2 -> pageAnn.key2
                 3 -> pageAnn.key3
-                else->null
+                else -> null
             }
 
             if (!TextUtils.isEmpty(key)) {
@@ -283,13 +286,27 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         }
     }
 
+    private fun addParams(vararg pairs: Pair<String, Any?>) {
+        pairs.forEach { addParam(it.first, it.second) }
+    }
+
     private fun addParam(key: String, `val`: Any?) {
         if (`val` is String)
-            params.putString(key, `val` as String?)
+            params.putString(key, `val`)
         else if (`val` is Boolean)
             params.putBoolean(key, `val`)
         else if (`val` is Int)
             params.putInt(key, `val`)
+        else if (`val` is Serializable)
+            params.putSerializable(key, `val`)
+        else if (`val` is Float)
+            params.putFloat(key, `val`)
+        else if (`val` is Long)
+            params.putLong(key, `val`)
+        else if (`val` is Double)
+            params.putDouble(key, `val`)
+        else if (`val` is Parcelable)
+            params.putParcelable(key, `val`)
         else if (`val` != null)
             throw IllegalStateException(`val`.javaClass.simpleName + " - Not supported, use String, int, boolean for annotation or another build construction OR ASK Vladimir Feofilaktov")
     }

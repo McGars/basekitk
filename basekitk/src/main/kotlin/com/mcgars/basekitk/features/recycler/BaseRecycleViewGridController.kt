@@ -76,7 +76,7 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
 
             return when (getAdapter()?.getItemViewType(position)) {
                 TYPE_HEADER, TYPE_FOOTER -> 2
-                TYPE_ITEM -> mCount
+                TYPE_ITEM -> mCount //1
                 else -> -1
             }
 //            return if (mAdapter.getItemViewType(position) === 0) mCount else 1
