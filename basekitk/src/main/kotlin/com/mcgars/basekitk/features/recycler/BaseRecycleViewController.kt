@@ -83,7 +83,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
             adapter = getAdapter(allList)
             setAdapter(adapter!!)
         } else {
-            if (page > DEFAULT_FIRST_PAGE && list.size > 0)
+            if (page > DEFAULT_FIRST_PAGE && list.isNotEmpty())
                 adapter!!.notifyItemRangeChanged(allList.size - list.size, list.size)
             else
                 adapter!!.notifyDataSetChanged()

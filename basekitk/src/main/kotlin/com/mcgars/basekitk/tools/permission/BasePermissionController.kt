@@ -1,5 +1,6 @@
 package com.mcgars.basekitk.tools.permission
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -13,11 +14,12 @@ class BasePermissionController(private val activity: AppCompatActivity) {
     private var allRequest: ((Set<String>?) -> Unit)? = null
     private var onePermission: ((allow: Boolean) -> Unit)? = null
 
-    /**
+            /**
      * Request all permissions, after user done, system call method
      * Activity.onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
      * @param allRequest
      */
+    @SuppressLint("NewApi")
     fun requestPermissions(allRequest: ((Set<String>?) -> Unit)) {
         if (permissions.size == 0 || Build.VERSION.SDK_INT < 23) {
             allRequest.invoke(null)
@@ -31,9 +33,7 @@ class BasePermissionController(private val activity: AppCompatActivity) {
      * Set this method to Activity inside
      * Activity.onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
      * @param requestCode
-     * *
      * @param permissions
-     * *
      * @param grantResults
      */
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -45,7 +45,7 @@ class BasePermissionController(private val activity: AppCompatActivity) {
             allRequest?.invoke(permissionsAllow)
             allRequest = null
         } else if (requestCode == REQUEST_PERMISSION) {
-            onePermission?.invoke(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            onePermission?.invoke(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             onePermission = null
         }
     }
@@ -53,7 +53,6 @@ class BasePermissionController(private val activity: AppCompatActivity) {
     /**
      * Check 1 permission
      * @param permission
-     * *
      * @param onePermission
      */
     fun checkPermission(permission: String, onePermission: ((allow: Boolean) -> Unit)) {

@@ -4,10 +4,12 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.ConnectivityManager
 import android.os.Build
+import android.support.annotation.AttrRes
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
@@ -22,8 +24,12 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import com.mcgars.basekitk.R
 import java.io.File
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -208,7 +214,7 @@ fun getDuration(secconds: Int): String {
     val seconds = millis % (1000 * 60 * 60) % (1000 * 60) / 1000
 
     if (hours > 0) {
-        buf.append(String.format("%02d", hours)).append (":")
+        buf.append(String.format("%02d", hours)).append(":")
     }
     buf.append(String.format("%02d", minutes))
             .append(":")
@@ -299,3 +305,67 @@ fun Context.getColor(attr: Int) = ContextCompat.getColor(this, getAttributeResou
  * @return
  */
 fun Context.getDrawable(attr: Int) = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
+
+fun String.md5(): String? {
+    return trying2<String> {
+        val messageDigest = MessageDigest.getInstance("MD5").run {
+            update(toByteArray())
+            digest()
+        }
+
+        // Create Hex String
+        val hexString = StringBuffer()
+        for (i in messageDigest.indices) {
+            var h = Integer.toHexString(0xFF and messageDigest[i].toInt())
+            while (h.length < 2)
+                h = "0" + h
+            hexString.append(h)
+        }
+        return hexString.toString()
+    }
+}
+
+/**
+ * Перекрашивание иконок
+ */
+inline fun Drawable.setColorAccent(context: Context) {
+    setColor(context, R.attr.colorAccent)
+}
+
+inline fun Drawable.setColor(context: Context, @AttrRes colorAttr: Int) {
+    val color = context.getAttributeResourceId(colorAttr)
+    setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+}
+
+inline fun ImageView.setIconColor(context: Context, @AttrRes colorAttr: Int) {
+    val color = context.getAttributeResourceId(colorAttr)
+    drawable?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+}
+
+/**
+ * Set color to colorAccent
+ * @param context
+ * @param icon
+ */
+inline fun ImageView.setIconColorAccent(context: Context) {
+    setIconColor(context, R.attr.colorAccent)
+}
+
+/**
+ * Заменяет в исходной строке символы на похожие по написанию символы из другого языка.
+ * Например, "Н" ("эн" русская) на "H" ("эйч" английская) и т.п.
+ * @param line строка, в которой делается замена символов
+ * @param engToRus true для перевода английских букв в русские, false - русских в английские
+ * @return строка с заменёнными символами
+ */
+fun String.replaceSimilarLetters(engToRus: Boolean): String {
+    var line = this
+    val RUS = arrayOf("а", "в", "е", "к", "м", "н", "о", "п", "р", "с", "т", "у", "х")
+    val ENG = arrayOf("a", "b", "e", "k", "m", "h", "o", "n", "p", "c", "t", "y", "x")
+    val source = if (engToRus) ENG else RUS
+    val destination = if (engToRus) RUS else ENG
+    for (n in source.indices)
+        line = line.replace(source[n].toRegex(), destination[n])
+                .replace(source[n].toUpperCase().toRegex(), destination[n].toUpperCase())
+    return line
+}
