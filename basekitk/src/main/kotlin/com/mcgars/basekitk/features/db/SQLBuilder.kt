@@ -311,8 +311,8 @@ class SQLBuilder(val context: Context, val provider: ToolContentProvider, conten
         //        Log.d("contentUrltest", ""+contentUrl);
 
         if (LIMIT == 0)
-            return if (notify) provider!!.getContentUri(contentUrl) else provider!!.getNoNotifyContentUri(contentUrl)
-        return provider!!.getContentWithLimitUri(contentUrl, LIMIT)
+            return if (notify) provider!!.getContentUri(contentUrl!!) else provider!!.getNoNotifyContentUri(contentUrl!!)
+        return provider!!.getContentWithLimitUri(contentUrl!!, LIMIT)
     }
 
     @JvmOverloads fun delete(notify: Boolean = true) {
@@ -354,11 +354,11 @@ class SQLBuilder(val context: Context, val provider: ToolContentProvider, conten
             return CursorLoader(
                     context!!,
                     if (GROUP_BY != null)
-                        provider!!.getContentUriGroupBy(contentUrl, GROUP_BY)
+                        provider!!.getContentUriGroupBy(contentUrl!!, GROUP_BY!!)
                     else if (LIMIT == 0)
-                        provider!!.getContentUri(contentUrl)
+                        provider!!.getContentUri(contentUrl!!)
                     else
-                        provider!!.getContentWithLimitUri(contentUrl, LIMIT),
+                        provider!!.getContentWithLimitUri(contentUrl!!, LIMIT),
                     COLUMNS, whereInstance, selection, ORDER_BY
             )
         }

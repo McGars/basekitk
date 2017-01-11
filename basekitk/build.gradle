@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 25
@@ -25,6 +26,12 @@ android {
     }
 }
 
+ext {
+    appCompat = "25.1.0"
+    gsonV = "2.7"
+    conductor = "2.0.5"
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -33,11 +40,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    compile "com.android.support:design:$appCompatV"
-    compile "com.android.support:recyclerview-v7:$appCompatV"
+    compile "com.android.support:design:$appCompat"
+    compile "com.android.support:recyclerview-v7:$appCompat"
     compile "com.google.code.gson:gson:$gsonV"
     compile "com.bluelinelabs:conductor-support:$conductor"
-}
-repositories {
-    mavenCentral()
 }

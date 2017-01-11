@@ -8,8 +8,12 @@ import com.mcgars.basekitk.R
 /**
  * Created by Владимир on 22.09.2015.
  */
-abstract class ListRecycleAdapter<T, H : RecyclerView.ViewHolder>(context: Context, items: MutableList<T>, layout: Int) :
-        HeaderRecyclerAdapter<T, H>(context, items, layout) {
+abstract class ListRecycleAdapter<T, H : RecyclerView.ViewHolder>(
+        context: Context,
+        items: MutableList<T>,
+        layout: Int,
+        onItemClickListener: ((item: T, position: Int)->Unit)? = null) :
+        HeaderRecyclerAdapter<T, H>(context, items, layout, onItemClickListener) {
 
     private var loaderView: View? = null
 

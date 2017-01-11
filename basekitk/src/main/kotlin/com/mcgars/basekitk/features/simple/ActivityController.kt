@@ -12,7 +12,7 @@ import com.mcgars.basekitk.features.simple.BaseKitActivity
  * Так как мы не можем унаследовать все активити от базового активити
  * то используеться этот [ActivityController]
  */
-class ActivityController<T : BaseKitActivity<ActivityController<T>>>(activity: T? = null) {
+open class ActivityController<T : BaseKitActivity<ActivityController<T>>>(activity: T? = null) {
     var activity: Activity?= activity
 
     fun onResume() {

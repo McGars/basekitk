@@ -13,8 +13,12 @@ import java.util.*
  * Created by gars on 05.01.2017.
  */
 
-class SimpleListAdapter(context: Context, items: MutableList<SimpleListItem>, layout: Int = R.layout.basekit_view_simple_list) :
-        HeaderRecyclerAdapter<SimpleListItem, SimpleListHolder>(context, items, layout) {
+class SimpleListAdapter(
+        context: Context,
+        items: MutableList<SimpleListItem>,
+        layout: Int = R.layout.basekit_view_simple_list,
+        onItemClickListener: ((item: SimpleListItem, position: Int)->Unit)? = null) :
+        HeaderRecyclerAdapter<SimpleListItem, SimpleListHolder>(context, items, layout, onItemClickListener) {
 
     override fun getViewHolder(view: View) = SimpleListHolder(view)
 

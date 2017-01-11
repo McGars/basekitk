@@ -68,9 +68,9 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
             (adapter as ListRecycleAdapter<*,*>).showLoader(b)
     }
 
-    abstract fun getAdapter(list: List<*>): RecyclerView.Adapter<*>
+    abstract fun getAdapter(list: MutableList<*>): RecyclerView.Adapter<*>
 
-    protected fun prepareData(list: List<Any>, hasmore: Boolean) {
+    protected fun prepareData(list: List<Any>, hasmore: Boolean = false) {
         if (activity == null)
             return
 

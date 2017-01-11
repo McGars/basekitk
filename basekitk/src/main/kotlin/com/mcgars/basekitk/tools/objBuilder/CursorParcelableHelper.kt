@@ -9,6 +9,7 @@ import java.util.HashMap
 /**
  * Created by Владимир on 28.09.2015.
  */
+@Suppress("UNCHECKED_CAST")
 abstract class CursorParcelableHelper : CursorParcelable {
     private var cursor: Cursor? = null
     internal var cashColunm = HashMap<String, Int>()
