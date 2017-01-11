@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:paddingLeft="@dimen/defaultPadding"
-    android:paddingRight="@dimen/defaultPadding"
-    android:paddingTop="@dimen/defaultPaddingMini"
-    android:paddingBottom="@dimen/defaultPaddingMini"
+    android:paddingLeft="@dimen/dp8"
+    android:paddingRight="@dimen/dp8"
+    android:paddingTop="@dimen/dp4"
+    android:paddingBottom="@dimen/dp4"
     android:orientation="vertical">
 
     <TextView
