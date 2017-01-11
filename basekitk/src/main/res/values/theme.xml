@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
-    <style name="BaseKitTeme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- что бы при клике цвет менялся на нужный замените @color/altarixUiPressedColor-->
-        <item name="selectableItemBackground">@drawable/basekit_selector_simple</item>
+    <style name="BaseKitThemeAbs" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Цвет подсветки нажатия -->
         <item name="colorControlHighlight">@color/black_owerlay_20</item>
+        <!-- цвет при клике -->
+        <item name="selectableItemBackground">@drawable/basekit_selector_simple</item>
 
         <item name="windowActionModeOverlay">true</item>
     </style>
-    <style name="KitTeme" parent="BaseKitTeme">
+    <style name="KitTeme" parent="BaseKitThemeAbs">
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-        <!--<item name="colorControlNormal">@color/normalControl</item>-->
+        <item name="colorControlNormal">@color/black_owerlay_20</item>
         <!-- style button-->
         <!--<item name="android:buttonStyle">@style/uiButton</item>-->
         <!-- dialog theme stuff -->
@@ -21,7 +21,7 @@
         <!-- styles button-->
         <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
         <!-- Цвет текста на кнопках -->
-        <item name="android:textColorPrimary">@color/black_owerlay_60</item>
+        <item name="android:textColorPrimary">@color/black_owerlay_90</item>
     </style>
 
     <style name="KitTeme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
@@ -29,6 +29,10 @@
     </style>
 
     <style name="KitTeme.NoActionBar" parent="KitTeme" />
+
+    <style name="KitTeme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="KitTeme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- Customize your theme here. -->

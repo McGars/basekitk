@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:paddingLeft="@dimen/dp8"
-    android:paddingRight="@dimen/dp8"
-    android:paddingTop="@dimen/dp4"
-    android:paddingBottom="@dimen/dp4"
-    android:orientation="vertical">
+    android:paddingLeft="@dimen/dp16"
+    android:paddingRight="@dimen/dp16"
+    android:paddingTop="@dimen/dp8"
+    android:paddingBottom="@dimen/dp8"
+    android:orientation="vertical"
+    android:background="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/tvTitle"

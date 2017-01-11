@@ -59,15 +59,15 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-inline fun EditText?.txt(): String? {
+fun EditText?.txt(): String? {
     return this?.text.toString()
 }
 
-inline fun EditText?.toInt(defVal: Int = 0): Int {
+fun EditText?.toInt(defVal: Int = 0): Int {
     return if (txt()?.isEmpty() ?: true) defVal else txt()!!.toInt()
 }
 
-inline fun EditText?.toFloat(defVal: Float = 0f): Float {
+fun EditText?.toFloat(defVal: Float = 0f): Float {
     return if (txt()?.isEmpty() ?: true) defVal else txt()!!.toFloat()
 }
 
@@ -90,19 +90,19 @@ inline fun <C> trying2(func: () -> Unit): C? {
     }
 }
 
-inline fun View?.visible(visible: Boolean) {
+fun View?.visible(visible: Boolean) {
     this?.visibility = if (visible) View.VISIBLE else View.INVISIBLE
 }
 
-inline fun View?.gone(isGone: Boolean) {
+fun View?.gone(isGone: Boolean) {
     this?.visibility = if (isGone) View.GONE else View.VISIBLE
 }
 
-inline fun Array<View?>.visible(visible: Boolean) {
+fun Array<View?>.visible(visible: Boolean) {
     setVisibleState(if (visible) View.VISIBLE else View.INVISIBLE)
 }
 
-inline fun Array<View?>.gone(isGone: Boolean) {
+fun Array<View?>.gone(isGone: Boolean) {
     setVisibleState(if (isGone) View.GONE else View.VISIBLE)
 }
 
@@ -112,7 +112,7 @@ fun Array<View?>.setVisibleState(state: Int) {
     }
 }
 
-inline fun Context?.hideKeyboard(hostView: View?): Boolean? {
+fun Context?.hideKeyboard(hostView: View?): Boolean? {
     var isHide: Boolean = false
     hostView?.windowToken?.run {
         isHide = (this@hideKeyboard?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
@@ -121,17 +121,17 @@ inline fun Context?.hideKeyboard(hostView: View?): Boolean? {
     return isHide
 }
 
-inline fun Activity?.hideKeyboard(): Boolean? {
+fun Activity?.hideKeyboard(): Boolean? {
     return this?.run { hideKeyboard(window.decorView) } ?: false
 }
 
-inline fun Context?.showKeyboard(etText: EditText?): Boolean? {
+fun Context?.showKeyboard(etText: EditText?): Boolean? {
     etText?.requestFocus()
     val imm = this?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     return imm?.showSoftInput(etText, InputMethodManager.SHOW_IMPLICIT)
 }
 
-inline fun Context?.toggleKeyboard() {
+fun Context?.toggleKeyboard() {
     (this?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)?.run {
         toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
@@ -162,9 +162,9 @@ fun Context?.isServiceRunning(serviceClass: Class<*>): Boolean {
  * @param id id view for findViewById
  * @return Необходимую вью
 </C> */
-inline fun <C : View> View.find(id: Int) = findViewById(id) as C
+fun <C : View> View.find(id: Int) = findViewById(id) as C
 
-inline fun <C : View> Activity.find(id: Int) = findViewById(id) as C
+fun <C : View> Activity.find(id: Int) = findViewById(id) as C
 
 inline fun ViewGroup.forEach(action: View.() -> Unit) {
     (0..childCount).forEach { getChildAt(it).action() }
@@ -174,11 +174,11 @@ inline fun ViewGroup.forEach(action: View.() -> Unit) {
  * @param format
  * @return current formated date
  */
-inline fun Calendar.getDate(format: String): String {
+fun Calendar.getDate(format: String): String {
     return time.formatToString(format)
 }
 
-inline fun Date.formatToString(format: String) = SimpleDateFormat(format).format(date)
+fun Date.formatToString(format: String) = SimpleDateFormat(format).format(date)
 
 fun getDateFromString(format: String, date: String): Date? {
     val _format = SimpleDateFormat(format)
@@ -191,7 +191,7 @@ fun getDateFromString(format: String, date: String): Date? {
     return null
 }
 
-inline fun View?.startAnimation(anim: Int, l: Animation.AnimationListener? = null): Animation? {
+fun View?.startAnimation(anim: Int, l: Animation.AnimationListener? = null): Animation? {
     return this?.run {
         clearAnimation()
         val animation = AnimationUtils.loadAnimation(context, anim)
@@ -234,7 +234,7 @@ fun match(regexp: String, string: String): Boolean {
     return Pattern.compile(regexp).matcher(string).find()
 }
 
-inline fun Context.isInternetAvailable(context: Context): Boolean {
+fun Context.isInternetAvailable(context: Context): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
 }
@@ -328,16 +328,16 @@ fun String.md5(): String? {
 /**
  * Перекрашивание иконок
  */
-inline fun Drawable.setColorAccent(context: Context) {
+fun Drawable.setColorAccent(context: Context) {
     setColor(context, R.attr.colorAccent)
 }
 
-inline fun Drawable.setColor(context: Context, @AttrRes colorAttr: Int) {
+fun Drawable.setColor(context: Context, @AttrRes colorAttr: Int) {
     val color = context.getAttributeResourceId(colorAttr)
     setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
 }
 
-inline fun ImageView.setIconColor(context: Context, @AttrRes colorAttr: Int) {
+fun ImageView.setIconColor(context: Context, @AttrRes colorAttr: Int) {
     val color = context.getAttributeResourceId(colorAttr)
     drawable?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
 }
@@ -347,7 +347,7 @@ inline fun ImageView.setIconColor(context: Context, @AttrRes colorAttr: Int) {
  * @param context
  * @param icon
  */
-inline fun ImageView.setIconColorAccent(context: Context) {
+fun ImageView.setIconColorAccent(context: Context) {
     setIconColor(context, R.attr.colorAccent)
 }
 

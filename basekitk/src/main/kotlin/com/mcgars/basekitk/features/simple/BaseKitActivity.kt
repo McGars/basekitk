@@ -45,7 +45,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * Лисенер который срабатывает в момент нажатия home arrow
      */
-    protected var homeListener: OnHomeListener? = null
+    protected var homeListener: (()->Boolean)? = null
     /**
      * Стандартные настройки, создаються автоматически
      */
@@ -285,7 +285,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (activityController?.onOptionsItemSelected(item) ?: false)
             return true
         if (item.itemId == android.R.id.home) {
-            if (homeListener?.onHomePressed() ?: false)
+            if (homeListener?.invoke() ?: false)
                 return true
             isHomeButtonPressed = true
             onBackPressed()
@@ -294,18 +294,11 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         return super.onOptionsItemSelected(item)
     }
 
-    /**
-     * home button listener
-     */
-    interface OnHomeListener {
-        fun onHomePressed(): Boolean
-    }
-
     /***
      * Remove this from your code, onBackListener add automatically
      * @param homeListener
      */
-    fun setOnHomeListener(homeListener: OnHomeListener) {
+    fun setOnHomeListener(homeListener: (()->Boolean)) {
         this.homeListener = homeListener
     }
 
