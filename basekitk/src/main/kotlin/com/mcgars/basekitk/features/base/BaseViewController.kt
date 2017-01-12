@@ -7,8 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.tools.hideKeyboard
+import com.mcgars.basekitk.tools.inflate
 
 /**
  * Created by gars on 29.12.2016.
@@ -23,8 +25,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         return inflater.inflate(getLayoutId(), container, false).apply { onViewCreated(this) }
     }
 
-    fun addDecorator(lifecycleListener: LifecycleListener) {
+    fun <D : LifecycleListener> addDecorator(lifecycleListener: D): D {
         addLifecycleListener(lifecycleListener)
+        return lifecycleListener
     }
 
     /**

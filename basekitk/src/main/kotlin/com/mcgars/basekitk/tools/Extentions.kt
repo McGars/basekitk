@@ -44,7 +44,7 @@ fun Context.toast(@IdRes msg: Int, lenght: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, lenght).show()
 }
 
-fun Context.toast(msg: String, lenght: Int = Toast.LENGTH_SHORT) {
+fun Context.toast(msg: String?, lenght: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, lenght).show()
 }
 

@@ -13,10 +13,8 @@ import kotlin.properties.Delegates
 class WrapperUiTool {
 
     private var view: View by Delegates.notNull()
-    internal var positionView: Int = 0
     var layout: ViewGroup? = null
-    private var parent: ViewGroup? = null
-    private var settings: ((v: View)->Unit)? = null
+    private var settings: ((v: View) -> Unit)? = null
 
     /**
 
@@ -80,7 +78,7 @@ class WrapperUiTool {
      * *
      * @return
      */
-    fun setOnSettingsBeforeSet(settings: (v: View)->Unit): WrapperUiTool {
+    fun setOnSettingsBeforeSet(settings: (v: View) -> Unit): WrapperUiTool {
         this.settings = settings
         return this
     }
@@ -89,9 +87,12 @@ class WrapperUiTool {
      * Удаляем оригинальное вью и вместо него ставим враппер
      */
     private fun rebuildParent() {
-        parent?.run {
-            removeViewAt(positionView)
-            addView(layout, positionView)
+        view.parent?.run {
+            with(view.parent as ViewGroup) {
+                val pos = indexOfChild(view)
+                addView(layout, pos)
+                removeView(view)
+            }
         }
     }
 

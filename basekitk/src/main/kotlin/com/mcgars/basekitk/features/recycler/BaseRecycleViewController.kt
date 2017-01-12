@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewGroup
 import com.gars.percents.base.BaseViewController
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.tools.find
@@ -118,8 +119,13 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         return adapter
     }
 
-    fun onDestroyView() {
+    override fun onDestroyView(view: View) {
+        super.onDestroyView(view)
         adapter = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     companion object {
