@@ -39,7 +39,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     /**
      * Call when view is ready to work
      */
-    protected open fun onReady(view: View) {}
+    protected abstract fun onReady(view: View)
 
     override fun onAttach(view: View) {
         setTitle()
