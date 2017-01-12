@@ -10,7 +10,7 @@ import com.mcgars.basekitk.features.simple.BaseKitActivity
 /**
  * Created by Владимир on 21.03.2016.
  */
-abstract class BaseDrawerNavigationActivity<C : ActivityController<*>> : BaseKitActivity<C>() {
+abstract class BaseDrawerNavigationActivity<out C : ActivityController<*>> : BaseKitActivity<C>() {
 
     override fun getLayoutId() = R.layout.basekit_activity_navigation
 

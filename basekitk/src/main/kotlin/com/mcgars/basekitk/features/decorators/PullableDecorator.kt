@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
+import com.mcgars.basekitk.features.base.DecoratorListener
 import com.mcgars.basekitk.tools.WrapperUiTool
 
 /**
@@ -13,7 +14,7 @@ import com.mcgars.basekitk.tools.WrapperUiTool
 class PullableDecorator private constructor(
         val viewId: Int,
         var swipeRefreshLayout: SwipeRefreshLayout?,
-        val onRefreshListener: SwipeRefreshLayout.OnRefreshListener) : Controller.LifecycleListener() {
+        val onRefreshListener: SwipeRefreshLayout.OnRefreshListener) : DecoratorListener() {
 
     /**
      * Id view which become attached to swipe
@@ -27,7 +28,7 @@ class PullableDecorator private constructor(
     constructor(swipeRefreshLayout: SwipeRefreshLayout, onRefreshListener: SwipeRefreshLayout.OnRefreshListener)
             : this(0, swipeRefreshLayout, onRefreshListener)
 
-    override fun postCreateView(controller: Controller, view: View) {
+    override fun onViewInited(view: View) {
         if (viewId != 0) {
             val v = view.findViewById(viewId) ?: return
             swipeRefreshLayout = SwipeRefreshLayout(view.context)

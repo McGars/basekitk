@@ -51,7 +51,7 @@ abstract class DrawerNavigationToolHelper(
     protected val navigationViewId: Int
         get() = R.id.nav_view
 
-    protected abstract val menuId: Int
+    protected open fun getMenuId(): Int = 0
 
     /**
      * Левая менюшка
@@ -64,17 +64,17 @@ abstract class DrawerNavigationToolHelper(
         toolbar?.run {
             activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             activity.supportActionBar?.setHomeButtonEnabled(true)
-            drawerToggle = toolbar.tag as ActionBarDrawerToggle
+            toolbar.tag?.run { drawerToggle = this as ActionBarDrawerToggle }
         }
 
         if (drawerLayout == null) {
             drawerLayout = activity.findViewById(drawerLayoutId) as DrawerLayout
-            mNavigationView = activity.findViewById(R.id.nav_view) as NavigationView
+            mNavigationView = activity.findViewById(navigationViewId) as NavigationView
             //            setGravityForNavigation(false);
             mNavigationView?.setNavigationItemSelectedListener(this)
-            if (menuId != 0) {
+            if (getMenuId() != 0) {
                 mNavigationView?.menu?.clear()
-                mNavigationView?.inflateMenu(menuId)
+                mNavigationView?.inflateMenu(getMenuId())
             }
         }
 
@@ -112,6 +112,43 @@ abstract class DrawerNavigationToolHelper(
         return true
     }
 
+    private fun chooseItem(id: Int, closeDrawer: Boolean = true) {
+        launchId = id
+        if (closeDrawer && drawerLayout!!.isDrawerOpen(GravityCompat.START))
+            drawerLayout!!.closeDrawers()
+        else {
+            loadPage()
+        }
+    }
+
+    fun loadPage(pageId: Int) {
+        mNavigationView?.setCheckedItem(pageId)
+        load(pageId)
+    }
+
+    private fun load(pageId: Int/*, closeDrawer: Boolean = true*/) {
+//        if (closeDrawer /*&& drawerLayout.isDrawerOpen(EaApplication.isLeft ? GravityCompat.START : GravityCompat.END)*/)
+//            drawerLayout!!.closeDrawers()
+
+        selectedId = pageId
+
+        val frag = getViewController(pageId) ?: return
+        activity.clearBackStack()
+        activity.loadPage(frag)
+    }
+
+    fun clearSelect() {
+        val itemMenu = mNavigationView?.menu?.findItem(selectedId)
+        itemMenu?.isChecked = false
+        selectedId = -1
+    }
+
+    private fun loadPage() {
+        if (launchId == -1) return
+        load(launchId)
+        launchId = -1
+    }
+
     val size: Int
         get() = mNavigationView?.menu?.size() ?: 0
 
@@ -142,44 +179,7 @@ abstract class DrawerNavigationToolHelper(
         }
     }
 
-    fun chooseItem(id: Int, closeDrawer: Boolean = true) {
-        launchId = id
-        if (closeDrawer && drawerLayout!!.isDrawerOpen(GravityCompat.START))
-            drawerLayout!!.closeDrawers()
-        else {
-            loadPage()
-        }
-    }
-
-    fun setSelected(id: Int) {
-        selectedId = id
-        mNavigationView?.setCheckedItem(id)
-    }
-
-    open fun loadPage(pageId: Int, closeDrawer: Boolean = true) {
-        if (closeDrawer /*&& drawerLayout.isDrawerOpen(EaApplication.isLeft ? GravityCompat.START : GravityCompat.END)*/)
-            drawerLayout!!.closeDrawers()
-
-        selectedId = pageId
-
-        val frag = getViewController(pageId) ?: return
-        activity.clearBackStack()
-        activity.loadPage(frag)
-    }
-
-    fun clearSelect() {
-        val itemMenu = mNavigationView?.menu?.findItem(selectedId)
-        itemMenu?.isChecked = false
-        selectedId = -1
-    }
-
     abstract fun getViewController(pageId: Int): Controller?
-
-    private fun loadPage() {
-        if (launchId == -1) return
-        loadPage(launchId)
-        launchId = -1
-    }
 
     fun onOptionsItemSelected(item: MenuItem) = drawerToggle!!.onOptionsItemSelected(item)
 

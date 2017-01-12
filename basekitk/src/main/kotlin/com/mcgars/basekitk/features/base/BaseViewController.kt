@@ -7,33 +7,39 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import com.bluelinelabs.conductor.Controller
+import com.mcgars.basekitk.features.base.DecoratorListener
 import com.mcgars.basekitk.tools.hideKeyboard
-import com.mcgars.basekitk.tools.inflate
+import java.util.*
 
 /**
  * Created by gars on 29.12.2016.
  */
 abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
+    val decorators: MutableList<DecoratorListener> = ArrayList()
+
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
     override final fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         Log.d("onCreateView", javaClass.canonicalName)
-        return inflater.inflate(getLayoutId(), container, false).apply { onViewCreated(this) }
+        return inflater.inflate(getLayoutId(), container, false).apply {
+            decorators.forEach { it.onViewInited(this) }
+            onReady(this)
+        }
     }
 
-    fun <D : LifecycleListener> addDecorator(lifecycleListener: D): D {
-        addLifecycleListener(lifecycleListener)
-        return lifecycleListener
+    fun <D : DecoratorListener> addDecorator(decoratorListener: D): D {
+        addLifecycleListener(decoratorListener)
+        decorators.add(decoratorListener)
+        return decoratorListener
     }
 
     /**
-     * Call when view is created
+     * Call when view is ready to work
      */
-    protected open fun onViewCreated(view: View) {}
+    protected open fun onReady(view: View) {}
 
     override fun onAttach(view: View) {
         setTitle()
@@ -61,5 +67,14 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     override fun onActivityPaused(activity: Activity) {
         super.onActivityPaused(activity)
         activity.hideKeyboard(activity.window.decorView)
+    }
+
+    final override fun addLifecycleListener(lifecycleListener: LifecycleListener) {
+        super.addLifecycleListener(lifecycleListener)
+    }
+
+    override fun onDestroyView(view: View) {
+        super.onDestroyView(view)
+        decorators.clear()
     }
 }

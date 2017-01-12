@@ -2,9 +2,9 @@
 <resources xmlns:ns1="http://schemas.android.com/tools">
     <style name="BaseKitThemeAbs" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Цвет подсветки нажатия -->
-        <item name="colorControlHighlight">@color/black_owerlay_20</item>
-        <!-- цвет при клике -->
-        <item name="selectableItemBackground">@drawable/basekit_selector_simple</item>
+        <!--<item name="colorControlHighlight">@color/black_owerlay_20</item>-->
+        <!--&lt;!&ndash; цвет при клике &ndash;&gt;-->
+        <!--<item name="selectableItemBackground">@drawable/basekit_selector_simple</item>-->
 
         <item name="windowActionModeOverlay">true</item>
     </style>
@@ -13,7 +13,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-        <item name="colorControlNormal">@color/black_owerlay_20</item>
+        <!--<item name="colorControlNormal">@color/black_owerlay_20</item>-->
         <!-- style button-->
         <!--<item name="android:buttonStyle">@style/uiButton</item>-->
         <!-- dialog theme stuff -->

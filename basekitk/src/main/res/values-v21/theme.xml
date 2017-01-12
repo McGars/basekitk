@@ -2,7 +2,7 @@
 <resources>
     <style name="BaseKitThemeAbs" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Цвет подсветки нажатия -->
-        <item name="colorControlHighlight">@color/black_owerlay_20</item>
+        <!--<item name="colorControlHighlight">@color/black_owerlay_20</item>-->
 
         <item name="windowActionModeOverlay">true</item>
     </style>

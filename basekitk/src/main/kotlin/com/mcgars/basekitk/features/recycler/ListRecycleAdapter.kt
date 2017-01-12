@@ -7,6 +7,7 @@ import com.mcgars.basekitk.R
 
 /**
  * Created by Владимир on 22.09.2015.
+ * Adapter with loader view, for pagination
  */
 abstract class ListRecycleAdapter<T, H : RecyclerView.ViewHolder>(
         context: Context,

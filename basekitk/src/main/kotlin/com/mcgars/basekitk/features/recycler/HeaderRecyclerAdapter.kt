@@ -17,11 +17,21 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         private val layout: Int,
         var onItemClickListener: ((item: T, position: Int)->Unit)? = null) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    /**
+     * Inflater
+     */
     protected val inflater: LayoutInflater by lazy { LayoutInflater.from(context) }
-    //headers
+    /**
+     * Headers views
+     */
     internal var headers: MutableList<View> = ArrayList()
-    //footers
+    /**
+     * Footer views
+     */
     internal var footers: MutableList<View> = ArrayList()
+    /**
+     * Click for items
+     */
     protected var itemClickListener: View.OnClickListener = View.OnClickListener { v ->
         val vh = v.getTag(R.id.item_position) as RecyclerView.ViewHolder
         val fixPos = vh.adapterPosition - headers.size
@@ -32,8 +42,14 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
 
     abstract fun getViewHolder(var1: View): H
 
+    /**
+     * Call's when holder created
+     */
     protected open fun setListeners(holder: H) {}
 
+    /**
+     * For few layouts
+     */
     protected fun getLayout(viewType: Int): Int {
         return this.layout
     }
@@ -55,6 +71,9 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         return null
     }
 
+    /**
+     * Override default click
+     */
     fun setOriginItemClick(itemClickListener: View.OnClickListener) {
         this.itemClickListener = itemClickListener
     }
@@ -96,6 +115,9 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         vh.base.addView(view)
     }
 
+    /**
+     * Call's for set values from item to holder
+     */
     abstract fun setValues(h: H, item: T, position: Int)
 
     override fun getItemViewType(position: Int): Int {
@@ -202,7 +224,6 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
             this.base = itemView as FrameLayout
         }
     }
-
 
     fun getItem(position: Int) = items[position]
 
