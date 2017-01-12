@@ -27,7 +27,8 @@ import kotlin.properties.Delegates
  * Created by Феофилактов on 26.07.2015.
  * Базовая активити, от которой наследуються все активити проекта в основном
  */
-abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivity() {
+abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
+
     /**
      * true if click on home button
      * check it in onBackPressed
@@ -105,6 +106,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         setContentView(getLayoutId())
         initToolBar()
         router = Conductor.attachRouter(this, findViewById(R.id.contentFrame) as ViewGroup, savedInstanceState)
+        router.addChangeListener(this)
         activityController?.onCreate(savedInstanceState)
     }
 
@@ -239,7 +241,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         /**
          * Прячим табы когда переходим на другую страницу
          */
-        checkHideTabs(view)
+//        checkHideTabs(view)
         setAppBarDefault()
 
         if(view.overriddenPopHandler == null)
@@ -345,6 +347,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     override fun onDestroy() {
         activityController?.onDestroy()
+        router.removeChangeListener(this)
         super.onDestroy()
     }
 
@@ -392,6 +395,14 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     companion object {
         private var CLOSE_APLICATION: Boolean = false
+    }
+
+    override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
+        checkHideTabs(to)
+    }
+
+    override fun onChangeCompleted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
+//        checkHideTabs(to)
     }
 
 }
