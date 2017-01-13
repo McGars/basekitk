@@ -13,10 +13,8 @@ import kotlin.properties.Delegates
 class WrapperUiTool {
 
     private var view: View by Delegates.notNull()
-    internal var positionView: Int = 0
-    var layout: ViewGroup? = null
-    private var parent: ViewGroup? = null
-    private var settings: ((v: View)->Unit)? = null
+    var wrapperLayout: ViewGroup? = null
+    private var settings: ((v: View) -> Unit)? = null
 
     /**
 
@@ -35,9 +33,9 @@ class WrapperUiTool {
      * *
      * @param layout это враппер, который обволакивает нужную вьюху
      */
-    constructor(view: View, layout: ViewGroup) {
+    constructor(view: View, wrapperLayout: ViewGroup) {
         this.view = view
-        this.layout = layout
+        this.wrapperLayout = wrapperLayout
     }
 
     /**
@@ -49,7 +47,7 @@ class WrapperUiTool {
      */
     fun insertAtId(@IdRes inputId: Int): WrapperUiTool {
         settings?.invoke(view)
-        (layout!!.findViewById(inputId) as ViewGroup).addView(view)
+        (wrapperLayout!!.findViewById(inputId) as ViewGroup).addView(view)
         rebuildParent()
         return this
     }
@@ -64,7 +62,7 @@ class WrapperUiTool {
     fun insertAtPosition(position: Int): WrapperUiTool {
         settings?.invoke(view)
         rebuildParent()
-        layout!!.addView(view, position)
+        wrapperLayout!!.addView(view, position)
         return this
     }
 
@@ -80,7 +78,7 @@ class WrapperUiTool {
      * *
      * @return
      */
-    fun setOnSettingsBeforeSet(settings: (v: View)->Unit): WrapperUiTool {
+    fun setOnSettingsBeforeSet(settings: (v: View) -> Unit): WrapperUiTool {
         this.settings = settings
         return this
     }
@@ -89,14 +87,18 @@ class WrapperUiTool {
      * Удаляем оригинальное вью и вместо него ставим враппер
      */
     private fun rebuildParent() {
-        parent?.run {
-            removeViewAt(positionView)
-            addView(layout, positionView)
+        view.parent?.run {
+            with(view.parent as ViewGroup) {
+                val pos = indexOfChild(view)
+                addView(wrapperLayout, pos)
+                removeView(view)
+            }
         }
     }
 
     fun covertLayout(wrapperLayout: Int) {
         val inf = LayoutInflater.from(view.context)
-        layout = inf.inflate(wrapperLayout, view.parent as ViewGroup, false) as ViewGroup
+        this.wrapperLayout = inf.inflate(wrapperLayout, view.parent as ViewGroup, false) as ViewGroup
     }
+
 }

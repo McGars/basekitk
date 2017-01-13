@@ -15,27 +15,9 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
     val columnCount: Int
         get() = 2
 
-    //number of columns of the grid
-//    override fun initLayoutManager(): LinearLayoutManager {
-//        val ml = GridLayoutManager(activity, columnCount)
-//        ml.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-//            override fun getSpanSize(position: Int): Int {
-//
-//                if (getAdapter() == null)
-//                    return 1
-//
-//                return when (getAdapter()?.getItemViewType(position)) {
-//                    TYPE_HEADER, TYPE_FOOTER -> 2
-//                    TYPE_ITEM -> 1
-//                    else -> -1
-//                }
-//            }
-//        }
-//        return ml
-//    }
     override fun initLayoutManager(): LinearLayoutManager {
         val ml = GridLayoutManager(activity, columnCount)
-        ml.spanSizeLookup = AutoSpanSizeLookup(columnCount)
+        ml.spanSizeLookup = AutoSpanSizeLookup()
         return ml
     }
 
@@ -44,7 +26,7 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
             if (spanCount != mCount) {
                 val position = findFirstCompletelyVisibleItemPosition()
                 spanCount = mCount
-                spanSizeLookup = AutoSpanSizeLookup(mCount)
+                spanSizeLookup = AutoSpanSizeLookup()
                 recyclerView?.adapter = getAdapter()
                 recyclerView?.scrollToPosition(position)
             }
@@ -68,7 +50,7 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
         return if (count == 0) 1 else count
     }
 
-    inner class AutoSpanSizeLookup(internal val mCount: Int) : GridLayoutManager.SpanSizeLookup() {
+    inner class AutoSpanSizeLookup : GridLayoutManager.SpanSizeLookup() {
 
         override fun getSpanSize(position: Int): Int {
             if (getAdapter() == null)
@@ -76,10 +58,9 @@ abstract class BaseRecycleViewGridController(args: Bundle? = null) : BaseRecycle
 
             return when (getAdapter()?.getItemViewType(position)) {
                 TYPE_HEADER, TYPE_FOOTER -> 2
-                TYPE_ITEM -> mCount //1
+                TYPE_ITEM -> 1
                 else -> -1
             }
-//            return if (mAdapter.getItemViewType(position) === 0) mCount else 1
         }
     }
 

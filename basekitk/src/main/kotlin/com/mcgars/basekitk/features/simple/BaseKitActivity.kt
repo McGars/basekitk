@@ -13,28 +13,29 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.bluelinelabs.conductor.Conductor
-import com.bluelinelabs.conductor.Controller
-import com.bluelinelabs.conductor.Router
-import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.*
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.tools.*
 import com.mcgars.basekitk.tools.pagecontroller.ExTabs
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import com.mcgars.basekitk.tools.permission.BasePermissionController
+import java.util.*
 import kotlin.properties.Delegates
 
 /**
  * Created by Феофилактов on 26.07.2015.
  * Базовая активити, от которой наследуються все активити проекта в основном
  */
-abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivity() {
+abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
+
     /**
      * true if click on home button
      * check it in onBackPressed
      * @return
      */
+    val TAG = "BaseKitActivity"
+
     var isHomeButtonPressed: Boolean = false
         private set
 
@@ -45,7 +46,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * Лисенер который срабатывает в момент нажатия home arrow
      */
-    protected var homeListener: (()->Boolean)? = null
+    protected var homeListener: (() -> Boolean)? = null
     /**
      * Стандартные настройки, создаються автоматически
      */
@@ -94,12 +95,18 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     private var router: Router by Delegates.notNull()
 
+    /**
+     * If in back stack more than 1 page, always set back arrow
+     */
+    var alwaysArrow: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityController = initActivityController()
         setContentView(getLayoutId())
         initToolBar()
         router = Conductor.attachRouter(this, findViewById(R.id.contentFrame) as ViewGroup, savedInstanceState)
+        router.addChangeListener(this)
         activityController?.onCreate(savedInstanceState)
     }
 
@@ -111,7 +118,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     /**
-     * Change default app bar layout whit toolbar to custom
+     * Change default app bar wrapperLayout whit toolbar to custom
      * @param appBarLayout
      * *
      * @return boolean
@@ -125,7 +132,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     /**
-     * Set default app bar layout
+     * Set default app bar wrapperLayout
      * @return boolean
      */
     open fun setAppBarDefault(): Boolean {
@@ -196,7 +203,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      */
     fun clearBackStack() {
         // Clear all back stack.
-        router.popToRoot()
+        router.setBackstack(ArrayList<RouterTransaction>(), null)
+//        router.popToRoot()
     }
 
 
@@ -207,6 +215,16 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     open fun loadPage(id: Int) {
     }
 
+    /**
+     * Default in animation for page
+     */
+    protected fun getDefaultPopAnimate(): ControllerChangeHandler? = null
+
+    /**
+     * Default out animation for page
+     */
+    protected fun getDefaultPushAnimate(): ControllerChangeHandler? = null
+
 
     /**
      * Display fragment on the screen
@@ -215,7 +233,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * @param backstack if true, remove previous fragment from Fragment Manager
      * *        and when press back button then will be -2 Fragments
      */
-     open fun loadPage(view: Controller?, backstack: Boolean = true) {
+    open fun loadPage(view: Controller?, backstack: Boolean = true) {
 
         if (view == null || (Build.VERSION.SDK_INT >= 17 && isDestroyed) || isFinishing)
             return
@@ -223,12 +241,18 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         /**
          * Прячим табы когда переходим на другую страницу
          */
-        checkHideTabs(view)
+        //        checkHideTabs(view)
         setAppBarDefault()
-        if (!backstack) {
-            router.replaceTopController((RouterTransaction.with(view)))
-        } else {
-            router.pushController((RouterTransaction.with(view)))
+
+        if (view.overriddenPopHandler == null)
+            view.overridePopHandler(getDefaultPopAnimate())
+        if (view.overriddenPushHandler == null)
+            view.overridePopHandler(getDefaultPushAnimate())
+
+        val transition = RouterTransaction.with(view)
+        router.run {
+            setHomeArrow(alwaysArrow && backstackSize > 0)
+            if (backstack) pushController(transition) else replaceTopController(transition)
         }
     }
 
@@ -245,6 +269,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     override fun onBackPressed() {
         // Check if we can back pressed from views
+        setHomeArrow(alwaysArrow && router.backstackSize > 2)
         if (router.handleBack()) {
             return
         }
@@ -298,7 +323,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * Remove this from your code, onBackListener add automatically
      * @param homeListener
      */
-    fun setOnHomeListener(homeListener: (()->Boolean)) {
+    fun setOnHomeListener(homeListener: (() -> Boolean)) {
         this.homeListener = homeListener
     }
 
@@ -322,6 +347,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     override fun onDestroy() {
         activityController?.onDestroy()
+        router.removeChangeListener(this)
         super.onDestroy()
     }
 
@@ -369,6 +395,14 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     companion object {
         private var CLOSE_APLICATION: Boolean = false
+    }
+
+    override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
+        checkHideTabs(to)
+    }
+
+    override fun onChangeCompleted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
+//        checkHideTabs(to)
     }
 
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewGroup
 import com.gars.percents.base.BaseViewController
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.tools.find
@@ -29,17 +30,22 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         return LinearLayoutManager(activity)
     }
 
-    override fun onViewCreated(view: View) {
-        super.onViewCreated(view)
+    override fun onReady(view: View) {
         recyclerView = view.find(R.id.recycleView)
         recyclerView?.layoutManager = initLayoutManager()
         initLoading()
     }
 
+    /**
+     * Load more items when list scrolls to end
+     */
     protected fun initLoading() {
         recyclerView!!.addOnScrollListener(loadingScroll)
     }
 
+    /**
+     * Calls when list scrolls to end
+     */
     abstract fun loadData()
 
     internal var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -60,6 +66,9 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         }
     }
 
+    /**
+     * Indicate have more items and when list scrolls to end call [loadData]
+     */
     fun hasMoreItems(b: Boolean) {
         isLoading = false
         hasMoreItems = b
@@ -68,8 +77,14 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
             (adapter as ListRecycleAdapter<*,*>).showLoader(b)
     }
 
+    /**
+     * Call when [adapter] is null, in first init
+     */
     abstract fun getAdapter(list: MutableList<*>): RecyclerView.Adapter<*>
 
+    /**
+     * You must call this when data is ready to show for UI
+     */
     protected fun prepareData(list: List<Any>, hasmore: Boolean = false) {
         if (activity == null)
             return
@@ -110,7 +125,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         }
     }
 
-    fun setAdapter(adapter: RecyclerView.Adapter<*>) {
+    private fun setAdapter(adapter: RecyclerView.Adapter<*>) {
         recyclerView!!.adapter = adapter
     }
 
@@ -118,7 +133,9 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         return adapter
     }
 
-    fun onDestroyView() {
+    override fun onDestroyView(view: View) {
+        super.onDestroyView(view)
+        // When we go to another page and back to this page list disappears, fix this
         adapter = null
     }
 
