@@ -162,9 +162,9 @@ fun Context?.isServiceRunning(serviceClass: Class<*>): Boolean {
  * @param id id view for findViewById
  * @return Необходимую вью
 </C> */
-fun <C : View> View.find(id: Int) = findViewById(id) as C
+fun <C : View?> View.find(id: Int) = findViewById(id)?.run { this as C }
 
-fun <C : View> Activity.find(id: Int) = findViewById(id) as C
+fun <C : View?> Activity.find(id: Int) = findViewById(id)?.run { this as C }
 
 inline fun ViewGroup.forEach(action: View.() -> Unit) {
     (0..childCount).forEach { getChildAt(it).action() }
@@ -296,7 +296,7 @@ fun Context.getAttributeResourceId(attr: Int): Int {
  * @param attr
  * @return
  */
-fun Context.getColor(attr: Int) = ContextCompat.getColor(this, getAttributeResourceId(attr))
+fun Context.color(@AttrRes attr: Int) = ContextCompat.getColor(this, getAttributeResourceId(attr))
 
 /**
  * Get simple drawable from attr
@@ -304,7 +304,7 @@ fun Context.getColor(attr: Int) = ContextCompat.getColor(this, getAttributeResou
  * @param attr
  * @return
  */
-fun Context.getDrawable(attr: Int) = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
+fun Context.drawable(@AttrRes attr: Int) = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
 
 fun String.md5(): String? {
     return trying2<String> {
@@ -368,4 +368,9 @@ fun String.replaceSimilarLetters(engToRus: Boolean): String {
         line = line.replace(source[n].toRegex(), destination[n])
                 .replace(source[n].toUpperCase().toRegex(), destination[n].toUpperCase())
     return line
+}
+
+inline fun log (tag: String = "supperloger", text: ()->Any?) {
+    val txt = text()?.toString()
+    Log.d(tag, "$txt")
 }

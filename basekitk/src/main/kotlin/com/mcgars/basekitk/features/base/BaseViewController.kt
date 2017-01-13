@@ -3,13 +3,18 @@ package com.gars.percents.base
 import android.app.Activity
 import android.os.Bundle
 import android.support.annotation.LayoutRes
+import android.support.design.widget.TabLayout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.features.base.DecoratorListener
+import com.mcgars.basekitk.features.simple.ActivityController
+import com.mcgars.basekitk.features.simple.BaseKitActivity
+import com.mcgars.basekitk.tools.LoaderController
 import com.mcgars.basekitk.tools.hideKeyboard
+import com.mcgars.basekitk.tools.pagecontroller.PageController
 import java.util.*
 
 /**
@@ -18,7 +23,41 @@ import java.util.*
 abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
     val decorators: MutableList<DecoratorListener> = ArrayList()
+    /**
+     * Tabs top on the page
+     */
+    val tabs: TabLayout?
+        get() = (activity as BaseKitActivity<*>).tabs
 
+    /**
+     * Run page in new Activity without create new Activity
+     */
+    val pageController: PageController
+        get() = (activity as BaseKitActivity<*>).pageController
+
+    /**
+     * Loader block ui when show
+     */
+    val loader: LoaderController
+        get() = (activity as BaseKitActivity<*>).loaderController
+
+    /**
+     * Life cycle of the Activity
+     */
+    fun <C: ActivityController<BaseKitActivity<C>>> getAc(): C? {
+        return (activity as BaseKitActivity<C>).getAC()
+    }
+
+    /**
+     * Show page to user
+     */
+    fun loadPage(viewController: Controller, backStack: Boolean = true) {
+        (activity as BaseKitActivity<*>).loadPage(viewController, backStack)
+    }
+
+    /**
+     * Layout of the page ui
+     */
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 

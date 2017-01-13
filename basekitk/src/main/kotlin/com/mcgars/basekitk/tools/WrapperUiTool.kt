@@ -13,7 +13,7 @@ import kotlin.properties.Delegates
 class WrapperUiTool {
 
     private var view: View by Delegates.notNull()
-    var layout: ViewGroup? = null
+    var wrapperLayout: ViewGroup? = null
     private var settings: ((v: View) -> Unit)? = null
 
     /**
@@ -33,9 +33,9 @@ class WrapperUiTool {
      * *
      * @param layout это враппер, который обволакивает нужную вьюху
      */
-    constructor(view: View, layout: ViewGroup) {
+    constructor(view: View, wrapperLayout: ViewGroup) {
         this.view = view
-        this.layout = layout
+        this.wrapperLayout = wrapperLayout
     }
 
     /**
@@ -47,7 +47,7 @@ class WrapperUiTool {
      */
     fun insertAtId(@IdRes inputId: Int): WrapperUiTool {
         settings?.invoke(view)
-        (layout!!.findViewById(inputId) as ViewGroup).addView(view)
+        (wrapperLayout!!.findViewById(inputId) as ViewGroup).addView(view)
         rebuildParent()
         return this
     }
@@ -62,7 +62,7 @@ class WrapperUiTool {
     fun insertAtPosition(position: Int): WrapperUiTool {
         settings?.invoke(view)
         rebuildParent()
-        layout!!.addView(view, position)
+        wrapperLayout!!.addView(view, position)
         return this
     }
 
@@ -90,7 +90,7 @@ class WrapperUiTool {
         view.parent?.run {
             with(view.parent as ViewGroup) {
                 val pos = indexOfChild(view)
-                addView(layout, pos)
+                addView(wrapperLayout, pos)
                 removeView(view)
             }
         }
@@ -98,6 +98,7 @@ class WrapperUiTool {
 
     fun covertLayout(wrapperLayout: Int) {
         val inf = LayoutInflater.from(view.context)
-        layout = inf.inflate(wrapperLayout, view.parent as ViewGroup, false) as ViewGroup
+        this.wrapperLayout = inf.inflate(wrapperLayout, view.parent as ViewGroup, false) as ViewGroup
     }
+
 }

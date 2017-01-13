@@ -58,7 +58,7 @@ abstract class SimpleBaseAdapter<T, H>(context: Context, list: List<T>, @LayoutR
 
     /**
      * Инициализация ViewHolder
-     * @param v передается inflater.inflate(getLayout(item), parent, false)
+     * @param v передается inflater.inflate(getWrapperLayout(item), parent, false)
      * *
      * @return ViewHolder
      */
@@ -66,7 +66,7 @@ abstract class SimpleBaseAdapter<T, H>(context: Context, list: List<T>, @LayoutR
 
     /**
      * Тут выставляем все листенеры для вьюшек
-     * вызываеться в момент создания view inflater.inflate(getLayout(item), parent, false)
+     * вызываеться в момент создания view inflater.inflate(getWrapperLayout(item), parent, false)
      * @param holder передается готовый экземпляр класса [.getViewHolder]
      */
     fun setListeners(holder: H) {

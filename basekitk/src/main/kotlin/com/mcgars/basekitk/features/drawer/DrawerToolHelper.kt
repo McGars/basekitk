@@ -36,7 +36,7 @@ abstract class DrawerToolHelper<T : BaseKitActivity<*>>(
     private var originListener: View.OnClickListener? = null
 
     /**
-     * Wrapper drawer layout
+     * Wrapper drawer wrapperLayout
      * @return
      */
     protected val drawerLayoutId: Int

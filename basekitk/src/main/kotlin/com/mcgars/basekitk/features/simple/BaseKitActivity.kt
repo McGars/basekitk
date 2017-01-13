@@ -46,7 +46,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * Лисенер который срабатывает в момент нажатия home arrow
      */
-    protected var homeListener: (()->Boolean)? = null
+    protected var homeListener: (() -> Boolean)? = null
     /**
      * Стандартные настройки, создаються автоматически
      */
@@ -118,7 +118,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     /**
-     * Change default app bar layout whit toolbar to custom
+     * Change default app bar wrapperLayout whit toolbar to custom
      * @param appBarLayout
      * *
      * @return boolean
@@ -132,7 +132,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     /**
-     * Set default app bar layout
+     * Set default app bar wrapperLayout
      * @return boolean
      */
     open fun setAppBarDefault(): Boolean {
@@ -233,7 +233,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * @param backstack if true, remove previous fragment from Fragment Manager
      * *        and when press back button then will be -2 Fragments
      */
-     open fun loadPage(view: Controller?, backstack: Boolean = true) {
+    open fun loadPage(view: Controller?, backstack: Boolean = true) {
 
         if (view == null || (Build.VERSION.SDK_INT >= 17 && isDestroyed) || isFinishing)
             return
@@ -241,18 +241,18 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         /**
          * Прячим табы когда переходим на другую страницу
          */
-//        checkHideTabs(view)
+        //        checkHideTabs(view)
         setAppBarDefault()
 
-        if(view.overriddenPopHandler == null)
+        if (view.overriddenPopHandler == null)
             view.overridePopHandler(getDefaultPopAnimate())
-        if(view.overriddenPushHandler == null)
+        if (view.overriddenPushHandler == null)
             view.overridePopHandler(getDefaultPushAnimate())
 
         val transition = RouterTransaction.with(view)
         router.run {
             setHomeArrow(alwaysArrow && backstackSize > 0)
-            if(backstack) pushController(transition) else replaceTopController(transition)
+            if (backstack) pushController(transition) else replaceTopController(transition)
         }
     }
 
@@ -323,7 +323,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * Remove this from your code, onBackListener add automatically
      * @param homeListener
      */
-    fun setOnHomeListener(homeListener: (()->Boolean)) {
+    fun setOnHomeListener(homeListener: (() -> Boolean)) {
         this.homeListener = homeListener
     }
 

@@ -36,7 +36,7 @@ abstract class DrawerNavigationToolHelper(
     }
 
     /**
-     * Wrapper drawer layout
+     * Wrapper drawer wrapperLayout
 
      * @return
      */
