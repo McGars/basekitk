@@ -26,9 +26,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
 
     override fun getLayoutId() = R.layout.basekit_view_recycler
 
-    protected open fun initLayoutManager(): LinearLayoutManager {
-        return LinearLayoutManager(activity)
-    }
+    protected open fun initLayoutManager() = LinearLayoutManager(activity)
 
     override fun onReady(view: View) {
         recyclerView = view.find(R.id.recycleView)
@@ -46,7 +44,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
     /**
      * Calls when list scrolls to end
      */
-    abstract fun loadData()
+    abstract fun loadData(page: Int)
 
     internal var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -61,7 +59,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
                     return
                 page++
                 isLoading = true
-                loadData()
+                loadData(page)
             }
         }
     }
@@ -129,9 +127,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         recyclerView!!.adapter = adapter
     }
 
-    fun getAdapter(): RecyclerView.Adapter<*>? {
-        return adapter
-    }
+    fun getAdapter() = adapter
 
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
