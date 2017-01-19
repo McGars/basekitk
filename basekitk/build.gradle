@@ -26,6 +26,17 @@ android {
         debug.java.srcDirs += 'src/debug/kotlin'
         release.java.srcDirs += 'src/release/kotlin'
     }
+
+    dexOptions {
+        incremental false
+        javaMaxHeapSize "6g"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+
 }
 
 ext {
@@ -59,9 +70,9 @@ if(file(filePatch).exists()){
         bintrayKey=props['BINTRAY_KEY']
         dryRun=false
         groupId = 'com.github.msgars'
-        artifactId = 'BasekitK'
+        artifactId = 'basekitk'
         //    repoName = 'ImageFactory'
-        publishVersion = '0.0.1'
+        publishVersion = '0.0.2'
         //    website = 'https://github.com/McGars/ImageFactory'
         //    description = 'View show image from thumb to screensize for android'
         //    repository = "${website}.git"
