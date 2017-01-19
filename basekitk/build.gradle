@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 25
@@ -45,4 +46,27 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$appCompat"
     compile "com.google.code.gson:gson:$gsonV"
     compile "com.bluelinelabs:conductor-support:$conductor"
+}
+
+def filePatch = "$project.rootDir/keybitray.properties";
+if(file(filePatch).exists()){
+    Properties props = new Properties()
+    props.load(new FileInputStream(filePatch))
+
+    // это блок будет обработан плагином bintray-release
+    publish {
+        bintrayUser=props['BINTRAY_USER']
+        bintrayKey=props['BINTRAY_KEY']
+        dryRun=false
+        groupId = 'com.github.msgars'
+        artifactId = 'BasekitK'
+        //    repoName = 'ImageFactory'
+        publishVersion = '0.0.1'
+        //    website = 'https://github.com/McGars/ImageFactory'
+        //    description = 'View show image from thumb to screensize for android'
+        //    repository = "${website}.git"
+        //    issueTracker = "https://issues.sonatype.org/browse/OSSRH-17767"
+        //    licences = ['Apache-2.0']
+    }
+
 }

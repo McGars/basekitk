@@ -30,3 +30,6 @@ app/build
 !build.gradle
 .*
 !.gitignore
+seeds.txt
+unused.txt
+keybitray.properties
