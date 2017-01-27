@@ -79,6 +79,6 @@ abstract class SimpleBaseAdapter<T, H>(context: Context, list: List<T>, @LayoutR
      * *
      * @param item передается [.getItem]
      */
-    fun viewListener(v: View, item: T) {
+    open fun viewListener(v: View, item: T) {
     }
 }
