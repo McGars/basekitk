@@ -72,7 +72,7 @@ if(file(filePatch).exists()){
         groupId = 'com.github.msgars'
         artifactId = 'basekitk'
         //    repoName = 'ImageFactory'
-        publishVersion = '0.0.2'
+        publishVersion = '0.0.3'
         //    website = 'https://github.com/McGars/ImageFactory'
         //    description = 'View show image from thumb to screensize for android'
         //    repository = "${website}.git"
