@@ -1,6 +1,18 @@
+buildscript {
+    ext.kotlin_version = '1.0.6'
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.3.4'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 25
@@ -52,7 +64,6 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile "com.android.support:design:$appCompat"
     compile "com.android.support:recyclerview-v7:$appCompat"
     compile "com.google.code.gson:gson:$gsonV"
@@ -61,6 +72,9 @@ dependencies {
 
 def filePatch = "$project.rootDir/keybitray.properties";
 if(file(filePatch).exists()){
+
+    apply plugin: 'com.novoda.bintray-release'
+
     Properties props = new Properties()
     props.load(new FileInputStream(filePatch))
 
@@ -80,4 +94,7 @@ if(file(filePatch).exists()){
         //    licences = ['Apache-2.0']
     }
 
+}
+repositories {
+    mavenCentral()
 }
