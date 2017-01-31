@@ -9,33 +9,26 @@ import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import com.bluelinelabs.conductor.Controller
+import com.mcgars.basekitk.features.simple.BaseKitActivity
 import com.mcgars.basekitk.tools.pagecontroller.PageController
+import java.lang.reflect.Constructor
 
 /**
  * @author Александр Свиридов on 31.07.2014.
  */
 abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
 
-    protected val context: Context
-    protected var frmanager: FragmentManager? = null
-    protected var rootId = -1
+    protected val context: BaseKitActivity<*>
     protected var arguments = Bundle()
     protected var authActivityClass: Class<out Activity>? = null
     protected var authViewClass: Class<out Controller>? = null
 
-    /** режим работы для AuthActivity-SomeActivity */
-    constructor(context: Context) {
+    /**
+     * activityMode - open in new activity or same activity
+     */
+    constructor(context: BaseKitActivity<*>, activityMode: Boolean = true) {
         this.context = context
-        arguments.putBoolean(ACTIVITY_MODE, true)
-    }
-
-    /** режим работы для AuthFragment-SomeFragment */
-    constructor(context: Context, @IdRes rootId: Int, frmanager: FragmentManager) {
-        this.context = context
-        this.rootId = rootId
-        this.frmanager = frmanager
-        arguments.putBoolean(ACTIVITY_MODE, false)
-        arguments.putInt(ROOT_ID, rootId)
+        arguments.putBoolean(ACTIVITY_MODE, activityMode)
     }
 
     fun setSkip(skipCls: Class<*>): T {
@@ -48,8 +41,8 @@ abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
         return this as T
     }
 
-    fun setAuthFragment(authFragmentClass: Class<out Controller>): T {
-        this.authViewClass = authFragmentClass
+    fun setAuthView(authViewClass: Class<out Controller>): T {
+        this.authViewClass = authViewClass
         return this as T
     }
 
@@ -83,6 +76,7 @@ abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
     fun createIntent(pageClass: Class<out Controller>): Intent {
         var pageClass = pageClass
         val auth = isAuthorized
+        val justAuth = arguments.getBoolean(JUST_AUTHORIZE, false)
         val intent = Intent()
         if (!auth) {
             intent.setClass(context, authActivityClass!!)
@@ -91,7 +85,8 @@ abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
             arguments.putSerializable(PageController.ACTIVITY_CONTROLLER, PageController.baseActivityController)
             arguments.putSerializable(PageController.CONTROLLER, pageClass)
         }
-        if (!auth) {
+
+        if (!auth && !justAuth) {
             if (Build.VERSION.SDK_INT > 10)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             else
@@ -119,15 +114,20 @@ abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
     }
 
     fun buildController(_class: Class<out Controller>): Controller? {
-        val constructor = _class.getConstructor(Bundle::class.java)
-        return constructor?.run { newInstance(arguments) } ?: _class.newInstance()
+        try {
+            val constructor = _class.getConstructor(Bundle::class.java)
+            return constructor.newInstance(arguments)
+        } catch(e: Exception) {
+            return _class.newInstance()
+        }
     }
 
     abstract val isAuthorized: Boolean
 
     private fun openViewController(pageClass: Class<out Controller>): Controller? {
         val view = createViewController(pageClass)
-
+        val justAuth = arguments.getBoolean(JUST_AUTHORIZE, false)
+        context.loadPage(view, justAuth)
         return view
     }
 
@@ -136,6 +136,5 @@ abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
         val PASSED_CLASS = "basekit.auth.PASSED_CLASS"
         val JUST_AUTHORIZE = "basekit.auth.JUST_AUTHORIZE"
         val ACTIVITY_MODE = "basekit.auth.ACTIVITY_MODE"
-        internal val ROOT_ID = "basekit.auth.ROOT_ID"
     }
 }

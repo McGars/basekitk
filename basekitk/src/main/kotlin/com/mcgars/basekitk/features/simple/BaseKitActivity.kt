@@ -50,9 +50,10 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * Стандартные настройки, создаються автоматически
      */
-    private val mSettings: SharedPreferences by lazy {
+    val settings: SharedPreferences by lazy {
         getSharedPreferences(packageName, Context.MODE_PRIVATE)
     }
+
     private var doubleBack: Boolean = false
 
     val pageController: PageController by lazy { PageController(this) }

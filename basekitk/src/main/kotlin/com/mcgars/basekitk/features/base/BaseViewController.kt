@@ -1,9 +1,11 @@
 package com.gars.percents.base
 
 import android.app.Activity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.design.widget.TabLayout
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -49,10 +51,29 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     }
 
     /**
+     * Settings for all app
+     */
+    val settings: SharedPreferences
+        get() = (activity as BaseKitActivity<*>).settings
+
+    /**
+     * Settings for all app
+     */
+    val toolbar: Toolbar?
+        get() = (activity as BaseKitActivity<*>).toolbar
+
+    /**
      * Show page to user
      */
     fun loadPage(viewController: Controller, backStack: Boolean = true) {
         (activity as BaseKitActivity<*>).loadPage(viewController, backStack)
+    }
+
+    /**
+     * Show home arrow in toolbar
+     */
+    fun setHomeArrow(arrow: Boolean) {
+        (activity as BaseKitActivity<*>).setHomeArrow(arrow)
     }
 
     /**
