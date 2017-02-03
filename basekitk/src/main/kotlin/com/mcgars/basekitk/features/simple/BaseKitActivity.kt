@@ -164,7 +164,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * но можно переопределить id с помощью метода getToolbarId()
      * @return [ExSlidingTabLayout]
      */
-    val tabs: TabLayout?
+    open val tabs: TabLayout?
         get() {
             showTabs(true)
             return tabsView
@@ -202,7 +202,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * Remove all fragments from stack
      */
-    fun clearBackStack() {
+    open fun clearBackStack() {
         // Clear all back stack.
         router.setBackstack(ArrayList<RouterTransaction>(), null)
 //        router.popToRoot()
@@ -219,12 +219,12 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * Default in animation for page
      */
-    protected fun getDefaultPopAnimate(): ControllerChangeHandler? = null
+    open protected fun getDefaultPopAnimate(): ControllerChangeHandler? = null
 
     /**
      * Default out animation for page
      */
-    protected fun getDefaultPushAnimate(): ControllerChangeHandler? = null
+    open protected fun getDefaultPushAnimate(): ControllerChangeHandler? = null
 
 
     /**
@@ -290,7 +290,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     private var isFirstBack = true
-    fun doubleBackPressed(): Boolean {
+    private fun doubleBackPressed(): Boolean {
 
         isFirstBack = when (isFirstBack) {
             true -> {
@@ -364,7 +364,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * Close all activity in stack
      */
-    fun exitApplication() {
+    open fun exitApplication() {
         CLOSE_APLICATION = true
         finish()
     }
@@ -390,7 +390,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         permissionController.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun checkPermission(permission: String, listener: ((allow: Boolean) -> Unit)) {
+    open fun checkPermission(permission: String, listener: ((allow: Boolean) -> Unit)) {
         permissionController.checkPermission(permission, listener)
     }
 
