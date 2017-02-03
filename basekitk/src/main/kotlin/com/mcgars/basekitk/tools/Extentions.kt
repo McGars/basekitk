@@ -178,7 +178,7 @@ fun Calendar.getDate(format: String): String {
     return time.formatToString(format)
 }
 
-fun Date.formatToString(format: String) = SimpleDateFormat(format).format(date)
+fun Date.formatToString(format: String) = SimpleDateFormat(format).format(this)
 
 fun getDateFromString(format: String, date: String): Date? {
     val _format = SimpleDateFormat(format)

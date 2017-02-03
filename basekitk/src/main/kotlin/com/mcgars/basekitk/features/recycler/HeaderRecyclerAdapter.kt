@@ -110,8 +110,9 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
     private fun prepareHeaderFooter(vh: HeaderFooterViewHolder, view: View) {
         //empty out our FrameLayout and replace with our header/footer
         vh.base.removeAllViews()
-        val parent = view.parent as ViewGroup
-        parent?.removeAllViews()
+        view.parent?.let {
+            (it as ViewGroup).removeAllViews()
+        }
         vh.base.addView(view)
     }
 

@@ -75,6 +75,10 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
             (adapter as ListRecycleAdapter<*,*>).showLoader(b)
     }
 
+    fun setDefaultPage() {
+        page = DEFAULT_FIRST_PAGE
+    }
+
     /**
      * Call when [adapter] is null, in first init
      */
