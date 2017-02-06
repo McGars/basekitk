@@ -22,16 +22,6 @@ class PullableDecorator private constructor(
         val onRefreshListener: SwipeRefreshLayout.OnRefreshListener) : DecoratorListener() {
 
     var swipeRefreshLayout: SwipeRefreshLayout? = null
-    /**
-     * Id view which become attached to swipe
-     */
-    constructor(@IdRes viewId: Int, onRefreshListener: SwipeRefreshLayout.OnRefreshListener)
-            : this(viewId, 0, onRefreshListener)
-    /**
-     * Id swipeLayout which swipe behavior
-     */
-    constructor(@IdRes swipeLayoutId: Int, refreshListener: ()->Unit)
-            : this(0, swipeLayoutId, SwipeRefreshLayout.OnRefreshListener {refreshListener()})
 
     fun setColor(@ColorInt color: Int) {
         swipeRefreshLayout?.setColorSchemeColors(color)
@@ -64,6 +54,22 @@ class PullableDecorator private constructor(
             isRefreshing = false
             destroyDrawingCache()
             clearAnimation()
+        }
+    }
+
+    companion object {
+        /**
+         * Id view which become attached to swipe
+         */
+        fun forView(@IdRes viewId: Int, refreshListener: ()->Unit): PullableDecorator {
+            return PullableDecorator(viewId, 0, SwipeRefreshLayout.OnRefreshListener {refreshListener()})
+        }
+
+        /**
+         * Id swipeLayout which swipe behavior
+         */
+        fun forSwipeLayout(@IdRes viewId: Int, refreshListener: ()->Unit): PullableDecorator {
+            return PullableDecorator(0, viewId, SwipeRefreshLayout.OnRefreshListener {refreshListener()})
         }
     }
 }
