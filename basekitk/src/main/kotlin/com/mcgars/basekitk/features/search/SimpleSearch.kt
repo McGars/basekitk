@@ -12,7 +12,7 @@ import com.mcgars.basekitk.R
 /**
  * Created by Феофилактов on 10.10.2015.
  */
-class SimpleSearch(private val listener: SearchView.OnQueryTextListener) {
+open class SimpleSearch(protected var listener: SearchView.OnQueryTextListener? = null) {
 
     internal var hint: String? = null
     var searchView: SearchView? = null
