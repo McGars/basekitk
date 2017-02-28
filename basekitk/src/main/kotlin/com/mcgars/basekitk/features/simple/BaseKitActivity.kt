@@ -112,10 +112,14 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     protected open fun initToolBar() {
-        toolbar = findViewById(getToolbarId()) as Toolbar
-        tabsView = findViewById(getTabsId()) as TabLayout
+        findViewById(getToolbarId())?.apply {
+            toolbar = this as Toolbar
+            setSupportActionBar(toolbar)
+        }
+        findViewById(getTabsId())?.apply {
+            tabsView = this as TabLayout
+        }
         prepareTabsConfig(tabsView)
-        toolbar?.run { setSupportActionBar(this) }
     }
 
     /**

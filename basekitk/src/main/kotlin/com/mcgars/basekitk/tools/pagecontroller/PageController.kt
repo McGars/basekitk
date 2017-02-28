@@ -179,6 +179,21 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         return this
     }
 
+    fun addParam(key: String, value: Long): PageController {
+        params.putLong(key, value)
+        return this
+    }
+
+    fun addParam(key: String, value: Double): PageController {
+        params.putDouble(key, value)
+        return this
+    }
+
+    fun addParam(key: String, value: Serializable): PageController {
+        params.putSerializable(key, value)
+        return this
+    }
+
     /**
      * Ставим первый парамметр в аннотации Page
      * @param value
