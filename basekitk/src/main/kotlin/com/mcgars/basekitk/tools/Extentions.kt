@@ -59,8 +59,8 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-fun EditText?.txt(): String? {
-    return this?.text.toString()
+fun EditText?.txt(): String {
+    return this?.text?.toString() ?: ""
 }
 
 fun EditText?.toInt(defVal: Int = 0): Int {
