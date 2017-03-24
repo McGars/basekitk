@@ -374,3 +374,9 @@ inline fun log (tag: String = "supperloger", text: ()->Any?) {
     val txt = text()?.toString()
     Log.d(tag, "$txt")
 }
+
+inline fun String?.isNotEmpty(action: (String)->Unit) {
+    if(!this.isNullOrEmpty()) {
+        action(this!!)
+    }
+}
