@@ -36,6 +36,18 @@ class DialogCompat(activity: Activity) {
               .show()
     }
 
+    fun show(title: Int, text: String): AlertDialog {
+        return dialog.setTitle(title)
+              .setMessage(text)
+              .show()
+    }
+
+    fun show(title: String, text: Int): AlertDialog {
+        return dialog.setTitle(title)
+              .setMessage(text)
+              .show()
+    }
+
     fun show(text: String): AlertDialog {
         return dialog.setMessage(text).show()
     }
@@ -49,12 +61,12 @@ class DialogCompat(activity: Activity) {
         return this
     }
 
-    fun setPositiveListener(clickListener: DialogInterface.OnClickListener?): DialogCompat {
+    fun setPositiveListener(clickListener: DialogInterface.OnClickListener? = null): DialogCompat {
         setPositiveListener(okButton, clickListener)
         return this
     }
 
-    fun setPositiveListener(button: Int, clickListener: DialogInterface.OnClickListener?): DialogCompat {
+    fun setPositiveListener(button: Int, clickListener: DialogInterface.OnClickListener? = null): DialogCompat {
         dialog.setPositiveButton(button, clickListener)
         return this
     }
@@ -63,11 +75,11 @@ class DialogCompat(activity: Activity) {
         return setNegativeListener(noneButton, null)
     }
 
-    fun setNegativeListener(clickListener: DialogInterface.OnClickListener?): DialogCompat {
+    fun setNegativeListener(clickListener: DialogInterface.OnClickListener? = null): DialogCompat {
         return setNegativeListener(noneButton, clickListener)
     }
 
-    fun setNegativeListener(button: Int, clickListener: DialogInterface.OnClickListener?): DialogCompat {
+    fun setNegativeListener(button: Int, clickListener: DialogInterface.OnClickListener? = null): DialogCompat {
         dialog.setNegativeButton(button, clickListener)
         return this
     }

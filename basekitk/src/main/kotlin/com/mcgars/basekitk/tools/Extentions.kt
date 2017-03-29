@@ -60,7 +60,7 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
 }
 
 fun EditText?.txt(): String {
-    return this?.text?.toString() ?: ""
+    return this?.text?.toString()?.trim() ?: ""
 }
 
 fun EditText?.toInt(defVal: Int = 0): Int {
@@ -90,19 +90,19 @@ inline fun <C> trying2(func: () -> Unit): C? {
     }
 }
 
-fun View?.visible(visible: Boolean) {
+fun View?.visible(visible: Boolean = true) {
     this?.visibility = if (visible) View.VISIBLE else View.INVISIBLE
 }
 
-fun View?.gone(isGone: Boolean) {
+fun View?.gone(isGone: Boolean = true) {
     this?.visibility = if (isGone) View.GONE else View.VISIBLE
 }
 
-fun Array<View?>.visible(visible: Boolean) {
+fun Array<View?>.visible(visible: Boolean = true) {
     setVisibleState(if (visible) View.VISIBLE else View.INVISIBLE)
 }
 
-fun Array<View?>.gone(isGone: Boolean) {
+fun Array<View?>.gone(isGone: Boolean = true) {
     setVisibleState(if (isGone) View.GONE else View.VISIBLE)
 }
 
