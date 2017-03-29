@@ -25,6 +25,16 @@ import java.util.*
 abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
     val decorators: MutableList<DecoratorListener> = ArrayList()
+
+    init {
+        // Lets work with getView()
+        addDecorator(object : DecoratorListener() {
+            override fun postCreateView(controller: Controller, view: View) {
+                onReady(view)
+            }
+        })
+    }
+
     /**
      * Tabs top on the page
      */
@@ -86,7 +96,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         Log.d("onCreateView", javaClass.canonicalName)
         return inflater.inflate(getLayoutId(), container, false).apply {
             decorators.forEach { it.onViewInited(this) }
-            onReady(this)
+//            onReady(this)
         }
     }
 
