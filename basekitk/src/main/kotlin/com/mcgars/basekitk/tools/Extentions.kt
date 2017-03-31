@@ -375,8 +375,12 @@ inline fun log (tag: String = "supperloger", text: ()->Any?) {
     Log.d(tag, "$txt")
 }
 
-inline fun String?.isNotEmpty(action: (String)->Unit) {
+inline fun String?.isNotEmpty(action: (String)->Unit): String? {
     if(!this.isNullOrEmpty()) {
         action(this!!)
+        return this
     }
+    return null
 }
+
+fun String?.ifNotEmpty() = if(!this.isNullOrEmpty()) this else null
