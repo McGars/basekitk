@@ -230,8 +230,8 @@ fun Double.formatCurrency(locale: Locale = Locale("ru", "RU")): String {
     }.format(this)
 }
 
-fun match(regexp: String, string: String): Boolean {
-    return Pattern.compile(regexp).matcher(string).find()
+fun String.match(regexp: String): Boolean {
+    return Pattern.compile(regexp).matcher(this).find()
 }
 
 fun Context.isInternetAvailable(context: Context): Boolean {
