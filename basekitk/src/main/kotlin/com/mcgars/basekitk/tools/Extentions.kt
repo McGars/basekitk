@@ -296,7 +296,8 @@ fun Context.getAttributeResourceId(attr: Int): Int {
  * @param attr
  * @return
  */
-fun Context.color(@AttrRes attr: Int) = ContextCompat.getColor(this, getAttributeResourceId(attr))
+fun Context.color(@AttrRes attr: Int, isAttr: Boolean = true)
+        = ContextCompat.getColor(this, if(isAttr) getAttributeResourceId(attr) else attr)
 
 /**
  * Get simple drawable from attr
@@ -304,7 +305,8 @@ fun Context.color(@AttrRes attr: Int) = ContextCompat.getColor(this, getAttribut
  * @param attr
  * @return
  */
-fun Context.drawable(@AttrRes attr: Int) = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
+fun Context.drawable(@AttrRes attr: Int, isAttr: Boolean = true)
+        = ContextCompat.getDrawable(this, if(isAttr) getAttributeResourceId(attr) else attr)
 
 fun String.md5(): String? {
     return trying2<String> {
