@@ -1,6 +1,6 @@
 package com.mcgars.basekitk.tools
 
-import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import com.mcgars.basekitk.R
@@ -9,7 +9,7 @@ import com.mcgars.basekitk.R
 /**
  * Created by Владимир on 09.06.2015.
  */
-class DialogCompat(activity: Activity) {
+class DialogCompat(activity: Context) {
     val dialog: AlertDialog.Builder = AlertDialog.Builder(activity)
     private val okButton = R.string.ok
     private val noneButton = android.R.string.cancel

@@ -69,7 +69,7 @@ abstract class SimpleBaseAdapter<T, H>(context: Context, list: List<T>, @LayoutR
      * вызываеться в момент создания view inflater.inflate(getWrapperLayout(item), parent, false)
      * @param holder передается готовый экземпляр класса [.getViewHolder]
      */
-    fun setListeners(holder: H) {
+    open fun setListeners(holder: H) {
     }
 
     /**
