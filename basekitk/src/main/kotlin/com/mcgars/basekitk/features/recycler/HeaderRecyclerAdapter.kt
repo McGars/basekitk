@@ -40,7 +40,7 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
             onItemClickListener?.invoke(items[fixPos], fixPos)
     }
 
-    abstract fun getViewHolder(var1: View, type: Int = TYPE_ITEM): H
+    abstract fun getViewHolder(view: View, type: Int = TYPE_ITEM): H
 
     /**
      * Call's when holder created

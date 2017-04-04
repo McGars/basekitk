@@ -20,7 +20,7 @@ class SimpleListAdapter(
         onItemClickListener: ((item: SimpleListItem, position: Int)->Unit)? = null) :
         HeaderRecyclerAdapter<SimpleListItem, SimpleListHolder>(context, items, layout, onItemClickListener) {
 
-    override fun getViewHolder(view: View) = SimpleListHolder(view)
+    override fun getViewHolder(view: View, type: Int) = SimpleListHolder(view)
 
     override fun setValues(holder: SimpleListHolder, item: SimpleListItem, i: Int) {
         with(holder) {
