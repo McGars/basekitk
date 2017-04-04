@@ -40,7 +40,7 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
             onItemClickListener?.invoke(items[fixPos], fixPos)
     }
 
-    abstract fun getViewHolder(var1: View): H
+    abstract fun getViewHolder(var1: View, type: Int = TYPE_ITEM): H
 
     /**
      * Call's when holder created
@@ -62,13 +62,13 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
             return HeaderFooterViewHolder(FrameLayout(viewGroup.context).apply {
                 layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
             })
-        } else if (type == TYPE_ITEM) {
+        } else {
             val view = inflater.inflate(getLayout(type), viewGroup, false)
             onItemClickListener?.let { view.setOnClickListener(itemClickListener) }
-            return getViewHolder(view).apply { setListeners(this) }
+            return getViewHolder(view, type).apply { setListeners(this) }
         }
 
-        return null
+//        return null
     }
 
     /**
