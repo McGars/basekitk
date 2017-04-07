@@ -9,7 +9,7 @@ import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.base.DecoratorListener
 import com.mcgars.basekitk.tools.WrapperUiTool
-import com.mcgars.basekitk.tools.color
+import com.mcgars.basekitk.tools.colorAttr
 import com.mcgars.basekitk.tools.find
 
 /**
@@ -39,7 +39,7 @@ class PullableDecorator private constructor(
 
         swipeRefreshLayout?.apply {
             setOnRefreshListener(onRefreshListener)
-            setColorSchemeColors(context.color(R.attr.colorAccent ))
+            setColorSchemeColors(context.colorAttr(R.attr.colorAccent ))
         }
 
     }

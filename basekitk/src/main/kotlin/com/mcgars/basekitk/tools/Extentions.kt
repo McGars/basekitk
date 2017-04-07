@@ -10,6 +10,7 @@ import android.media.ExifInterface
 import android.net.ConnectivityManager
 import android.os.Build
 import android.support.annotation.AttrRes
+import android.support.annotation.ColorRes
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
@@ -123,6 +124,12 @@ fun Context?.hideKeyboard(hostView: View?): Boolean? {
 
 fun Activity?.hideKeyboard(): Boolean? {
     return this?.run { hideKeyboard(window.decorView) } ?: false
+}
+
+fun Context?.hideKeyboard(): Boolean? {
+    if(this is Activity)
+        return this.run { hideKeyboard(window.decorView) } ?: false
+    return false
 }
 
 fun Context?.showKeyboard(etText: EditText?): Boolean? {
@@ -296,8 +303,10 @@ fun Context.getAttributeResourceId(attr: Int): Int {
  * @param attr
  * @return
  */
-fun Context.color(@AttrRes attr: Int, isAttr: Boolean = true)
-        = ContextCompat.getColor(this, if(isAttr) getAttributeResourceId(attr) else attr)
+fun Context.colorAttr(@AttrRes attr: Int)
+        = ContextCompat.getColor(this, getAttributeResourceId(attr))
+
+fun Context.color(@ColorRes attr: Int) = ContextCompat.getColor(this, attr)
 
 /**
  * Get simple drawable from attr
