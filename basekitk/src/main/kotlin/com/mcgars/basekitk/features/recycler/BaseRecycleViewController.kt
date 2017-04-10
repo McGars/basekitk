@@ -23,6 +23,10 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
     private var adapter: RecyclerView.Adapter<*>? = null
     private val allList = ArrayList<Any>()
     protected var page = DEFAULT_FIRST_PAGE
+    /**
+     * If user on the first page, then all list will be cleared when new data arrived
+     */
+    var clearOnFirstPage = true
 
     override fun getLayoutId() = R.layout.basekit_view_recycler
 
@@ -91,7 +95,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         if (activity == null)
             return
 
-        if (page == DEFAULT_FIRST_PAGE)
+        if (clearOnFirstPage && page == DEFAULT_FIRST_PAGE)
             allList.clear()
 
         list.indices.mapTo(allList) { list[it] }
@@ -100,10 +104,10 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
             adapter = getAdapter(allList)
             setAdapter(adapter!!)
         } else {
-            if (page > DEFAULT_FIRST_PAGE && list.isNotEmpty())
-                adapter!!.notifyItemRangeChanged(allList.size - list.size, list.size)
+            if ((!clearOnFirstPage || page > DEFAULT_FIRST_PAGE) && list.isNotEmpty())
+                adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)
             else
-                adapter!!.notifyDataSetChanged()
+                adapter?.notifyDataSetChanged()
         }
         hasMoreItems(hasmore)
     }
