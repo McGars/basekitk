@@ -50,7 +50,7 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
     /**
      * For few layouts
      */
-    protected fun getLayout(viewType: Int): Int {
+    protected open fun getLayout(viewType: Int): Int {
         return this.layout
     }
 

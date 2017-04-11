@@ -27,7 +27,7 @@ abstract class SimpleBaseAdapter<T, H>(context: Context, list: List<T>, @LayoutR
         return layout
     }
 
-    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
+    override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         var v = view
         val viewHolder: H
         val item = getItem(position)
