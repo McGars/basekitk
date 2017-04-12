@@ -1,10 +1,13 @@
 package com.mcgars.basekitk.features.recycler
 
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Rect
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.mcgars.basekitk.tools.log
 
 import java.util.HashMap
 
@@ -240,10 +243,15 @@ class StickyHeaderDecorator(var adapter: StickyHeaderAdapter<RecyclerView.ViewHo
     fun drawHeader(recyclerView: RecyclerView, canvas: Canvas, header: View, offset: Rect) {
         canvas.save()
 
+//        if(offset.top == 0) {
+//            header.setBackgroundColor(Color.BLUE)
+////            ViewCompat.setElevation(header, 10f)
+//        } else {
+//            header.setBackgroundColor(Color.WHITE)
+//        }
+
         canvas.translate(offset.left.toFloat(), offset.top.toFloat())
-
         header.draw(canvas)
-
         canvas.restore()
     }
 }

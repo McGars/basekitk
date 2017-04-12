@@ -252,7 +252,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (view.overriddenPopHandler == null)
             view.overridePopHandler(getDefaultPopAnimate())
         if (view.overriddenPushHandler == null)
-            view.overridePopHandler(getDefaultPushAnimate())
+            view.overridePushHandler(getDefaultPushAnimate())
 
         val transition = RouterTransaction.with(view)
         router.run {
