@@ -256,7 +256,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
         val transition = RouterTransaction.with(view)
         router.run {
-            setHomeArrow(alwaysArrow && backstackSize > 0)
+            if(alwaysArrow)
+                setHomeArrow(backstackSize > 0)
             if (backstack) pushController(transition) else replaceTopController(transition)
         }
     }
