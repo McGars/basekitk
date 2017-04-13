@@ -275,7 +275,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     override fun onBackPressed() {
         // Check if we can back pressed from views
-        setHomeArrow(alwaysArrow && router.backstackSize > 2)
+        if(alwaysArrow)
+            setHomeArrow(router.backstackSize > 2)
         if (router.handleBack()) {
             return
         }
