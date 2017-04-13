@@ -103,8 +103,6 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
         val radius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()
         val (x, y) = calculateHalfPosition(from, to)
 
-        log { "x: $x , y: $y" }
-
         if (isPush && to != null) {
             return ViewAnimationUtils.createCircularReveal(to, x, y, 0f, radius)
         } else if (!isPush && from != null) {
