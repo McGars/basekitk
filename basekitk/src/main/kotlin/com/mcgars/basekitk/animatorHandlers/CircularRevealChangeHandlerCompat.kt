@@ -7,7 +7,7 @@ import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 
-class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
+open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
 
     constructor()
 
