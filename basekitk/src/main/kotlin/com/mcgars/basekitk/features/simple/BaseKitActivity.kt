@@ -175,7 +175,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         }
 
     val isTabsVisible: Boolean
-        get() = tabsView?.visibility === View.VISIBLE
+        get() = tabsView?.visibility == View.VISIBLE
 
     /**
      * Показывает табы, которые, ты, разработчик, должен прописать
