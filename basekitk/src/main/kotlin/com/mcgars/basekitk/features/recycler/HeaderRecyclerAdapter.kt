@@ -54,6 +54,13 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         return this.layout
     }
 
+    fun setList(list : MutableList<T>) {
+        notifyItemRangeRemoved(headers.size, headers.size + items.size)
+        items.clear()
+        items.addAll(list)
+        notifyItemRangeInserted(headers.size, headers.size + items.size)
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, type: Int): RecyclerView.ViewHolder? {
         //if our position is one of our items (this comes from getItemViewType(int position) below)
         if (type == TYPE_HEADER || type == TYPE_FOOTER) {
