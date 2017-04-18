@@ -392,7 +392,7 @@ inline fun String?.isNotEmpty(action: (String)->Unit): String? {
     } else null
 }
 
-inline fun String?.isEmpty(action: ()->Unit): String? {
+inline fun String?.ifEmpty(action: ()->Unit): String? {
     return if(this.isNullOrEmpty()) {
         action(); ""
     } else null
