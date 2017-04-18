@@ -9,10 +9,7 @@ import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.ConnectivityManager
 import android.os.Build
-import android.support.annotation.AttrRes
-import android.support.annotation.ColorRes
-import android.support.annotation.IdRes
-import android.support.annotation.LayoutRes
+import android.support.annotation.*
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
@@ -314,7 +311,7 @@ fun Context.color(@ColorRes attr: Int) = ContextCompat.getColor(this, attr)
  * @param attr
  * @return
  */
-fun Context.drawable(@AttrRes attr: Int)
+fun Context.drawable(@DrawableRes attr: Int)
         = ContextCompat.getDrawable(this, attr)
 
 fun Context.drawableAttr(@AttrRes attr: Int)
