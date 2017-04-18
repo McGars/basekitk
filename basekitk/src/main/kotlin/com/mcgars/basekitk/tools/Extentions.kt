@@ -387,11 +387,15 @@ inline fun log (tag: String = "supperloger", text: ()->Any?) {
 }
 
 inline fun String?.isNotEmpty(action: (String)->Unit): String? {
-    if(!this.isNullOrEmpty()) {
-        action(this!!)
-        return this
-    }
-    return null
+    return if(!this.isNullOrEmpty()) {
+        action(this!!); this
+    } else null
+}
+
+inline fun String?.isEmpty(action: ()->Unit): String? {
+    return if(this.isNullOrEmpty()) {
+        action(); ""
+    } else null
 }
 
 fun String?.ifNotEmpty() = if(!this.isNullOrEmpty()) this else null
