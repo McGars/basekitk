@@ -314,8 +314,11 @@ fun Context.color(@ColorRes attr: Int) = ContextCompat.getColor(this, attr)
  * @param attr
  * @return
  */
-fun Context.drawable(@AttrRes attr: Int, isAttr: Boolean = true)
-        = ContextCompat.getDrawable(this, if(isAttr) getAttributeResourceId(attr) else attr)
+fun Context.drawable(@AttrRes attr: Int)
+        = ContextCompat.getDrawable(this, attr)
+
+fun Context.drawableAttr(@AttrRes attr: Int)
+        = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
 
 fun String.md5(): String? {
     return trying2<String> {
