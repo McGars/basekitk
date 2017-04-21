@@ -24,6 +24,16 @@ class DialogCompat(activity: Context) {
         return this
     }
 
+    fun setMessage(message: Int): DialogCompat {
+        dialog.setMessage(message)
+        return this
+    }
+
+    fun setMessage(message: String): DialogCompat {
+        dialog.setMessage(message)
+        return this
+    }
+
     fun show(title: String, text: String): AlertDialog {
         dialog.setTitle(title)
                 .setMessage(text)
