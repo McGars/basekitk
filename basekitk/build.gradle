@@ -52,7 +52,7 @@ android {
 }
 
 ext {
-    appCompat = "25.1.0"
+    appCompat = "25.3.0"
     gsonV = "2.7"
     conductor = "2.1.2"
 }
