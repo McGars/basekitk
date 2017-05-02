@@ -47,11 +47,13 @@ fun Context.toast(msg: String?, lenght: Int = Toast.LENGTH_SHORT) {
 }
 
 inline fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG, f: Snackbar.() -> Unit) {
-    val snack = Snackbar.make(this, message, length)
-    snack.f()
-    snack.show()
+    Snackbar.make(this, message, length).apply {
+        f(this)
+    }.show()
 }
 
+fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG)
+        = Snackbar.make(this, message, length).show()
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
