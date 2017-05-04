@@ -54,7 +54,7 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         return this.layout
     }
 
-    fun setList(list : MutableList<T>) {
+    fun setList(list : List<T>) {
         notifyItemRangeRemoved(headers.size, headers.size + items.size)
         items.clear()
         items.addAll(list)
