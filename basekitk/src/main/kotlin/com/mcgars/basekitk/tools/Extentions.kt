@@ -52,7 +52,16 @@ inline fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG, f: Sn
     }.show()
 }
 
+inline fun View.snack(message: Int, length: Int = Snackbar.LENGTH_LONG, f: Snackbar.() -> Unit) {
+    Snackbar.make(this, message, length).apply {
+        f(this)
+    }.show()
+}
+
 fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG)
+        = Snackbar.make(this, message, length).show()
+
+fun View.snack(message: Int, length: Int = Snackbar.LENGTH_LONG)
         = Snackbar.make(this, message, length).show()
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {

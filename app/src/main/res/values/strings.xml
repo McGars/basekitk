@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">BaseKitKotlin</string>
+    <string name="page1">page 1</string>
+    <string name="page2">page 2</string>
+    <string name="pullable_text">Android Studio is the official Integrated Development Environment (IDE) for Android app development, based on IntelliJ IDEA . On top of IntelliJ\'s powerful code editor and developer tools, Android Studio offers even more features that enhance your productivity when building Android apps, such as:  A flexible Gradle-based build system A fast and feature-rich emulator A unified environment where you can develop for all Android devices Instant Run to push changes to your running app without building a new APK Code templates and GitHub integration to help you build common app features and import sample code Extensive testing tools and frameworks Lint tools to catch performance, usability, version compatibility, and other problems C++ and NDK support Built-in support for Google Cloud Platform, making it easy to integrate Google Cloud Messaging and App Engine This page provides an introduction to basic Android Studio features. For a summary of the latest changes, see Android Studio Release Notes.</string>
+    <string name="pull_to_refresh">Pull to refresh</string>
+    <string name="feature_toolbar_tabs">Tabs</string>
+    <string name="drawer_title">Drawer Activity</string>
+    <string name="pullabe_title">Pullable decorator</string>
+    <string name="tabs_title">Tabs</string>
 </resources>
