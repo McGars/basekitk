@@ -15,14 +15,14 @@ import java.util.*
 
 class SimpleListAdapter(
         context: Context,
-        items: MutableList<SimpleListItem>,
+        items: MutableList<SimpleItem>,
         layout: Int = R.layout.basekit_view_simple_list,
-        onItemClickListener: ((item: SimpleListItem, position: Int)->Unit)? = null) :
-        HeaderRecyclerAdapter<SimpleListItem, SimpleListHolder>(context, items, layout, onItemClickListener) {
+        onItemClickListener: ((item: SimpleItem, position: Int)->Unit)? = null) :
+        HeaderRecyclerAdapter<SimpleItem, SimpleListHolder>(context, items, layout, onItemClickListener) {
 
     override fun getViewHolder(view: View, type: Int) = SimpleListHolder(view)
 
-    override fun setValues(holder: SimpleListHolder, item: SimpleListItem, i: Int) {
+    override fun setValues(holder: SimpleListHolder, item: SimpleItem, i: Int) {
         with(holder) {
             tvTitle?.text = item.title
             tvDescription?.text = item.description
