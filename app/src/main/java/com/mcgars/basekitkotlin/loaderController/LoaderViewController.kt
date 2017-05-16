@@ -10,6 +10,8 @@ import com.mcgars.basekitkotlin.R
  */
 class LoaderViewController : BaseViewController(){
 
+    override fun getTitleInt() = R.string.loader_title
+
     override fun getLayoutId() = R.layout.view_empry
 
     override fun onReady(view: View) {

@@ -12,25 +12,14 @@ import com.mcgars.basekitkotlin.R
  */
 class MainMenuAdapter(
         context: Context,
+        list: MutableList<MenuItem>,
         onItemClickListener: ((item: MenuItem, position: Int) -> Unit)?)
-    : ListRecycleAdapter<MenuItem, RecyclerView.ViewHolder>(context, mutableListOf(), android.R.layout.simple_expandable_list_item_1, onItemClickListener) {
-
-    init {
-        addItem(MenuItem(DRAWER, context.getString(R.string.drawer_title)))
-        addItem(MenuItem(PULLABLE, context.getString(R.string.pullabe_title)))
-        addItem(MenuItem(TABS, context.getString(R.string.tabs_title)))
-    }
+    : ListRecycleAdapter<MenuItem, RecyclerView.ViewHolder>(context, list, android.R.layout.simple_selectable_list_item, onItemClickListener) {
 
     override fun getViewHolder(view: View, type: Int) = object : RecyclerView.ViewHolder(view) {}
 
     override fun setValues(h: RecyclerView.ViewHolder, item: MenuItem, position: Int) = with((h.itemView as TextView)) {
         text = item.text
-    }
-
-    companion object {
-        val DRAWER = 0
-        val PULLABLE = 1
-        val TABS = 2
     }
 }
 

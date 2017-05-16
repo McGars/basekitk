@@ -139,10 +139,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         activity.hideKeyboard(activity.window.decorView)
     }
 
-    final override fun addLifecycleListener(lifecycleListener: LifecycleListener) {
-        super.addLifecycleListener(lifecycleListener)
-    }
-
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
         decorators.clear()

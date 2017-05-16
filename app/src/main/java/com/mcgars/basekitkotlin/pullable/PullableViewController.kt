@@ -6,13 +6,22 @@ import com.mcgars.basekitk.features.decorators.PullableDecorator
 import com.mcgars.basekitk.tools.Timer
 import com.mcgars.basekitk.tools.snack
 import com.mcgars.basekitkotlin.R
+import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
  * Created by gars on 13.05.2017.
  */
 class PullableViewController : BaseViewController() {
 
+    override fun getTitleInt() = R.string.pullabe_title
+
     override fun getLayoutId() = R.layout.view_pullable
+
+    init {
+        // animation
+        overridePushHandler(CircularRevealChangeHandlerCompat())
+        overridePopHandler(CircularRevealChangeHandlerCompat())
+    }
 
     /**
      * Find swipe refresh view and attach listeners
@@ -28,6 +37,6 @@ class PullableViewController : BaseViewController() {
     }
 
     override fun onReady(view: View) {
-        view.snack(R.string.pull_to_refresh)
+        view.post { view.snack(R.string.pull_to_refresh) }
     }
 }
