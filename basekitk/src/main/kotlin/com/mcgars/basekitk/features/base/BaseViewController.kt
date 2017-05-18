@@ -1,4 +1,4 @@
-package com.gars.percents.base
+package com.mcgars.basekitk.features.base
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
-import com.mcgars.basekitk.features.base.DecoratorListener
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.simple.BaseKitActivity
 import com.mcgars.basekitk.tools.LoaderController
