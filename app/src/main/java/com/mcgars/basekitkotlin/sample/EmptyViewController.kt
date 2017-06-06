@@ -2,7 +2,7 @@ package com.mcgars.basekitkotlin.sample
 
 import android.os.Bundle
 import android.view.View
-import com.gars.percents.base.BaseViewController
+import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.tools.isNotEmpty
 import com.mcgars.basekitkotlin.R
 import kotlinx.android.synthetic.main.view_empry.view.*

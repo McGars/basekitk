@@ -4,7 +4,7 @@ import android.view.View
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.support.RouterPagerAdapter
-import com.gars.percents.base.BaseViewController
+import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.tools.pagecontroller.ExTabs
 import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.sample.EmptyViewController

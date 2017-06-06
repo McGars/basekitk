@@ -1,7 +1,7 @@
 package com.mcgars.basekitkotlin.loaderController
 
 import android.view.View
-import com.gars.percents.base.BaseViewController
+import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.tools.Timer
 import com.mcgars.basekitkotlin.R
 
