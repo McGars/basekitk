@@ -12,7 +12,7 @@ import com.mcgars.basekitk.features.recycler.HeaderRecyclerAdapter.Companion.TYP
  */
 abstract class BaseRecycleViewGridDelegateController(args: Bundle? = null) : BaseRecycleViewDelegateController(args) {
 
-    val columnCount: Int
+    open val columnCount: Int
         get() = 2
 
     override fun initLayoutManager(): LinearLayoutManager {
