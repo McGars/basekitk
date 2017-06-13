@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:visibility="gone"
     android:clickable="true"
-    android:background="@color/black_owerlay_60">
+    android:background="@color/black_overlay_60">
 
     <ProgressBar
         android:id="@+id/pbLoader"

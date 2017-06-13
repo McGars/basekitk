@@ -21,7 +21,7 @@
         <!-- styles button-->
         <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
         <!-- Цвет текста на кнопках -->
-        <item name="android:textColorPrimary">@color/black_owerlay_90</item>
+        <item name="android:textColorPrimary">@color/black_overlay_90</item>
     </style>
 
     <style name="KitTeme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">

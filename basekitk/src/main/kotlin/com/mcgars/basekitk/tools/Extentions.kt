@@ -314,7 +314,7 @@ fun Context.getAttributeResourceId(attr: Int): Int {
 fun Context.colorAttr(@AttrRes attr: Int)
         = ContextCompat.getColor(this, getAttributeResourceId(attr))
 
-fun Context.color(@ColorRes attr: Int) = ContextCompat.getColor(this, attr)
+fun Context.color(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 
 /**
  * Get simple drawable from attr
@@ -322,8 +322,8 @@ fun Context.color(@ColorRes attr: Int) = ContextCompat.getColor(this, attr)
  * @param attr
  * @return
  */
-fun Context.drawable(@DrawableRes attr: Int)
-        = ContextCompat.getDrawable(this, attr)
+fun Context.drawable(@DrawableRes drawable: Int)
+        = ContextCompat.getDrawable(this, drawable)
 
 fun Context.drawableAttr(@AttrRes attr: Int)
         = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
