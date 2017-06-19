@@ -17,6 +17,7 @@
         app:tabIndicatorColor="@color/white_overlay_90"
         app:tabSelectedTextColor="@color/white_overlay_90"
         app:tabGravity="fill"
-        app:tabMode="fixed" />
+        app:tabMode="fixed"
+        android:visibility="gone"/>
 
 </android.support.design.widget.AppBarLayout>
