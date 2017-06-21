@@ -13,6 +13,7 @@ buildscript {
 }
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+def versionN = "0.0.8"
 
 android {
     compileSdkVersion 25
@@ -22,7 +23,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName versionN
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -86,7 +87,7 @@ if(file(filePatch).exists()){
         groupId = 'com.github.msgars'
         artifactId = 'basekitk'
         //    repoName = 'ImageFactory'
-        publishVersion = '0.0.7'
+        publishVersion = versionN
         //    website = 'https://github.com/McGars/ImageFactory'
         //    description = 'View show image from thumb to screensize for android'
         //    repository = "${website}.git"
