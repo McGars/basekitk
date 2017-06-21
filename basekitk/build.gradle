@@ -13,7 +13,7 @@ buildscript {
 }
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-def versionN = "0.0.8"
+def versionN = "0.0.9"
 
 android {
     compileSdkVersion 25

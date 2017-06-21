@@ -12,6 +12,7 @@ import com.mcgars.basekitk.features.simple.BaseKitActivity
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.BaseKitConstants
 import java.io.Serializable
+import java.net.URI
 import java.util.*
 
 
@@ -67,9 +68,8 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         return this
     }
 
-    fun startActivity(view: Class<out Controller>? = null) {
-        setView(view)
-        startActivityForResult(0)
+    fun startActivity(view: Class<out Controller>) {
+        startActivityForResult(view, 0)
     }
 
     fun startActivityForResult(
@@ -79,8 +79,24 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
             val2: Any? = null,
             val3: Any? = null
     ) {
-        setView(view)
         startActivity(view, val1, val2, val3, code)
+    }
+
+    fun getIntent(
+            view: Class<out Controller>,
+            val1: Any? = null,
+            val2: Any? = null,
+            val3: Any? = null): Intent {
+        setView(view)
+        getAnnotation(view, val1, val2, val3)
+        intController()
+
+        val i = intent
+        i.putExtras(params.clone() as Bundle)
+        if (uri != null)
+            i.data = Uri.parse(uri.toString())
+        invalidate()
+        return i
     }
 
     fun loadPage() {

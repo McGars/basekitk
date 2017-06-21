@@ -257,8 +257,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         val transition = RouterTransaction.with(view)
         router.run {
             if (backstack) pushController(transition) else replaceTopController(transition)
-            if(alwaysArrow)
-                setHomeArrow(backstackSize > 1)
+            if(alwaysArrow && backstackSize > 1)
+                setHomeArrow(true)
         }
     }
 
@@ -274,12 +274,13 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     override fun onBackPressed() {
-        // Check if we can back pressed from views
-        if(alwaysArrow)
-            setHomeArrow(router.backstackSize > 2)
         if (router.handleBack()) {
             return
         }
+
+        // Check if we can back pressed from views
+        if(alwaysArrow && router.backstackSize > 0)
+            setHomeArrow(router.backstackSize > 1)
 
         // Check if we can back pressed from activity controller
         if (activityController?.onBackPressed() ?: false)

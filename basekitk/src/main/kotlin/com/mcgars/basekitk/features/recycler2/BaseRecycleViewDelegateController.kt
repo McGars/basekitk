@@ -20,7 +20,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     private var hasMoreItems: Boolean = false
     private var isLoading: Boolean = false
     private var adapter: RecyclerView.Adapter<*>? = null
-    private val allList = ArrayList<Any>()
+    val allList = ArrayList<Any>()
     protected var page = DEFAULT_FIRST_PAGE
     /**
      * If user on the first page, then all list will be cleared when new data arrived
