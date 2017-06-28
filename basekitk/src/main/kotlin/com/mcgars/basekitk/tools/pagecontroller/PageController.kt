@@ -288,11 +288,10 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         var view: Controller? = null
         try {
             val constructor = _class.getConstructor(Bundle::class.java)
-            view = constructor?.run {
-                newInstance(params)
-            } ?: _class.newInstance()
-        } catch (e: Exception) {
+            view = constructor.newInstance(params)
+        } catch (e: NoSuchMethodException) {
             e.printStackTrace()
+            view = _class.newInstance()
         }
 
         return view
