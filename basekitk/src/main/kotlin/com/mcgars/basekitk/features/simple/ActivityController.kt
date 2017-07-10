@@ -15,36 +15,36 @@ import com.mcgars.basekitk.features.simple.BaseKitActivity
 open class ActivityController<T : BaseKitActivity<ActivityController<T>>>(activity: T? = null) {
     var activity: Activity?= activity
 
-    fun onResume() {
+    open fun onResume() {
 
     }
 
-    fun onDestroy() {
+    open fun onDestroy() {
 
     }
 
-    fun onBackPressed(): Boolean {
+    open fun onBackPressed(): Boolean {
         return false
     }
 
-    fun onPause() {
+    open fun onPause() {
 
     }
 
-    fun onCreate(savedInstanceState: Bundle?) {
+    open fun onCreate(savedInstanceState: Bundle?) {
 
     }
 
-    fun onOptionsItemSelected(item: MenuItem): Boolean {
+    open fun onOptionsItemSelected(item: MenuItem): Boolean {
         return false
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    open fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
 
     }
 
-    fun onStart() {}
+    open fun onStart() {}
 
-    fun onStop() {}
+    open fun onStop() {}
 
 }
