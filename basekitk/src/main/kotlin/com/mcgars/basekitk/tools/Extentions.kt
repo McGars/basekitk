@@ -249,7 +249,7 @@ fun String.match(regexp: String): Boolean {
     return Pattern.compile(regexp).matcher(this).find()
 }
 
-fun Context.isInternetAvailable(context: Context): Boolean {
+fun Context.isInternetAvailable(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
 }
