@@ -92,7 +92,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     protected abstract fun getLayoutId(): Int
 
     override final fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        Log.d("onCreateView", javaClass.canonicalName)
         return inflater.inflate(getLayoutId(), container, false).apply {
             decorators.forEach { it.onViewInited(this) }
 //            onReady(this)
