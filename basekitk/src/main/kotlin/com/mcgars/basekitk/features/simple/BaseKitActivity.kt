@@ -214,7 +214,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
 
     /**
-     * Override this if need load fragment by id
+     * Override this if need load controller by id
      * @param id
      */
     open fun loadPage(id: Int) {
@@ -232,10 +232,10 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
 
     /**
-     * Display fragment on the screen
+     * Display controller on the screen
      * @param _frag
      * *
-     * @param backstack if true, remove previous fragment from Fragment Manager
+     * @param backstack if true, remove previous controller from Fragment Manager
      * *        and when press back button then will be -2 Fragments
      */
     open fun loadPage(view: Controller?, backstack: Boolean = true) {

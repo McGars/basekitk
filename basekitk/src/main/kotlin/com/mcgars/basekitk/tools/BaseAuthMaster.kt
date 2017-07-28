@@ -126,7 +126,7 @@ abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
 
     private fun openViewController(pageClass: Class<out Controller>): Controller? {
         val view = createViewController(pageClass)
-        val justAuth = arguments.getBoolean(JUST_AUTHORIZE, false)
+        val justAuth = !arguments.getBoolean(JUST_AUTHORIZE, false)
         context.loadPage(view, justAuth)
         return view
     }

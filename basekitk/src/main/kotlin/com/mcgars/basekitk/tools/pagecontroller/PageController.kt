@@ -12,8 +12,6 @@ import com.mcgars.basekitk.features.simple.BaseKitActivity
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.BaseKitConstants
 import java.io.Serializable
-import java.net.URI
-import java.util.*
 
 
 /**
@@ -27,16 +25,16 @@ import java.util.*
  * Bundle b = new Bundle()
  * b.putObject(key1(), val1);
  * b.putObject(key2(), val2);
- * fragment.setArguments(b);
+ * controller.setArguments(b);
 
  * use instead of
  * public static CustomFragment newInstance(Object val1, Object val2){
  * Bundle b = new Bundle()
  * b.putObject("param1", val1);
  * b.putObject("param2", val2);
- * fragment = new CustomFragment();
- * fragment.setArguments(b);
- * return fragment;
+ * controller = new CustomFragment();
+ * controller.setArguments(b);
+ * return controller;
  * }
  */
 class PageController(private val context: BaseKitActivity<ActivityController<*>>) {
@@ -62,7 +60,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         params = Bundle()
         activityClass = SimpleActivity::class.java
         uri = null
-        viewClass = null
+            viewClass = null
         pageAnn = null
         activityController = null
         return this
@@ -100,13 +98,13 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
     }
 
     fun loadPage() {
-        context.loadPage(fragment)
+        context.loadPage(controller, params.getBoolean(ADDTOBACKSTACK))
         invalidate()
     }
 
     fun loadPage(view: Class<out Controller>, `val`: Any? = null, val2: Any? = null, val3: Any? = null) {
         getAnnotation(view, `val`, val2, val3)
-        context.loadPage(initView(view))
+        context.loadPage(initView(view), params.getBoolean(ADDTOBACKSTACK))
         invalidate()
     }
 
@@ -177,6 +175,11 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         else
             context.startActivity(i)
         invalidate()
+    }
+
+    fun addToBackstack(add: Boolean): PageController {
+        params.putBoolean(ADDTOBACKSTACK, add)
+        return this
     }
 
     fun setView(clazz: Class<out Controller>?): PageController {
@@ -281,7 +284,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
      * Return new Fragment and set params Arguments
      * @return
      */
-    val fragment: Controller?
+    val controller: Controller?
         get() = initView(classView)
 
     private fun initView(_class: Class<out Controller>): Controller? {
@@ -345,6 +348,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
 
         val CONTROLLER = "viewController"
         val ACTIVITY_CONTROLLER = "controller"
+        val ADDTOBACKSTACK = "addtobackstack"
         var baseActivityController: Class<out ActivityController<*>>? = null
         var baseLauncherActivity: Class<out BaseKitActivity<*>>? = SimpleActivity::class.java
 

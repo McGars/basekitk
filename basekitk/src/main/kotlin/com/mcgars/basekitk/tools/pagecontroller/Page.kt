@@ -12,16 +12,16 @@ package com.mcgars.basekitk.tools.pagecontroller
  * Bundle b = new Bundle()
  * b.putObject(key1(), val1);
  * b.putObject(key2(), val2);
- * fragment.setArguments(b);
+ * controller.setArguments(b);
 
  * use instead of
  * public static CustomFragment newInstance(Object val1, Object val2){
  * Bundle b = new Bundle()
  * b.putObject("param1", val1);
  * b.putObject("param2", val2);
- * fragment = new CustomFragment();
- * fragment.setArguments(b);
- * return fragment;
+ * controller = new CustomFragment();
+ * controller.setArguments(b);
+ * return controller;
  * }
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FILE)
