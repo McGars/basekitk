@@ -1,12 +1,14 @@
 package com.mcgars.basekitk.tools.pagecontroller
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.TextUtils
 import com.bluelinelabs.conductor.Controller
+import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.simple.BaseKitActivity
 import com.mcgars.basekitk.features.simple.SimpleActivity
@@ -45,6 +47,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
     internal var pageAnn: Page? = null
     private var uri: Uri? = null
     private var activityController: Class<out ActivityController<*>>? = null
+    private var baseActivityController = getBaseActivityController(context)
 
     fun setActivityController(activityController: Class<out ActivityController<*>>): PageController {
         this.activityController = activityController
@@ -60,7 +63,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         params = Bundle()
         activityClass = SimpleActivity::class.java
         uri = null
-            viewClass = null
+        viewClass = null
         pageAnn = null
         activityController = null
         return this
@@ -125,14 +128,17 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
             setParamFromAnno(pageAnn, 3, val3)
     }
 
+    /**
+     * Build intent for start activity
+     */
     val intent: Intent
         get() {
             val baseIntetnt = Intent()
-
-            if (activityClass == SimpleActivity::class.java && baseLauncherActivity != null)
-                baseIntetnt.setClass(context, baseLauncherActivity)
-            else
-                baseIntetnt.setClass(context, activityClass)
+            val baseLauncher = getBaseLauncherActivity(context)
+            when (activityClass) {
+                SimpleActivity::class.java -> baseIntetnt.setClass(context, baseLauncher)
+                else -> baseIntetnt.setClass(context, activityClass)
+            }
 
             return baseIntetnt
         }
@@ -145,7 +151,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
     }
 
     fun <C : ActivityController<*>> getActivityController(): C? {
-        var _class = params.getSerializable(ACTIVITY_CONTROLLER) as Class<out ActivityController<*>>?
+        var _class = params.getSerializable(ACTIVITY_CONTROLLER) as? Class<out ActivityController<*>>
         if (_class == null)
             _class = baseActivityController
 
@@ -349,29 +355,25 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
         val CONTROLLER = "viewController"
         val ACTIVITY_CONTROLLER = "controller"
         val ADDTOBACKSTACK = "addtobackstack"
-        var baseActivityController: Class<out ActivityController<*>>? = null
-        var baseLauncherActivity: Class<out BaseKitActivity<*>>? = SimpleActivity::class.java
+
+        fun getBaseLauncherActivity(context: Activity): Class<out BaseKitActivity<*>> {
+            return when {
+                (context.application is KitConfiguration)
+                        && (context.applicationContext as KitConfiguration).getConfiguration()?.baseLauncherActivity != null -> {
+                    (context.applicationContext as KitConfiguration).getConfiguration()!!.baseLauncherActivity!!
+                }
+                else -> SimpleActivity::class.java
+            }
+        }
+
+        fun getBaseActivityController(context: Activity): Class<out ActivityController<*>>? {
+            return if(context.applicationContext is KitConfiguration) {
+                (context.application as KitConfiguration).getConfiguration()?.baseActivityController
+            } else null
+        }
 
         fun init(context: BaseKitActivity<*>): PageController {
             return PageController(context)
         }
     }
 }
-/**
- * Ставим первый парамметр в аннотации Page
- * @param fragment
- * *
- * @param val
- */
-/**
- * Ставим первый и второй парамметр в аннотации Page
- * @param fragment
- * *
- * @param val
- */
-/**
- * Ставим первый парамметр в аннотации Page
- * @param fragment
- * *
- * @param val
- */

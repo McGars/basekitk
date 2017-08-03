@@ -81,8 +81,8 @@ abstract class BaseAuthMaster<T : BaseAuthMaster<T>> {
         if (!auth) {
             intent.setClass(context, authActivityClass!!)
         } else {
-            intent.setClass(context, PageController.baseLauncherActivity)
-            arguments.putSerializable(PageController.ACTIVITY_CONTROLLER, PageController.baseActivityController)
+            intent.setClass(context, PageController.getBaseLauncherActivity(context))
+            arguments.putSerializable(PageController.ACTIVITY_CONTROLLER, PageController.getBaseActivityController(context))
             arguments.putSerializable(PageController.CONTROLLER, pageClass)
         }
 

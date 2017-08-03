@@ -15,7 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.*
 import com.mcgars.basekitk.R
-import com.mcgars.basekitk.features.simple.ActivityController
+import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.tools.*
 import com.mcgars.basekitk.tools.pagecontroller.ExTabs
 import com.mcgars.basekitk.tools.pagecontroller.PageController
@@ -27,6 +27,7 @@ import kotlin.properties.Delegates
  * Created by Феофилактов on 26.07.2015.
  * Базовая активити, от которой наследуються все активити проекта в основном
  */
+@Suppress("UNCHECKED_CAST")
 abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
 
     /**
@@ -190,11 +191,22 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * Контроллер, который включает в себя жизненный цикл активити
      * все базовые инициализации которые дожны быть в базовом активити
      * необходимо писать туда
-     * а уже в коде вызывать activvity.getAC().getNeedMethod()
+     * а уже в коде вызывать activity.getAC().getNeedMethod()
      */
     abstract fun initActivityController(): C?
 
-    open fun getAC() = activityController
+    /**
+     * @return ActivityController inited in your activity or from [KitConfiguration]
+     */
+    open fun getAC(): C {
+        if (activityController == null) {
+            if (application is KitConfiguration) {
+                return (application as KitConfiguration).getConfiguration()?.baseActivityController as? C
+                        ?: throw NullPointerException("Please implements KitConfiguration in you Application and init global configuration by KitBuilder")
+            }
+            throw NullPointerException("Please implements KitConfiguration in you Application and init global configuration by KitBuilder")
+        } else return activityController as C
+    }
 
     /**
      * body xml
@@ -209,7 +221,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     open fun clearBackStack() {
         // Clear all back stack.
         router.setBackstack(ArrayList<RouterTransaction>(), null)
-//        router.popToRoot()
     }
 
 
@@ -257,7 +268,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         val transition = RouterTransaction.with(view)
         router.run {
             if (backstack) pushController(transition) else replaceTopController(transition)
-            if(alwaysArrow && backstackSize > 1)
+            if (alwaysArrow && backstackSize > 1)
                 setHomeArrow(true)
         }
     }
@@ -279,7 +290,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         }
 
         // Check if we can back pressed from views
-        if(alwaysArrow && router.backstackSize > 0)
+        if (alwaysArrow && router.backstackSize > 0)
             setHomeArrow(router.backstackSize > 1)
 
         // Check if we can back pressed from activity controller
