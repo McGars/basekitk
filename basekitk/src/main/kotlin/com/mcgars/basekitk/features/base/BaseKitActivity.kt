@@ -13,6 +13,7 @@ import com.mcgars.basekitk.R
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.tools.LoaderController
+import com.mcgars.basekitk.tools.log
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import com.mcgars.basekitk.tools.permission.BasePermissionController
 import com.mcgars.basekitk.tools.toast
@@ -48,6 +49,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     val settings: SharedPreferences by lazy {
         getSharedPreferences(packageName, Context.MODE_PRIVATE)
     }
+
+    var isPageLoading = false
 
     private var doubleBack: Boolean = false
 
@@ -193,8 +196,11 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 //        }
 //    }
 
+
+
     override fun onBackPressed() {
-        if (router.handleBack()) {
+
+        if (isPageLoading || router.handleBack()) {
             return
         }
 
@@ -323,11 +329,11 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     override fun onChangeCompleted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
-
+        isPageLoading = false
     }
 
     override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
-
+        isPageLoading = true
     }
 }
 

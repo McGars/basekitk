@@ -6,6 +6,7 @@ import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.drawer.DrawerNavigationViewController
 import com.mcgars.basekitkotlin.loaderController.LoaderViewController
 import com.mcgars.basekitkotlin.pullable.PullableViewController
+import com.mcgars.basekitkotlin.sample.ArrowToolbarViewController
 import com.mcgars.basekitkotlin.sample.EmptyViewController
 import com.mcgars.basekitkotlin.tabs.TabsViewController
 
@@ -31,6 +32,7 @@ class ListViewController : BaseRecycleViewController() {
             add(MenuItem(TABS, activity?.getString(R.string.tabs_title)))
             add(MenuItem(LOADER, activity?.getString(R.string.loader_title)))
             add(MenuItem(SIMPLE, activity?.getString(R.string.simple_activity)))
+            add(MenuItem(ARROW, activity?.getString(R.string.arrow)))
         })
     }
 
@@ -41,6 +43,7 @@ class ListViewController : BaseRecycleViewController() {
             TABS -> loadPage(TabsViewController())
             LOADER -> loadPage(LoaderViewController())
             SIMPLE -> pageController.startActivity(EmptyViewController::class.java)
+            ARROW -> loadPage(ArrowToolbarViewController())
         }
     }
 
@@ -50,5 +53,6 @@ class ListViewController : BaseRecycleViewController() {
         val TABS = 2
         val LOADER = 3
         val SIMPLE = 4
+        val ARROW = 5
     }
 }

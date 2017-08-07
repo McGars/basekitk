@@ -40,9 +40,10 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
                     toolbar = view.find(R.id.toolbar)
                 tabs = view.find(R.id.tablayout)
                 setTitle()
-                view.post {
-                    onReady(view)
-                }
+            }
+
+            override fun postAttach(controller: Controller, view: View) {
+                onReady(view)
             }
         })
     }
@@ -105,6 +106,8 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
     /**
      * Show home arrow in toolbar
+     * by default if backstack > 2 then back arrow show automatically
+     * but you can disable auto set arrow just change [BaseKitActivity.alwaysArrow]
      */
     open fun setHomeArrow(arrow: Boolean) {
         var parentController = parentController

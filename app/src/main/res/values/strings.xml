@@ -11,4 +11,5 @@
     <string name="menu">Menu</string>
     <string name="loader_title">LoaderController</string>
     <string name="simple_activity">SimpleActivity</string>
+    <string name="arrow">Show arrow in toolbar</string>
 </resources>
