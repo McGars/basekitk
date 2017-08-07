@@ -14,7 +14,7 @@ class MainMenuAdapter(
         context: Context,
         list: MutableList<MenuItem>,
         onItemClickListener: ((item: MenuItem, position: Int) -> Unit)?)
-    : ListRecycleAdapter<MenuItem, RecyclerView.ViewHolder>(context, list, android.R.layout.simple_selectable_list_item, onItemClickListener) {
+    : ListRecycleAdapter<MenuItem, RecyclerView.ViewHolder>(context, list, android.R.layout.simple_list_item_1, onItemClickListener) {
 
     override fun getViewHolder(view: View, type: Int) = object : RecyclerView.ViewHolder(view) {}
 

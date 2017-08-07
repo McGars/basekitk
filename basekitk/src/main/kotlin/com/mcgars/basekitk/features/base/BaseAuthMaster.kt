@@ -1,17 +1,11 @@
-package com.mcgars.basekitk.tools
+package com.mcgars.basekitk.features.base
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import com.bluelinelabs.conductor.Controller
-import com.mcgars.basekitk.features.simple.BaseKitActivity
 import com.mcgars.basekitk.tools.pagecontroller.PageController
-import java.lang.reflect.Constructor
 
 /**
  * @author Александр Свиридов on 31.07.2014.

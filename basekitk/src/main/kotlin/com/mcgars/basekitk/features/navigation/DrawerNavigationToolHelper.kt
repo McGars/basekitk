@@ -1,47 +1,42 @@
 package com.mcgars.basekitk.features.navigation
 
+import android.support.annotation.MenuRes
 import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.features.simple.BaseKitActivity
+import com.mcgars.basekitk.features.base.BaseKitActivity
+import com.mcgars.basekitk.features.base.BaseViewController
+import com.mcgars.basekitk.features.drawer.DrawerTool
+import com.mcgars.basekitk.features.drawer.OnViewLoadPageListener
 import com.mcgars.basekitk.tools.hideKeyboard
 
 /**
  * Created by Владимир on 16.04.2015.
  */
-abstract class DrawerNavigationToolHelper(
-        context: BaseKitActivity<ActivityController<*>>,
+open class DrawerNavigationToolHelper(
+        private val viewController: BaseViewController,
+        pageListener: OnViewLoadPageListener,
         toolbar: Toolbar? = null) : NavigationView.OnNavigationItemSelectedListener {
-    protected var activity: BaseKitActivity<ActivityController<*>> = context
-    var drawerLayout: DrawerLayout? = null
-        private set
-    var drawerToggle: ActionBarDrawerToggle? = null
-        private set
-    private var launchId = -1
+
+    open var drawerTool = DrawerTool(viewController, pageListener, toolbar)
+
+    var menuResourceId: Int = 0
+        set(@MenuRes value) {
+            field = value
+        }
+
     var selectedId = -1
         protected set
-    private var originListener: View.OnClickListener? = null
+
     protected var mNavigationView: NavigationView? = null
-
-    init {
-        initDrawer(toolbar)
-    }
-
-    /**
-     * Wrapper drawer wrapperLayout
-
-     * @return
-     */
-    protected val drawerLayoutId: Int
-        get() = R.id.drawer_layout
 
     /**
      * List view were set items
@@ -51,90 +46,35 @@ abstract class DrawerNavigationToolHelper(
     protected val navigationViewId: Int
         get() = R.id.nav_view
 
-    protected open fun getMenuId(): Int = 0
-
     /**
      * Левая менюшка
      */
-    private fun initDrawer(toolbar: Toolbar? = null) {
-        /**
-         * Кнопка нажималась слева сверху
-         */
-
-        toolbar?.run {
-            activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            activity.supportActionBar?.setHomeButtonEnabled(true)
-            toolbar.tag?.run { drawerToggle = this as ActionBarDrawerToggle }
+    fun initDrawer() {
+        mNavigationView = viewController.view?.findViewById(navigationViewId) as NavigationView
+        mNavigationView?.setNavigationItemSelectedListener(this)
+        if (menuResourceId != 0) {
+            mNavigationView?.menu?.clear()
+            mNavigationView?.inflateMenu(menuResourceId)
         }
 
-        if (drawerLayout == null) {
-            drawerLayout = activity.findViewById(drawerLayoutId) as DrawerLayout
-            mNavigationView = activity.findViewById(navigationViewId) as NavigationView
-            //            setGravityForNavigation(false);
-            mNavigationView?.setNavigationItemSelectedListener(this)
-            if (getMenuId() != 0) {
-                mNavigationView?.menu?.clear()
-                mNavigationView?.inflateMenu(getMenuId())
-            }
-        }
-
-        if (drawerToggle == null) {
-            drawerToggle = initDrawerToggle(toolbar)
-            toolbar?.tag = drawerToggle
-        }
-
-        if (originListener == null) {
-            originListener = drawerToggle?.toolbarNavigationClickListener
-        } else {
-            drawerToggle?.toolbarNavigationClickListener = originListener
-        }
-        drawerLayout?.setDrawerListener(drawerToggle)
-        drawerToggle?.syncState()
+        drawerTool.drawerToggle.syncState()
     }
-
-    //    // navigationview открывается слева или справа
-    //    public void setGravityForNavigation(boolean open) {
-    //        DrawerLayout.LayoutParams layoutParams = (DrawerLayout.LayoutParams) mNavigationView.getLayoutParams();
-    //        layoutParams.gravity = EaApplication.isLeft ? GravityCompat.START : GravityCompat.END;
-    //        mNavigationView.setLayoutParams(layoutParams);
-    //        if (open)
-    //            drawerLayout.openDrawer(EaApplication.isLeft ? GravityCompat.START : GravityCompat.END);
-    //    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         if (selectedId == item.itemId) {
-            drawerLayout!!.closeDrawers()
+            drawerTool.drawerLayout?.closeDrawers()
             return true
         }
         selectedId = item.itemId
 
-        chooseItem(selectedId)
+        loadPage(selectedId)
         return true
     }
 
-    private fun chooseItem(id: Int, closeDrawer: Boolean = true) {
-        launchId = id
-        if (closeDrawer && drawerLayout!!.isDrawerOpen(GravityCompat.START))
-            drawerLayout!!.closeDrawers()
-        else {
-            loadPage()
-        }
-    }
-
     fun loadPage(pageId: Int) {
-        mNavigationView?.setCheckedItem(pageId)
-        load(pageId)
-    }
-
-    private fun load(pageId: Int/*, closeDrawer: Boolean = true*/) {
-//        if (closeDrawer /*&& drawerLayout.isDrawerOpen(EaApplication.isLeft ? GravityCompat.START : GravityCompat.END)*/)
-//            drawerLayout!!.closeDrawers()
-
         selectedId = pageId
-
-        val frag = getViewController(pageId) ?: return
-        activity.clearBackStack()
-        activity.loadPage(frag)
+        mNavigationView?.setCheckedItem(pageId)
+        drawerTool.loadPage(pageId)
     }
 
     fun clearSelect() {
@@ -143,69 +83,18 @@ abstract class DrawerNavigationToolHelper(
         selectedId = -1
     }
 
-    private fun loadPage() {
-        if (launchId == -1) return
-        load(launchId)
-        launchId = -1
-    }
-
     val size: Int
         get() = mNavigationView?.menu?.size() ?: 0
 
-    private fun initDrawerToggle(toolbar: Toolbar?): ActionBarDrawerToggle {
-        return object : ActionBarDrawerToggle(activity, drawerLayout,
-                toolbar, R.string.app_name, R.string.app_name) {
-            /**
-             * Called when a drawer has settled in a completely closed state.
-             */
-            override fun onDrawerClosed(view: View?) {
-                super.onDrawerClosed(view)
-                activity.invalidateOptionsMenu()
-                syncState()
-                loadPage()
-            }
 
-            /**
-             * Called when a drawer has settled in a completely open state.
-             */
-            override fun onDrawerOpened(drawerView: View?) {
-                super.onDrawerOpened(drawerView)
-                activity.apply {
-                    invalidateOptionsMenu()
-                    syncState()
-                    hideKeyboard(drawerView)
-                }
-            }
-        }
+    fun onOptionsItemSelected(item: MenuItem) = drawerTool.drawerToggle.onOptionsItemSelected(item)
+
+    fun hideDrawer() = drawerTool.hideDrawer()
+
+    fun setHomeArrow(arrow: Boolean) = drawerTool.setHomeArrow(arrow)
+
+    fun syncState()
+    {
+        drawerTool.drawerToggle.syncState()
     }
-
-    abstract fun getViewController(pageId: Int): Controller?
-
-    fun onOptionsItemSelected(item: MenuItem) = drawerToggle!!.onOptionsItemSelected(item)
-
-    fun hideDrawer(): Boolean {
-        drawerLayout!!.closeDrawers()
-        if (drawerLayout!!.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout!!.closeDrawer(GravityCompat.START)
-            return true
-        } else if (drawerLayout!!.isDrawerOpen(GravityCompat.END)) {
-            drawerLayout!!.closeDrawer(GravityCompat.END)
-            return true
-        }
-        return false
-    }
-
-    fun setHomeArrow(arrow: Boolean) {
-        drawerToggle?.isDrawerIndicatorEnabled = !arrow
-        if (arrow) {
-            drawerToggle?.toolbarNavigationClickListener = View.OnClickListener { activity.onBackPressed() }
-        } else {
-            drawerToggle?.toolbarNavigationClickListener = originListener
-        }
-    }
-
-    fun setCustomToolbar(toolbar: Toolbar?) {
-        initDrawer(toolbar)
-    }
-
 }

@@ -1,12 +1,12 @@
 package com.mcgars.basekitkotlin.list
 
-import android.content.Intent
 import android.view.View
 import com.mcgars.basekitk.features.recycler.BaseRecycleViewController
 import com.mcgars.basekitkotlin.R
-import com.mcgars.basekitkotlin.draweractivity.DrawerActivity
+import com.mcgars.basekitkotlin.drawer.DrawerNavigationViewController
 import com.mcgars.basekitkotlin.loaderController.LoaderViewController
 import com.mcgars.basekitkotlin.pullable.PullableViewController
+import com.mcgars.basekitkotlin.sample.EmptyViewController
 import com.mcgars.basekitkotlin.tabs.TabsViewController
 
 /**
@@ -30,15 +30,17 @@ class ListViewController : BaseRecycleViewController() {
             add(MenuItem(PULLABLE, activity?.getString(R.string.pullabe_title)))
             add(MenuItem(TABS, activity?.getString(R.string.tabs_title)))
             add(MenuItem(LOADER, activity?.getString(R.string.loader_title)))
+            add(MenuItem(SIMPLE, activity?.getString(R.string.simple_activity)))
         })
     }
 
     override fun getAdapter(list: MutableList<*>) = MainMenuAdapter(activity!!, list as MutableList<MenuItem>) { item, position ->
         when (item.id) {
-            DRAWER -> startActivity(Intent(activity, DrawerActivity::class.java))
+            DRAWER -> loadPage(DrawerNavigationViewController())
             PULLABLE -> loadPage(PullableViewController())
             TABS -> loadPage(TabsViewController())
             LOADER -> loadPage(LoaderViewController())
+            SIMPLE -> pageController.startActivity(EmptyViewController::class.java)
         }
     }
 
@@ -47,5 +49,6 @@ class ListViewController : BaseRecycleViewController() {
         val PULLABLE = 1
         val TABS = 2
         val LOADER = 3
+        val SIMPLE = 4
     }
 }

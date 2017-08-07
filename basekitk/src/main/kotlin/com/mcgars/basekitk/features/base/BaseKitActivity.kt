@@ -1,25 +1,22 @@
-package com.mcgars.basekitk.features.simple
+package com.mcgars.basekitk.features.base
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.*
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.config.KitConfiguration
-import com.mcgars.basekitk.tools.*
-import com.mcgars.basekitk.tools.pagecontroller.ExTabs
+import com.mcgars.basekitk.features.simple.ActivityController
+import com.mcgars.basekitk.tools.LoaderController
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import com.mcgars.basekitk.tools.permission.BasePermissionController
+import com.mcgars.basekitk.tools.toast
+import com.mcgars.basekitk.tools.trying
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -36,9 +33,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * @return
      */
     val TAG = "BaseKitActivity"
-
-    var isHomeButtonPressed: Boolean = false
-        private set
 
     /**
      * Лисенер который срабатывает в момент нажатия назад
@@ -59,25 +53,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     val pageController: PageController by lazy { PageController(this) }
 
-    /**
-     * Если в разметке есть тулбар то  автоматически подхватится
-     * по умолчанию id=R.id.toolbar
-     * но можно переопределить id с помощью метода getToolbarId()
-     * @return [Toolbar]
-     */
-    var toolbar: Toolbar? = null
-        private set
-    /**
-     * Если в разметке есть табы то автоматически подхватится
-     * по умолчанию id=R.id.tabs
-     * но можно переопределить id с помощью метода getToolbarId()
-     */
-    var tabsView: TabLayout? = null
-        private set
-
     protected val permissionController: BasePermissionController by lazy { BasePermissionController(this) }
 
-    val loaderController: LoaderController by lazy { LoaderController(this) }
     /**
      * Контроллер, который включает в себя жизненный цикл активити
      * все базовые инициализации которые дожны быть в базовом активити
@@ -86,14 +63,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      */
     private var activityController: C? = null
         private set
-    /**
-     * Switcher appBarLayout
-     */
-    private val abbBarCoordinator: AppBarCoordinator by lazy { AppBarCoordinator(this) }
-    /**
-     * @return CoordinatorLayout
-     */
-    val coordinatorLayout: CoordinatorLayout by lazy { findViewById(getCoordinatorLayoutId()) as CoordinatorLayout }
 
     private var router: Router by Delegates.notNull()
 
@@ -106,86 +75,34 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         super.onCreate(savedInstanceState)
         activityController = initActivityController()
         setContentView(getLayoutId())
-        initToolBar()
         router = Conductor.attachRouter(this, findViewById(R.id.contentFrame) as ViewGroup, savedInstanceState)
         router.addChangeListener(this)
         activityController?.onCreate(savedInstanceState)
     }
 
-    protected open fun initToolBar() {
-        findViewById(getToolbarId())?.apply {
-            toolbar = this as Toolbar
-            setSupportActionBar(toolbar)
-        }
-        findViewById(getTabsId())?.apply {
-            tabsView = this as TabLayout
-        }
-        prepareTabsConfig(tabsView)
-    }
-
-    /**
-     * Change default app bar wrapperLayout whit toolbar to custom
-     * @param appBarLayout
-     * *
-     * @return boolean
-     */
-    open fun setAppBar(appBarLayout: Int): Boolean {
-        if (abbBarCoordinator.setAppBar(appBarLayout)) {
-            initToolBar()
-            return true
-        }
-        return false
-    }
-
-    /**
-     * Set default app bar wrapperLayout
-     * @return boolean
-     */
-    open fun setAppBarDefault(): Boolean {
-        if (abbBarCoordinator.setAppBar(AppBarCoordinator.DEFAULT_APP_BAR)) {
-            initToolBar()
-            return true
-        }
-        return false
-    }
-
-    /**
-     * Если нужно переопределить настройки табов (цвет, линию и т.д.)
-     * @param tabs
-     */
-    protected open fun prepareTabsConfig(tabs: TabLayout?) {
-
-    }
-
-    protected open fun getToolbarId() = R.id.toolbar
-
-    protected open fun getTabsId() = R.id.tablayout
-
-    protected open fun getCoordinatorLayoutId() = R.id.coordinatorLayout
-
-    /**
-     * * Если в разметке есть табы то автоматически подхватится
-     * по умолчанию id=R.id.tabs
-     * но можно переопределить id с помощью метода getToolbarId()
-     * @return [ExSlidingTabLayout]
-     */
-    open val tabs: TabLayout?
-        get() {
-            showTabs(true)
-            return tabsView
-        }
-
-    val isTabsVisible: Boolean
-        get() = tabsView?.visibility == View.VISIBLE
-
-    /**
-     * Показывает табы, которые, ты, разработчик, должен прописать
-     * в разметке xml где находиться тулбар (если они нужны)
-     * @param show
-     */
-    open fun showTabs(show: Boolean) {
-        tabsView.gone(!show)
-    }
+//    /**
+//     * * Если в разметке есть табы то автоматически подхватится
+//     * по умолчанию id=R.id.tabs
+//     * но можно переопределить id с помощью метода getToolbarId()
+//     * @return [ExSlidingTabLayout]
+//     */
+//    open val tabs: TabLayout?
+//        get() {
+//            showTabs(true)
+//            return tabsView
+//        }
+//
+//    val isTabsVisible: Boolean
+//        get() = tabsView?.visibility == View.VISIBLE
+//
+//    /**
+//     * Показывает табы, которые, ты, разработчик, должен прописать
+//     * в разметке xml где находиться тулбар (если они нужны)
+//     * @param show
+//     */
+//    open fun showTabs(show: Boolean) {
+//        tabsView.gone(!show)
+//    }
 
     /**
      * Контроллер, который включает в себя жизненный цикл активити
@@ -211,9 +128,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     /**
      * body xml
      * аналогично setContentView()
-
      */
-    protected open fun getLayoutId() = R.layout.basekit_activity_simple
+    protected open fun getLayoutId() = R.layout.basekit_activity_simple_v2
 
     /**
      * Remove all fragments from stack
@@ -222,7 +138,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         // Clear all back stack.
         router.setBackstack(ArrayList<RouterTransaction>(), null)
     }
-
 
     /**
      * Override this if need load controller by id
@@ -254,12 +169,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (view == null || (Build.VERSION.SDK_INT >= 17 && isDestroyed) || isFinishing)
             return
 
-        /**
-         * Прячим табы когда переходим на другую страницу
-         */
-        //        checkHideTabs(view)
-        setAppBarDefault()
-
         if (view.overriddenPopHandler == null)
             view.overridePopHandler(getDefaultPopAnimate())
         if (view.overriddenPushHandler == null)
@@ -272,17 +181,17 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
                 setHomeArrow(true)
         }
     }
-
-    /**
-     * Если есть аннотация что требуються табы то перед сменной фрагмента
-     * не прячем табы, что бы не было мигантя табов
-     * @param view
-     */
-    protected fun checkHideTabs(view: Controller?) {
-        view?.run {
-            showTabs(javaClass.getAnnotation(ExTabs::class.java) != null)
-        }
-    }
+//
+//    /**
+//     * Если есть аннотация что требуються табы то перед сменной фрагмента
+//     * не прячем табы, что бы не было мигантя табов
+//     * @param view
+//     */
+//    protected fun checkHideTabs(view: Controller?) {
+//        view?.run {
+//            showTabs(javaClass.getAnnotation(ExTabs::class.java) != null)
+//        }
+//    }
 
     override fun onBackPressed() {
         if (router.handleBack()) {
@@ -297,7 +206,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (activityController?.onBackPressed() ?: false)
             return
 
-        isHomeButtonPressed = false
         if (doubleBack && !doubleBackPressed())
             return
         super.onBackPressed()
@@ -331,7 +239,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (item.itemId == android.R.id.home) {
             if (homeListener?.invoke() ?: false)
                 return true
-            isHomeButtonPressed = true
             onBackPressed()
             return true
         }
@@ -347,11 +254,8 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        Log.d("onActivityResult", "base responce ")
         activityController?.onActivityResult(requestCode, resultCode, data)
-
         super.onActivityResult(requestCode, resultCode, data)
-
     }
 
     override fun onResume() {
@@ -388,7 +292,9 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     override fun setTitle(title: CharSequence) {
-        supportActionBar?.run { setTitle(title) } ?: super.setTitle(title)
+        supportActionBar?.let {
+            it.title = title
+        } ?: super.setTitle(title)
     }
 
     override fun setTitle(text: Int) = setTitle(getString(text))
@@ -416,13 +322,12 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         private var CLOSE_APLICATION: Boolean = false
     }
 
-    override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
-        checkHideTabs(to)
-    }
-
     override fun onChangeCompleted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
-//        checkHideTabs(to)
+
     }
 
+    override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
+
+    }
 }
 

@@ -1,7 +1,7 @@
 package com.mcgars.basekitk.config
 
 import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.features.simple.BaseKitActivity
+import com.mcgars.basekitk.features.base.BaseKitActivity
 
 /**
  * Created by gars on 03.08.17.

@@ -4,7 +4,6 @@ import android.support.annotation.IdRes
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.mcgars.basekitk.features.base.DecoratorListener
 import com.mcgars.basekitk.tools.find
 
 /**
@@ -21,7 +20,7 @@ class MoreLoadDecorator(@IdRes val recyclerView: Int, val listener: (page: Int)-
 
     private var hasMoreItems: Boolean = true
 
-    override fun onViewInited(view: View) {
+    override fun onViewCreated(view: View) {
         view.find<RecyclerView>(recyclerView)?.apply {
             addOnScrollListener(getLoadingListener())
         }

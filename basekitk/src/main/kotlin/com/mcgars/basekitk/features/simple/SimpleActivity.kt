@@ -1,8 +1,7 @@
 package com.mcgars.basekitk.features.simple
 
 import android.os.Bundle
-import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.features.simple.BaseKitActivity
+import com.mcgars.basekitk.features.base.BaseKitActivity
 
 
 /**
@@ -32,7 +31,7 @@ open class SimpleActivity : BaseKitActivity<ActivityController<*>>() {
         pageController.loadPage()
     }
 
-    override open fun initActivityController(): ActivityController<*>? {
+    override fun initActivityController(): ActivityController<*>? {
         return pageController.initParamsFromActivity()
                 .getActivityController()
     }

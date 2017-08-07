@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
-import com.mcgars.basekitk.features.base.DecoratorListener
 import com.mcgars.basekitk.tools.WrapperUiTool
 import com.mcgars.basekitk.tools.colorAttr
 import com.mcgars.basekitk.tools.find
@@ -27,7 +26,7 @@ class PullableDecorator private constructor(
         swipeRefreshLayout?.setColorSchemeColors(color)
     }
 
-    override fun onViewInited(view: View) {
+    override fun onViewCreated(view: View) {
         if (viewId != 0) {
             val v = view.findViewById(viewId) ?: return
             swipeRefreshLayout = SwipeRefreshLayout(view.context)

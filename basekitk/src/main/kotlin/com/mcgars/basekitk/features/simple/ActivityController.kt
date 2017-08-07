@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import com.mcgars.basekitk.features.simple.BaseKitActivity
+import com.mcgars.basekitk.features.base.BaseKitActivity
 
 /**
  * Created by Владимир on 12.10.2015.

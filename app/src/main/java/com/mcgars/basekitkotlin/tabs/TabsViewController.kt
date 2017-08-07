@@ -23,7 +23,7 @@ class TabsViewController : BaseViewController() {
     val pagerAdapter = object : RouterPagerAdapter(this) {
 
         override fun configureRouter(router: Router, position: Int) {
-            router.pushController(RouterTransaction.with(EmptyViewController("page: $position")))
+            router.pushController(RouterTransaction.with(EmptyViewController("page: $position", true)))
         }
 
         override fun getCount() = 3

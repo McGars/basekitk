@@ -1,7 +1,6 @@
 package com.mcgars.basekitk.tools.pagecontroller
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +9,7 @@ import android.text.TextUtils
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.features.simple.BaseKitActivity
+import com.mcgars.basekitk.features.base.BaseKitActivity
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.BaseKitConstants
 import java.io.Serializable
