@@ -17,7 +17,7 @@
         <!-- style button-->
         <!--<item name="android:buttonStyle">@style/uiButton</item>-->
         <!-- dialog theme stuff -->
-        <item name="android:datePickerDialogTheme" ns1:ignore="NewApi">@style/KitTeme.DialogTheme</item>
+        <item name="android:datePickerDialogTheme" ns1:ignore="NewApi">@style/KitTheme.DialogTheme</item>
         <!-- styles button-->
         <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
         <!-- Цвет текста на кнопках -->
@@ -26,17 +26,17 @@
         <item name="toolbarStyle">@style/ToolbarStyle</item>
     </style>
 
-    <style name="KitTeme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="KitTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">?attr/colorAccent</item>
     </style>
 
-    <style name="KitTeme.NoActionBar" parent="KitTheme" />
+    <style name="KitTheme.NoActionBar" parent="KitTheme" />
 
-    <style name="KitTeme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="KitTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="KitTeme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="KitTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/white_overlay_90</item>
     </style>
