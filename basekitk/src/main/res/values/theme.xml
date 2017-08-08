@@ -17,16 +17,14 @@
         <!-- style button-->
         <!--<item name="android:buttonStyle">@style/uiButton</item>-->
         <!-- dialog theme stuff -->
-        <item name="android:datePickerDialogTheme" ns1:ignore="NewApi">@style/KitTeme.DialogTheme</item>
+        <item name="android:datePickerDialogTheme" ns1:ignore="NewApi">@style/KitTheme.DialogTheme</item>
         <!-- styles button-->
         <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
         <!-- Цвет текста на кнопках -->
         <item name="android:textColorPrimary">@color/black_overlay_90</item>
-
-        <item name="toolbarStyle">@style/ToolbarStyle</item>
     </style>
 
-    <style name="KitTeme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    <style name="KitTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">?attr/colorAccent</item>
     </style>
 
@@ -36,10 +34,15 @@
 
     <style name="KitTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
         <!-- Customize your theme here. -->
-        <item name="colorAccent">@android:color/white</item>
-        <item name="colorControlNormal">@android:color/white</item>
+    <style name="ToolbarStyle.Theme">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/white_overlay_90</item>
     </style>
 
+    <style name="ToolbarStyle.ThemePopup">
+        <!-- Customize your theme here. -->
+        <!--<item name="colorAccent">@color/white_overlay_90</item>-->
+    </style>
 </resources>
