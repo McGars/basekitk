@@ -1,6 +1,7 @@
 package com.mcgars.basekitkotlin
 
 import android.os.Bundle
+import android.view.View
 import com.mcgars.basekitk.features.base.BaseKitActivity
 import com.mcgars.basekitkotlin.controller.HelloAc
 import com.mcgars.basekitkotlin.list.ListViewController

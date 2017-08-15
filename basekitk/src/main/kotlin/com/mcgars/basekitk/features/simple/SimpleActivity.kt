@@ -23,7 +23,6 @@ open class SimpleActivity : BaseKitActivity<ActivityController<*>>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHomeArrow(true)
         loadViewController()
     }
 

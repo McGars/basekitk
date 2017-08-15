@@ -75,7 +75,7 @@ class LoaderController @JvmOverloads constructor(private val activity: Activity,
     }
 
     private fun init() {
-        loader = activity.layoutInflater.inflate(if (layout != 0) layout else R.layout.basekit_custom_loader, root, false)
+        loader = activity.layoutInflater.inflate(if (layout != 0) layout else R.layout.basekit_global_loader, root, false)
         root?.addView(loader)
     }
 

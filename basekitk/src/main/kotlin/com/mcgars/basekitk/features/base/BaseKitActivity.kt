@@ -6,8 +6,6 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.UiThread
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -16,8 +14,6 @@ import com.bluelinelabs.conductor.internal.ThreadUtils
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.tools.LoaderController
-import com.mcgars.basekitk.tools.log
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import com.mcgars.basekitk.tools.permission.BasePermissionController
 import com.mcgars.basekitk.tools.toast
@@ -32,21 +28,8 @@ import kotlin.properties.Delegates
 @Suppress("UNCHECKED_CAST")
 abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
 
-    /**
-     * true if click on home button
-     * check it in onBackPressed
-     * @return
-     */
     val TAG = "BaseKitActivity"
 
-    /**
-     * Лисенер который срабатывает в момент нажатия назад
-     */
-    //    protected OnFragmentBackListener fragmentBackListener;
-    /**
-     * Лисенер который срабатывает в момент нажатия home arrow
-     */
-    protected var homeListener: (() -> Boolean)? = null
     /**
      * Стандартные настройки, создаються автоматически
      */
@@ -55,6 +38,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     var isPageLoading = false
+        private set
 
     private var doubleBack: Boolean = false
 
@@ -66,7 +50,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * Контроллер, который включает в себя жизненный цикл активити
      * все базовые инициализации которые дожны быть в базовом активити
      * необходимо писать туда
-     * а уже в коде вызывать activvity.getAC().getNeedMethod()
+     * а уже в коде вызывать activity.getAC().getNeedMethod()
      */
     private var activityController: C? = null
         private set
@@ -86,30 +70,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         router.addChangeListener(this)
         activityController?.onCreate(savedInstanceState)
     }
-
-//    /**
-//     * * Если в разметке есть табы то автоматически подхватится
-//     * по умолчанию id=R.id.tabs
-//     * но можно переопределить id с помощью метода getToolbarId()
-//     * @return [ExSlidingTabLayout]
-//     */
-//    open val tabs: TabLayout?
-//        get() {
-//            showTabs(true)
-//            return tabsView
-//        }
-//
-//    val isTabsVisible: Boolean
-//        get() = tabsView?.visibility == View.VISIBLE
-//
-//    /**
-//     * Показывает табы, которые, ты, разработчик, должен прописать
-//     * в разметке xml где находиться тулбар (если они нужны)
-//     * @param show
-//     */
-//    open fun showTabs(show: Boolean) {
-//        tabsView.gone(!show)
-//    }
 
     /**
      * Контроллер, который включает в себя жизненный цикл активити
@@ -136,7 +96,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      * body xml
      * аналогично setContentView()
      */
-    protected open fun getLayoutId() = R.layout.basekit_activity_simple_v2
+    protected open fun getLayoutId() = R.layout.basekit_activity_simple
 
     /**
      * Remove all fragments from stack
@@ -188,19 +148,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
                 setHomeArrow(true)
         }
     }
-//
-//    /**
-//     * Если есть аннотация что требуються табы то перед сменной фрагмента
-//     * не прячем табы, что бы не было мигантя табов
-//     * @param view
-//     */
-//    protected fun checkHideTabs(view: Controller?) {
-//        view?.run {
-//            showTabs(javaClass.getAnnotation(ExTabs::class.java) != null)
-//        }
-//    }
-
-
 
     override fun onBackPressed() {
 
@@ -267,20 +214,12 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (activityController?.onOptionsItemSelected(item) ?: false)
             return true
         if (item.itemId == android.R.id.home) {
-            if (homeListener?.invoke() ?: false)
+            if (router.onOptionsItemSelected(item))
                 return true
             onBackPressed()
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    /***
-     * Remove this from your code, onBackListener add automatically
-     * @param homeListener
-     */
-    fun setOnHomeListener(homeListener: (() -> Boolean)) {
-        this.homeListener = homeListener
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
