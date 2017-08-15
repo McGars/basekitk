@@ -107,15 +107,15 @@ fun View?.gone(isGone: Boolean = true) {
     this?.visibility = if (isGone) View.GONE else View.VISIBLE
 }
 
-fun Array<View?>.visible(visible: Boolean = true) {
+fun Array<out View?>.visible(visible: Boolean = true) {
     setVisibleState(if (visible) View.VISIBLE else View.INVISIBLE)
 }
 
-fun Array<View?>.gone(isGone: Boolean = true) {
+fun Array<out View?>.gone(isGone: Boolean = true) {
     setVisibleState(if (isGone) View.GONE else View.VISIBLE)
 }
 
-fun Array<View?>.setVisibleState(state: Int) {
+fun Array<out View?>.setVisibleState(state: Int) {
     for (i in indices) {
         get(i)?.visibility = state
     }

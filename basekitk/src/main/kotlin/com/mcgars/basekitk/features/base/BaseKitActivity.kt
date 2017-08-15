@@ -5,10 +5,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.UiThread
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.*
+import com.bluelinelabs.conductor.internal.ThreadUtils
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.simple.ActivityController
@@ -200,7 +204,12 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
     override fun onBackPressed() {
 
-        if (isPageLoading || router.handleBack()) {
+        if (isPageLoading || handleBack()) {
+            return
+        }
+
+        if (router.backstackSize > 1) {
+            router.popCurrentController()
             return
         }
 
@@ -215,6 +224,21 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (doubleBack && !doubleBackPressed())
             return
         super.onBackPressed()
+    }
+
+    @UiThread
+    fun handleBack(): Boolean {
+        ThreadUtils.ensureMainThread()
+
+        router.backstack.let { backStack ->
+            if (!backStack.isEmpty()) {
+                if (backStack.last().controller().handleBack()) {
+                    return true
+                }
+            }
+        }
+
+        return false
     }
 
     fun setDoubleBackPressedToExit(doubleBack: Boolean) {
