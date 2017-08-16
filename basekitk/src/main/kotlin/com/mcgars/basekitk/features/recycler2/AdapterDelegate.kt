@@ -65,8 +65,7 @@ interface AdapterDelegate<T> {
      * *
      * @param payloads A non-null list of merged payloads. Can be empty list if requires full update.
      */
-    fun onBindViewHolder(items: T, position: Int,
-                                            holder: RecyclerView.ViewHolder, payloads: List<Any>)
+    fun onBindViewHolder(items: T, position: Int, holder: RecyclerView.ViewHolder, payloads: List<Any>)
 
     /**
      * Called when a view created by this adapter has been recycled.
