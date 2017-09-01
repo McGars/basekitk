@@ -4,6 +4,9 @@ import android.view.MenuItem
 import android.view.View
 import com.mcgars.basekitk.tools.snack
 import com.mcgars.basekitkotlin.R
+import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
+import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandler
+import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
  * Created by gars on 07.08.17.
@@ -14,6 +17,13 @@ class ArrowToolbarViewController : EmptyViewController() {
 
     init {
         setHasOptionsMenu(true)
+        overridePushHandler(CircularRevealChangeHandlerCompat().apply {
+            halfPosition = CircularRevealChangeHandler.TOP_CENTER
+        })
+        overridePopHandler(CircularRevealChangeHandlerCompat().apply {
+            halfPosition = CircularRevealChangeHandler.TOP_CENTER
+        })
+        addDecorator(ToolbarColorDecorator(this))
     }
 
     override fun onReady(view: View) {

@@ -3,4 +3,23 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Colors for toolbar -->
+
+    <color name="color1">#9C27B0</color>
+    <color name="color2">#673AB7</color>
+    <color name="color3">#3F51B5</color>
+    <color name="color4">#4CAF50</color>
+    <color name="color5">#FF9800</color>
+    <color name="color6">#795548</color>
+
+    <array name="toolbar_colors">
+        <item>@color/color1</item>
+        <item>@color/color2</item>
+        <item>@color/color3</item>
+        <item>@color/color4</item>
+        <item>@color/color5</item>
+        <item>@color/color6</item>
+    </array>
+
 </resources>

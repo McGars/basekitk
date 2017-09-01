@@ -4,6 +4,8 @@ import android.view.View
 import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.tools.Timer
 import com.mcgars.basekitkotlin.R
+import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
+import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandler
 import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
@@ -11,13 +13,17 @@ import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerC
  */
 class LoaderViewController : BaseViewController(){
 
+    init {
+        addDecorator(ToolbarColorDecorator(this))
+    }
+
     override fun getTitleInt() = R.string.loader_title
 
     override fun getLayoutId() = R.layout.view_empry
 
     override fun onReady(view: View) {
         loader.show()
-        Timer(2000) {
+        Timer(3000) {
             loader.hide()
         }.start()
     }

@@ -13,10 +13,10 @@
 
     <TextView
         android:id="@+id/tvTitle"
+        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.AppCompat.Subhead"
-        tools:text="Title"/>
+        tools:text="Title" />
 
     <TextView
         android:id="@+id/tvDescription"

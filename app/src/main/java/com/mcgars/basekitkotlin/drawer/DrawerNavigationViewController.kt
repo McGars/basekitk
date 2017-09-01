@@ -7,7 +7,9 @@ import com.bluelinelabs.conductor.ControllerChangeType
 import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.features.drawer.BaseDrawerNavigationViewController
 import com.mcgars.basekitkotlin.R
+import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
 import com.mcgars.basekitkotlin.sample.EmptyViewController
+import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandler
 import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
@@ -17,8 +19,13 @@ class DrawerNavigationViewController : BaseDrawerNavigationViewController() {
 
     init {
         // animation
-        overridePushHandler(CircularRevealChangeHandlerCompat())
-        overridePopHandler(CircularRevealChangeHandlerCompat())
+        overridePushHandler(CircularRevealChangeHandlerCompat().apply {
+            halfPosition = CircularRevealChangeHandler.TOP_CENTER
+        })
+        overridePopHandler(CircularRevealChangeHandlerCompat().apply {
+            halfPosition = CircularRevealChangeHandler.TOP_CENTER
+        })
+        addDecorator(ToolbarColorDecorator(this))
     }
 
     override fun getViewController(pageId: Int): BaseViewController? {

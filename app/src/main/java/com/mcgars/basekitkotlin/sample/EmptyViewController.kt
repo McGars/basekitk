@@ -5,12 +5,17 @@ import android.view.View
 import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.tools.isNotEmpty
 import com.mcgars.basekitkotlin.R
+import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
 import kotlinx.android.synthetic.main.view_empry.view.*
 
 /**
  * Created by Владимир on 12.01.2017.
  */
 open class EmptyViewController(bundle: Bundle? = null) : BaseViewController(bundle){
+
+    init {
+        addDecorator(ToolbarColorDecorator(this))
+    }
 
     constructor(text: String, isCustom: Boolean = false): this(Bundle().apply {
        putString("text", text)

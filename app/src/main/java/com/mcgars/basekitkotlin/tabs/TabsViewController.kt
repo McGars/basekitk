@@ -9,6 +9,7 @@ import com.mcgars.basekitk.tools.pagecontroller.ExTabs
 import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.sample.EmptyViewController
 import kotlinx.android.synthetic.main.view_pager.view.*
+import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandler
 import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
@@ -23,8 +24,12 @@ class TabsViewController : BaseViewController() {
 
     init {
         // animation
-        overridePushHandler(CircularRevealChangeHandlerCompat())
-        overridePopHandler(CircularRevealChangeHandlerCompat())
+        overridePushHandler(CircularRevealChangeHandlerCompat().apply {
+            halfPosition = CircularRevealChangeHandler.RIGHT_CENTER
+        })
+        overridePopHandler(CircularRevealChangeHandlerCompat().apply {
+            halfPosition = CircularRevealChangeHandler.RIGHT_CENTER
+        })
     }
 
     val pagerAdapter: RouterPagerAdapter by lazy {

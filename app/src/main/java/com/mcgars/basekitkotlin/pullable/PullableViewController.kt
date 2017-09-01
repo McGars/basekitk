@@ -6,6 +6,7 @@ import com.mcgars.basekitk.features.decorators.PullableDecorator
 import com.mcgars.basekitk.tools.Timer
 import com.mcgars.basekitk.tools.snack
 import com.mcgars.basekitkotlin.R
+import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
 import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
@@ -21,6 +22,7 @@ class PullableViewController : BaseViewController() {
         // animation
         overridePushHandler(CircularRevealChangeHandlerCompat())
         overridePopHandler(CircularRevealChangeHandlerCompat())
+        addDecorator(ToolbarColorDecorator(this))
     }
 
     /**
