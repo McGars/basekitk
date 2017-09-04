@@ -39,17 +39,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
      */
     val TAG = "BaseKitActivity"
 
-    var isHomeButtonPressed: Boolean = false
-        private set
-
-    /**
-     * Лисенер который срабатывает в момент нажатия назад
-     */
-    //    protected OnFragmentBackListener fragmentBackListener;
-    /**
-     * Лисенер который срабатывает в момент нажатия home arrow
-     */
-    protected var homeListener: (() -> Boolean)? = null
     /**
      * Стандартные настройки, создаються автоматически
      */
@@ -304,7 +293,6 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (activityController?.onBackPressed() ?: false)
             return
 
-        isHomeButtonPressed = false
         if (doubleBack && !doubleBackPressed())
             return
         super.onBackPressed()
@@ -361,21 +349,12 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         if (activityController?.onOptionsItemSelected(item) ?: false)
             return true
         if (item.itemId == android.R.id.home) {
-            if (homeListener?.invoke() ?: false)
+            if (router.onOptionsItemSelected(item))
                 return true
-            isHomeButtonPressed = true
             onBackPressed()
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    /***
-     * Remove this from your code, onBackListener add automatically
-     * @param homeListener
-     */
-    fun setOnHomeListener(homeListener: (() -> Boolean)) {
-        this.homeListener = homeListener
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
