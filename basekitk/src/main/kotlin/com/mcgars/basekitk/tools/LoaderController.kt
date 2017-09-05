@@ -29,7 +29,7 @@ class LoaderController @JvmOverloads constructor(private val activity: Activity,
 
         root = groupToAdd
         if (root == null) {
-            root = (activity.findViewById(android.R.id.content) as ViewGroup).getChildAt(0) as ViewGroup
+            root = (activity.findViewById<ViewGroup>(android.R.id.content)).getChildAt(0) as ViewGroup
             height = ViewGroup.LayoutParams.MATCH_PARENT
         }
         val coordinator = findCoordinatorLayout(root!!)

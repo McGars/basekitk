@@ -66,7 +66,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         super.onCreate(savedInstanceState)
         activityController = initActivityController()
         setContentView(getLayoutId())
-        router = Conductor.attachRouter(this, findViewById(R.id.contentFrame) as ViewGroup, savedInstanceState)
+        router = Conductor.attachRouter(this, findViewById(R.id.contentFrame), savedInstanceState)
         router.addChangeListener(this)
         activityController?.onCreate(savedInstanceState)
     }

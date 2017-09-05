@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion rootProject.ext.compileSdk
     buildToolsVersion rootProject.ext.versionSdkTool
     defaultConfig {
         applicationId "com.mcgars.basekitkotlin"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion rootProject.ext.targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

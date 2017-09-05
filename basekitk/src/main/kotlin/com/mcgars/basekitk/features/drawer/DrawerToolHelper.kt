@@ -24,7 +24,7 @@ open class DrawerToolHelper(
 
     open val drawerTool = DrawerTool(viewController, pageListener, toolbar)
 
-    val drawerList: ListView? by lazy { viewController.view?.findViewById(drawerListViewId) as? ListView }
+    val drawerList: ListView? by lazy { viewController.view?.findViewById<ListView>(drawerListViewId) }
 
     /**
      * List view were set items

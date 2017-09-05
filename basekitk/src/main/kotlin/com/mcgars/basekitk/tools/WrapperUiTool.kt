@@ -47,7 +47,7 @@ class WrapperUiTool {
      */
     fun insertAtId(@IdRes inputId: Int): WrapperUiTool {
         settings?.invoke(view)
-        (wrapperLayout!!.findViewById(inputId) as ViewGroup).addView(view)
+        (wrapperLayout?.findViewById<ViewGroup>(inputId))?.addView(view)
         rebuildParent()
         return this
     }

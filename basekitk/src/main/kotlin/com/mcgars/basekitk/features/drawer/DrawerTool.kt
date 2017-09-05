@@ -27,7 +27,7 @@ open class DrawerTool(
     protected val drawerLayoutId: Int
         get() = R.id.drawer_layout
 
-    val drawerLayout: DrawerLayout? by lazy { viewController.view?.findViewById(drawerLayoutId) as? DrawerLayout }
+    val drawerLayout: DrawerLayout? by lazy { viewController.view?.findViewById<DrawerLayout>(drawerLayoutId) }
 
     val drawerToggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(viewController.activity, drawerLayout,
             toolbar, R.string.app_name, R.string.app_name) {

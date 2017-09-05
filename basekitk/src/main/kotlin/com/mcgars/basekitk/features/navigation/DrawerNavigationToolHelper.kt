@@ -50,7 +50,7 @@ open class DrawerNavigationToolHelper(
      * Левая менюшка
      */
     fun initDrawer() {
-        mNavigationView = viewController.view?.findViewById(navigationViewId) as NavigationView
+        mNavigationView = viewController.view?.findViewById(navigationViewId)
         mNavigationView?.setNavigationItemSelectedListener(this)
         if (menuResourceId != 0) {
             mNavigationView?.menu?.clear()

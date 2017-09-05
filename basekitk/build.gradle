@@ -16,12 +16,12 @@ apply plugin: 'kotlin-android'
 def versionN = "0.0.17"
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion rootProject.ext.compileSdk
     buildToolsVersion rootProject.ext.versionSdkTool
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion rootProject.ext.targetSdk
         versionCode 1
         versionName versionN
     }

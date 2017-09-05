@@ -38,7 +38,7 @@ import java.util.regex.Pattern
  * Created by gars on 02.01.2017.
  */
 
-fun Context.toast(@IdRes msg: Int, lenght: Int = Toast.LENGTH_SHORT) {
+fun Context.toast(@StringRes msg: Int, lenght: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, lenght).show()
 }
 
@@ -177,9 +177,9 @@ fun Context?.isServiceRunning(serviceClass: Class<*>): Boolean {
  * @param id id view for findViewById
  * @return Необходимую вью
 </C> */
-fun <C : View?> View.find(id: Int) = findViewById(id)?.run { this as C }
+fun <C : View?> View.find(id: Int) = findViewById<C?>(id)
 
-fun <C : View?> Activity.find(id: Int) = findViewById(id)?.run { this as C }
+fun <C : View?> Activity.find(id: Int) = findViewById<C?>(id)
 
 inline fun ViewGroup.forEach(action: View.() -> Unit) {
     (0..childCount).forEach { getChildAt(it).action() }
