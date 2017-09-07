@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.R
+import com.mcgars.basekitk.features.base.DecoratorListener
 import com.mcgars.basekitk.tools.find
 import java.util.*
 
@@ -27,15 +29,19 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
      */
     var clearOnFirstPage = true
 
+    init {
+        addDecorator(object : DecoratorListener() {
+            override fun postCreateView(controller: Controller, view: View) {
+                recyclerView = view.find(R.id.recycleView)
+                recyclerView?.layoutManager = initLayoutManager()
+                initLoading()
+            }
+        })
+    }
+
     override fun getLayoutId() = R.layout.basekit_view_recycler
 
     protected open fun initLayoutManager() = LinearLayoutManager(activity)
-
-    override fun onReady(view: View) {
-        recyclerView = view.find(R.id.recycleView)
-        recyclerView?.layoutManager = initLayoutManager()
-        initLoading()
-    }
 
     /**
      * Load more items when list scrolls to end
