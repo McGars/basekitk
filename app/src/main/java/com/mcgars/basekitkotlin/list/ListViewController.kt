@@ -17,7 +17,6 @@ class ListViewController : BaseRecycleViewController() {
     override fun getTitleInt() = R.string.menu
 
     override fun onReady(view: View) {
-        super.onReady(view)
         loadData(DEFAULT_FIRST_PAGE)
     }
 
