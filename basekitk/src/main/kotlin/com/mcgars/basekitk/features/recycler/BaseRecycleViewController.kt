@@ -7,7 +7,7 @@ import android.view.View
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.R
-import com.mcgars.basekitk.features.base.DecoratorListener
+import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.tools.find
 import java.util.*
 
