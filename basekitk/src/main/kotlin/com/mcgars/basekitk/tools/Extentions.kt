@@ -27,7 +27,6 @@ import android.widget.Toast
 import com.mcgars.basekitk.R
 import java.io.File
 import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -90,29 +89,31 @@ inline fun trying(func: () -> Unit): Boolean {
     }
 }
 
-inline fun <C> trying2(func: () -> Unit): C? {
-    try {
-        return func() as C
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
-    }
+inline fun <C> trying2(func: () -> C) = try {
+    func()
+} catch (e: Exception) {
+    e.printStackTrace()
+    null
 }
 
-fun View?.visible(visible: Boolean = true) {
+fun View?.visible(visible: Boolean = true): Boolean {
     this?.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+    return visible
 }
 
-fun View?.gone(isGone: Boolean = true) {
+fun View?.gone(isGone: Boolean = true): Boolean {
     this?.visibility = if (isGone) View.GONE else View.VISIBLE
+    return isGone
 }
 
-fun Array<out View?>.visible(visible: Boolean = true) {
+fun Array<out View?>.visible(visible: Boolean = true): Boolean {
     setVisibleState(if (visible) View.VISIBLE else View.INVISIBLE)
+    return visible
 }
 
-fun Array<out View?>.gone(isGone: Boolean = true) {
+fun Array<out View?>.gone(isGone: Boolean = true): Boolean {
     setVisibleState(if (isGone) View.GONE else View.VISIBLE)
+    return isGone
 }
 
 fun Array<out View?>.setVisibleState(state: Int) {
@@ -135,7 +136,7 @@ fun Activity?.hideKeyboard(): Boolean? {
 }
 
 fun Context?.hideKeyboard(): Boolean? {
-    if(this is Activity)
+    if (this is Activity)
         return this.run { hideKeyboard(window.decorView) } ?: false
     return false
 }
@@ -392,21 +393,21 @@ fun String.replaceSimilarLetters(engToRus: Boolean): String {
     return line
 }
 
-inline fun log (tag: String = "supperloger", text: ()->Any?) {
+inline fun log(tag: String = "supperloger", text: () -> Any?) {
     val txt = text()?.toString()
     Log.d(tag, "$txt")
 }
 
-inline fun String?.isNotEmpty(action: (String)->Unit): String? {
-    return if(!this.isNullOrEmpty()) {
+inline fun String?.isNotEmpty(action: (String) -> Unit): String? {
+    return if (!this.isNullOrEmpty()) {
         action(this!!); this
     } else null
 }
 
-inline fun String?.ifEmpty(action: ()->Unit): String? {
-    return if(this.isNullOrEmpty()) {
+inline fun String?.ifEmpty(action: () -> Unit): String? {
+    return if (this.isNullOrEmpty()) {
         action(); ""
     } else null
 }
 
-fun String?.ifNotEmpty() = if(!this.isNullOrEmpty()) this else null
+fun String?.ifNotEmpty() = if (!this.isNullOrEmpty()) this else null
