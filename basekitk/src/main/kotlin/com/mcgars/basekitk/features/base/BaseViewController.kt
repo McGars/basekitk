@@ -40,9 +40,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
                     toolbar = view.find(R.id.toolbar)
                 tabs = view.find(R.id.tablayout)
                 setTitle()
-            }
-
-            override fun postAttach(controller: Controller, view: View) {
                 onReady(view)
             }
         })
@@ -55,6 +52,14 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      * @return [Toolbar]
      */
     var toolbar: Toolbar? = null
+        get() {
+            if(field != null)
+                return field
+            if (parentController != null) {
+                return (parentController as BaseViewController).toolbar
+            }
+            return null
+        }
         private set(value) {
             field = value
             if(value != null)
@@ -80,9 +85,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         get() = (activity as BaseKitActivity<*>).pageController
 
     /**
-     * Loader block ui when show
+     * Loader blocking ui when show
      */
-    val loader: LoaderController by lazy { LoaderController(activity!!) }
+    val loader: LoaderController by lazy { LoaderController(view as ViewGroup) }
 
     /**
      * Life cycle of the Activity

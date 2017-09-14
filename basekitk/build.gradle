@@ -13,15 +13,15 @@ buildscript {
 }
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-def versionN = "0.0.18"
+def versionN = "0.1.0"
 
 android {
-    compileSdkVersion rootProject.ext.compileSdk
+    compileSdkVersion rootProject.ext.versionSdkCompile
     buildToolsVersion rootProject.ext.versionSdkTool
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion rootProject.ext.targetSdk
+        targetSdkVersion rootProject.ext.versionSdkTarget
         versionCode 1
         versionName versionN
     }
@@ -50,7 +50,7 @@ android {
 }
 
 ext {
-    appCompat = rootProject.ext.versionAndroidSDK
+    appCompat = rootProject.ext.versionSdkAndroid
     gsonV = "2.7"
     conductor = "2.1.4"
 }

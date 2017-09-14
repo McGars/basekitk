@@ -28,10 +28,11 @@ class PullableDecorator private constructor(
 
     override fun onViewCreated(view: View) {
         if (viewId != 0) {
-            val v = view.findViewById(viewId) ?: return
-            swipeRefreshLayout = SwipeRefreshLayout(view.context)
-            swipeRefreshLayout!!.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            WrapperUiTool(v, swipeRefreshLayout!!).insert()
+            view.find<View?>(viewId)?.let{
+                swipeRefreshLayout = SwipeRefreshLayout(view.context)
+                swipeRefreshLayout!!.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                WrapperUiTool(it, swipeRefreshLayout!!).insert()
+            }
         } else if (swipeLayoutId != 0) {
             swipeRefreshLayout = view.find(swipeLayoutId)
         }

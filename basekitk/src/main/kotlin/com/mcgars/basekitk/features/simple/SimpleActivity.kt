@@ -34,4 +34,6 @@ open class SimpleActivity : BaseKitActivity<ActivityController<*>>() {
         return pageController.initParamsFromActivity()
                 .getActivityController()
     }
+
+    override fun isShowArrow() = alwaysArrow
 }

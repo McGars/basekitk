@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import android.support.annotation.LayoutRes
 import android.support.design.widget.CoordinatorLayout
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -17,7 +18,7 @@ import com.mcgars.basekitk.R
 /**
  * Created by Владимир on 25.06.2014.
  */
-class LoaderController @JvmOverloads constructor(private val activity: Activity, groupToAdd: ViewGroup? = null) {
+class LoaderController @JvmOverloads constructor(groupToAdd: ViewGroup) {
 
     private var root: ViewGroup? = null
     private var loader: View? = null
@@ -28,11 +29,11 @@ class LoaderController @JvmOverloads constructor(private val activity: Activity,
         var height = ViewGroup.LayoutParams.WRAP_CONTENT
 
         root = groupToAdd
-        if (root == null) {
-            root = (activity.findViewById<ViewGroup>(android.R.id.content)).getChildAt(0) as ViewGroup
-            height = ViewGroup.LayoutParams.MATCH_PARENT
-        }
-        val coordinator = findCoordinatorLayout(root!!)
+//        if (root == null) {
+//            root = (activity.findViewById<ViewGroup>(android.R.id.content)).getChildAt(0) as ViewGroup
+//            height = ViewGroup.LayoutParams.MATCH_PARENT
+//        }
+        val coordinator = findCoordinator(root!!)
         if (coordinator != null)
             root = coordinator
 
@@ -40,7 +41,7 @@ class LoaderController @JvmOverloads constructor(private val activity: Activity,
 
             val parent = root!!.parent as ViewGroup
 
-            val rootViewNew = FrameLayout(activity).apply {
+            val rootViewNew = FrameLayout(root!!.context).apply {
                 layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
                 if (Build.VERSION.SDK_INT >= 16) {
                     fitsSystemWindows = root!!.fitsSystemWindows
@@ -55,6 +56,14 @@ class LoaderController @JvmOverloads constructor(private val activity: Activity,
             }
             rootViewNew.addView(root)
             this.root = rootViewNew
+        }
+    }
+
+    fun findCoordinator(root: View?): ViewGroup? {
+        return when (root) {
+            null -> return null
+            is CoordinatorLayout -> return root
+            else -> findCoordinator(root.parent as View)
         }
     }
 
@@ -75,7 +84,7 @@ class LoaderController @JvmOverloads constructor(private val activity: Activity,
     }
 
     private fun init() {
-        loader = activity.layoutInflater.inflate(if (layout != 0) layout else R.layout.basekit_global_loader, root, false)
+        loader = LayoutInflater.from(root!!.context).inflate(if (layout != 0) layout else R.layout.basekit_global_loader, root, false)
         root?.addView(loader)
     }
 
@@ -115,7 +124,7 @@ class LoaderController @JvmOverloads constructor(private val activity: Activity,
 
     private fun getAnimation(anim: Int): Animation {
         loader?.clearAnimation()
-        return AnimationUtils.loadAnimation(activity, anim)
+        return AnimationUtils.loadAnimation(root!!.context, anim)
     }
 
     fun setLoaderView(@LayoutRes layout: Int) {

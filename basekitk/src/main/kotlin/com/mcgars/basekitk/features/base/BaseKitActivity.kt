@@ -8,11 +8,13 @@ import android.os.Bundle
 import android.support.annotation.UiThread
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.*
 import com.bluelinelabs.conductor.internal.ThreadUtils
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.config.KitConfiguration
+import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import com.mcgars.basekitk.tools.permission.BasePermissionController
@@ -143,30 +145,41 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
 
         val transition = RouterTransaction.with(view)
         router.run {
+            if (view is BaseViewController) {
+                view.addDecorator(object :DecoratorListener() {
+                    override fun postAttach(controller: Controller, view: View) {
+                        setHomeArrow(isShowArrow())
+                    }
+                })
+            }
+
             if (backstack) pushController(transition) else replaceTopController(transition)
-            if (alwaysArrow && backstackSize > 1)
-                setHomeArrow(true)
         }
     }
 
+    /**
+     * Check if need show arrow in toolbar
+     */
+    open fun isShowArrow() = alwaysArrow && router.backstackSize > 1
+
     override fun onBackPressed() {
 
+        // Check if we can back pressed from views
         if (isPageLoading || handleBack()) {
             return
         }
+
+        // Check if we can back pressed from activity controller
+        if (activityController?.onBackPressed() == true)
+            return
 
         if (router.backstackSize > 1) {
             router.popCurrentController()
             return
         }
 
-        // Check if we can back pressed from views
-        if (alwaysArrow && router.backstackSize > 0)
-            setHomeArrow(router.backstackSize > 1)
-
-        // Check if we can back pressed from activity controller
-        if (activityController?.onBackPressed() ?: false)
-            return
+//        if (alwaysArrow && router.backstackSize > 0)
+//            setHomeArrow(router.backstackSize > 1)
 
         if (doubleBack && !doubleBackPressed())
             return
