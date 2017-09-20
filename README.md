@@ -7,7 +7,7 @@ It contains frequently used functions and ui features such as List, navigation,
 route between pages, loading etc.
 
 ```gradle
-compile 'com.github.msgars:basekitk:0.1.0'
+compile 'com.github.msgars:basekitk:0.1.1'
 ```
 
 See example for more details

@@ -63,7 +63,7 @@ class LoaderController @JvmOverloads constructor(groupToAdd: ViewGroup) {
         return when (root) {
             null -> return null
             is CoordinatorLayout -> return root
-            else -> findCoordinator(root.parent as View)
+            else -> findCoordinator(root.parent as? View)
         }
     }
 

@@ -10,6 +10,7 @@ import com.mcgars.basekitkotlin.pullable.PullableViewController
 import com.mcgars.basekitkotlin.sample.ArrowToolbarViewController
 import com.mcgars.basekitkotlin.sample.EmptyViewController
 import com.mcgars.basekitkotlin.tabs.TabsViewController
+import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
  * Created by gars on 13.05.2017.

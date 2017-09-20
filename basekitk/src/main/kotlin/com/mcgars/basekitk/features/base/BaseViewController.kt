@@ -6,7 +6,6 @@ import android.support.annotation.LayoutRes
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
@@ -36,11 +35,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         // Lets work with getView()
         addDecorator(object : DecoratorListener() {
             override fun postCreateView(controller: Controller, view: View) {
-                if(getToolbarLayout() != 0)
+                if(getContainerLayout() != 0)
                     toolbar = view.find(R.id.toolbar)
                 tabs = view.find(R.id.tablayout)
-                setTitle()
-                onReady(view)
             }
         })
     }
@@ -134,7 +131,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      * Layout with toolbar
      */
     @LayoutRes
-    open protected fun getToolbarLayout() = R.layout.basekit_toolbar
+    open protected fun getContainerLayout() = R.layout.basekit_view_container
 
     /**
      * if true then view will behind status bar
@@ -155,27 +152,30 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
             v = buildView(inflater)
         }
         decorators.forEach { it.onViewCreated(v) }
+
+        addDecorator(readyDecorator)
         return v
     }
 
-    private fun buildView(inflater: LayoutInflater): CoordinatorLayout {
-        return CoordinatorLayout(activity).also { coordinator ->
-            // set layout params
-            coordinator.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            // moved view behind status bar
-            ViewCompat.setFitsSystemWindows(coordinator, true)
-            // add toolbar
-            if (getLayoutId() != 0) {
-                coordinator.addView(inflater.inflate(getToolbarLayout(), coordinator, false))
-            }
-            // add content view
-            val layoutView = inflater.inflate(getLayoutId(), coordinator, false)
-            coordinator.addView(layoutView)
-            // attach scroll behavior for app bar
-            (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
-                if (layoutParams.behavior == null)
-                    layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
-            }
+    private fun buildView(inflater: LayoutInflater): View {
+
+        val coordinator = inflater.inflate(getContainerLayout(), null, false) as ViewGroup
+        // add content view
+        val layoutView = inflater.inflate(getLayoutId(), coordinator, false)
+        coordinator.addView(layoutView)
+        // attach scroll behavior for app bar
+        (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
+            if (layoutParams.behavior == null)
+                layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
+        }
+
+        return coordinator
+    }
+
+    private val readyDecorator = object : DecoratorListener() {
+        override fun postCreateView(controller: Controller, view: View) {
+            setTitle()
+            onReady(view)
         }
     }
 
@@ -225,6 +225,10 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         decorators.clear()
     }
 }

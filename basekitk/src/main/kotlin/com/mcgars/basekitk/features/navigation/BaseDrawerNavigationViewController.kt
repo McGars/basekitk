@@ -32,7 +32,9 @@ abstract class BaseDrawerNavigationViewController(args: Bundle? = null) : BaseVi
      * Show page and selected item in drawer menu
      */
     fun loadPage(pageId: Int) {
-        drawerTool.loadPage(pageId)
+        view?.post {
+            drawerTool.loadPage(pageId)
+        }
     }
 
     /**

@@ -35,7 +35,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
 
     init {
         addDecorator(object : DecoratorListener() {
-            override fun postCreateView(controller: Controller, view: View) {
+            override fun onViewCreated(view: View) {
                 recyclerView = view.find(R.id.recycleView)
                 recyclerView?.layoutManager = initLayoutManager()
                 initLoading()
