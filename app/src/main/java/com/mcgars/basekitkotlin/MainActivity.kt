@@ -1,6 +1,8 @@
 package com.mcgars.basekitkotlin
 
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
+import android.view.View
 import com.mcgars.basekitk.features.base.BaseKitActivity
 import com.mcgars.basekitk.tools.Timer
 import com.mcgars.basekitkotlin.controller.HelloAc

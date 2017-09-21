@@ -6,6 +6,7 @@ import android.support.annotation.LayoutRes
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
@@ -41,6 +42,8 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
             }
         })
     }
+
+    var isFitSystem = true
 
     /**
      * Если в разметке есть тулбар то  автоматически подхватится
@@ -167,6 +170,10 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
             if (layoutParams.behavior == null)
                 layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
+        }
+
+        if (isFitSystem) {
+            ViewCompat.setFitsSystemWindows(coordinator, true)
         }
 
         return coordinator
