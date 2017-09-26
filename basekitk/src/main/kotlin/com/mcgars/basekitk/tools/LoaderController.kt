@@ -1,6 +1,5 @@
 package com.mcgars.basekitk.tools
 
-import android.app.Activity
 import android.os.Build
 import android.support.annotation.LayoutRes
 import android.support.design.widget.CoordinatorLayout
@@ -11,14 +10,13 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
-
 import com.mcgars.basekitk.R
 
 
 /**
  * Created by Владимир on 25.06.2014.
  */
-class LoaderController @JvmOverloads constructor(groupToAdd: ViewGroup) {
+class LoaderController constructor(groupToAdd: ViewGroup) {
 
     private var root: ViewGroup? = null
     private var loader: View? = null
