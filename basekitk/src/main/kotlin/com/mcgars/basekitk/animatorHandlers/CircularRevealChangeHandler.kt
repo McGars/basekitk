@@ -113,9 +113,6 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
 
     private fun calculateHalfPosition(from: View?, to: View?): Pair<Int, Int> {
 
-        log { "width: " +  from?.width }
-        log { "width / 2: " +  ((from?.width ?: 0) / 2) }
-
         val width = from?.width ?: 0
         val height = from?.height ?: 0
 

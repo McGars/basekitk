@@ -1,7 +1,9 @@
 package com.mcgars.basekitk.features.base
 
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
@@ -122,6 +124,24 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
             parentController = parentController.parentController
         }
         (parentController as? BaseViewController)?.setHomeArrow(arrow)
+    }
+
+    /**
+     * Change home up indicator in toolbar
+     */
+    open fun setUpIndicator(@DrawableRes drawable: Int) {
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
+        }
+    }
+
+    /**
+     * Change home up indicator in toolbar
+     */
+    open fun setUpIndicator(drawable: Drawable) {
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).supportActionBar?.setHomeAsUpIndicator(drawable)
+        }
     }
 
     /**
