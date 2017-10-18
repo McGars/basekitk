@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+tasks.whenTaskAdded { task ->
+    if(task.name.contains("AndroidTest"))
+    {
+        //this is what you need
+        task.enabled = false
+    }
+}
+
 android {
     compileSdkVersion rootProject.ext.versionSdkCompile
     buildToolsVersion rootProject.ext.versionSdkTool
