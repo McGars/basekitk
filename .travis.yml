@@ -7,11 +7,22 @@ android:
       - build-tools-26.0.2
       - android-26
       - extra-android-m2repository
+      # Specify at least one system image,
+      # if you need to run emulator(s) during your tests
+      - sys-img-armeabi-v7a-android-23
 jdk:
   - oraclejdk8
+  
+env:
+  global:
+    # install timeout in minutes (2 minutes by default)
+    - ADB_INSTALL_TIMEOUT=10
+  
 before_install:
   - chmod +x gradlew
 script:
+  - echo $ADB_INSTALL_TIMEOUT
+  - android list target
   - ./gradlew build connectedCheck
 # Emulator Management: Create, Start and Wait
 before_script:
