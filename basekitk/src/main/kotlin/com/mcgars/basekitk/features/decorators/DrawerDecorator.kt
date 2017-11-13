@@ -18,7 +18,8 @@ import com.mcgars.basekitk.tools.find
 open class DrawerDecorator(
         private val viewController: BaseViewController,
         private val pageListener: OnViewLoadPageListener,
-        private val drawerAdapter: BaseDrawerAdapter<*, *>) : DecoratorListener() {
+        private val drawerAdapter: BaseDrawerAdapter<*, *>
+) : DecoratorListener() {
 
     /**
      * Это котроллер, который выполяет всю логику

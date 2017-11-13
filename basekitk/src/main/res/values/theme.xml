@@ -12,6 +12,7 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
 
         <!--<item name="colorControlNormal">@color/black_owerlay_20</item>-->
         <!-- style button-->

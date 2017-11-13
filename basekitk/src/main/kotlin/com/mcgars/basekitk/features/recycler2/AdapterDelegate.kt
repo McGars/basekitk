@@ -155,4 +155,5 @@ interface AdapterDelegate<T> {
      */
     fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
     }
+
 }

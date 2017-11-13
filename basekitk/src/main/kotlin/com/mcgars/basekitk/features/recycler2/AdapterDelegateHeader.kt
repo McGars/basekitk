@@ -1,5 +1,6 @@
 package com.mcgars.basekitk.features.recycler2
 
+import android.support.annotation.CallSuper
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -168,5 +169,6 @@ open class AdapterDelegateHeader<T>(
 
     private fun isHeader(position: Int) = position >= 0 && position < headers.size
     private fun isFooter(position: Int)
-            = position >= 0 && position > items.size && position < itemCount
+            = position >= 0 && position >= items.size && position < itemCount
+
 }

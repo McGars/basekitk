@@ -18,14 +18,14 @@ class KitSimpleActivityBehavior : AppBarLayout.ScrollingViewBehavior {
 
     override fun onDependentViewChanged(parent: CoordinatorLayout?, child: View?, dependency: View): Boolean {
         val bool = super.onDependentViewChanged(parent, child, dependency)
-        child?.let {
-            if (child.id == R.id.contentFrame && child.paddingTop >= 0) {
-                if (Build.VERSION.SDK_INT > 10)
-                    child.translationY = (-child.paddingTop).toFloat()
-                child.setPadding(0, 0, 0, 0)
-                parent?.requestLayout()
-            }
-        }
+//        child?.let {
+//            if (child.id == R.id.contentFrame && child.paddingTop >= 0) {
+//                if (Build.VERSION.SDK_INT > 10)
+//                    child.translationY = (-child.paddingTop).toFloat()
+//                child.setPadding(0, 0, 0, 0)
+//                parent?.requestLayout()
+//            }
+//        }
         return bool
     }
 }

@@ -28,15 +28,13 @@ open class DrawerNavigationToolHelper(
 
     open var drawerTool = DrawerTool(viewController, pageListener, toolbar)
 
+    @MenuRes
     var menuResourceId: Int = 0
-        set(@MenuRes value) {
-            field = value
-        }
 
     var selectedId = -1
         protected set
 
-    protected var mNavigationView: NavigationView? = null
+    var mNavigationView: NavigationView? = null
 
     /**
      * List view were set items

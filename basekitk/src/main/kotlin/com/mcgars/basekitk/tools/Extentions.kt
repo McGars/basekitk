@@ -411,3 +411,13 @@ inline fun String?.ifEmpty(action: () -> Unit): String? {
 }
 
 fun String?.ifNotEmpty() = if (!this.isNullOrEmpty()) this else null
+
+// A method to find height of the status bar
+fun Context.getStatusBarHeight(): Int {
+    var result = 0
+    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+    if (resourceId > 0) {
+        result = resources.getDimensionPixelSize(resourceId)
+    }
+    return result
+}

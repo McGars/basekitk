@@ -1,12 +1,14 @@
 package com.mcgars.basekitk.features.recycler2
 
 import android.os.Bundle
+import android.support.annotation.CallSuper
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bluelinelabs.conductor.Controller
-import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.R
+import com.mcgars.basekitk.features.base.BaseViewController
+import com.mcgars.basekitk.features.custom.PlaceholderRecyclerViewAdapter
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.tools.find
 import java.util.*
@@ -55,7 +57,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
      */
     abstract fun loadData(page: Int)
 
-    internal var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+    private var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
 
             val visibleItemCount = layoutManager!!.childCount
@@ -76,14 +78,39 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     /**
      * Indicate have more items and when list scrolls to end call [loadData]
      */
-    fun hasMoreItems(b: Boolean) {
+    @CallSuper
+    open fun hasMoreItems(has: Boolean) {
         isLoading = false
-        hasMoreItems = b
+        hasMoreItems = has
 
-        if(adapter is AdapterDelegateLoading)
-            (adapter as AdapterDelegateLoading).showLoader(b)
+        if (adapter is AdapterDelegateHeader<*>)
+            showAdapterLoader(adapter as AdapterDelegateHeader<*>)
+        else if (adapter is PlaceholderRecyclerViewAdapter) {
+            val originalAdapter = (adapter as PlaceholderRecyclerViewAdapter).originalAdapter
+            if (originalAdapter is AdapterDelegateHeader<*>) {
+                showAdapterLoader(originalAdapter)
+            }
+        }
     }
 
+    /**
+     * Try show pagination loader
+     */
+    fun showAdapterLoader(adpr: AdapterDelegateHeader<*>) {
+        adpr.manager.let { manarer ->
+            val size = manarer.delegates.size()
+            (0..size).forEach {
+                val delegate = manarer.delegates[it]
+                if (delegate is AdapterViewLoader<*>) {
+                    delegate.showLoader(hasMoreItems)
+                }
+            }
+        }
+    }
+
+    /**
+     * Drop page to default
+     */
     fun setDefaultPage() {
         page = DEFAULT_FIRST_PAGE
     }
@@ -110,7 +137,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             setAdapter(adapter!!)
         } else {
             if ((!clearOnFirstPage || page > DEFAULT_FIRST_PAGE) && list.isNotEmpty()) {
-                if(adapter is AdapterDelegateHeader<*>) {
+                if (adapter is AdapterDelegateHeader<*>) {
                     (adapter as AdapterDelegateHeader<*>).notifyItemsInserted(allList.size - list.size, list.size)
                 } else {
                     adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)

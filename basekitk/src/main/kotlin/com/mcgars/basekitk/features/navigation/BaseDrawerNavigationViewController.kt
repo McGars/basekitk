@@ -2,6 +2,7 @@ package com.mcgars.basekitk.features.drawer
 
 import android.os.Bundle
 import android.support.annotation.MenuRes
+import android.support.design.widget.NavigationView
 import android.view.MenuItem
 import android.view.View
 import com.mcgars.basekitk.R
@@ -17,6 +18,11 @@ abstract class BaseDrawerNavigationViewController(args: Bundle? = null) : BaseVi
     override fun getLayoutId() = R.layout.basekit_view_navigation
 
     abstract fun getViewController(pageId: Int): BaseViewController?
+
+    /**
+     * Drawer navigation
+     */
+    fun getNavigation(): NavigationView? = drawerTool.drawerTool?.mNavigationView
 
     override var isCustomLayout = true
 

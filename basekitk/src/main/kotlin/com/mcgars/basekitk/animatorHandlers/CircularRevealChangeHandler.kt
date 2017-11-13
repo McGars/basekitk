@@ -26,18 +26,9 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
 
     var halfPosition = DEFAULT
 
-    constructor() {}
+    constructor()
 
-    /**
-     * Constructor that will create a circular reveal from the center of the fromView parameter.
-     * @param fromView The view from which the circular reveal should originate
-     * *
-     * @param containerView The view that hosts fromView
-     * *
-     * @param removesFromViewOnPush If true, the view being replaced will be removed from the view hierarchy on pushes
-     */
-    constructor(fromView: View, containerView: View, removesFromViewOnPush: Boolean) : this(fromView, containerView, AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, true) {
-    }
+    constructor(duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true): super(duration, removesFromViewOnPush)
 
     /**
      * Constructor that will create a circular reveal from the center of the fromView parameter.
@@ -49,9 +40,19 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
      * *
      * @param removesFromViewOnPush If true, the view being replaced will be removed from the view hierarchy on pushes
      */
-    @JvmOverloads constructor(fromView: View, containerView: View, duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush) {
-//        calculateSize(fromView, containerView)
+    constructor(fromView: View, containerView: View, duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush) {
+        calculateSize(fromView, containerView)
     }
+
+    /**
+     * Constructor that will create a circular reveal from the center point passed in.
+     * @param cx The center's x-axis
+     * *
+     * @param cy The center's y-axis
+     * *
+     * @param removesFromViewOnPush If true, the view being replaced will be removed from the view hierarchy on pushes
+     */
+    constructor(cx: Int, cy: Int, removesFromViewOnPush: Boolean) : this(cx, cy, AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush)
 
     fun calculateSize(fromView: View?, containerView: View) {
 
@@ -77,30 +78,18 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
      * *
      * @param cy The center's y-axis
      * *
-     * @param removesFromViewOnPush If true, the view being replaced will be removed from the view hierarchy on pushes
-     */
-    constructor(cx: Int, cy: Int, removesFromViewOnPush: Boolean) : this(cx, cy, AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush) {
-
-    }
-
-    /**
-     * Constructor that will create a circular reveal from the center point passed in.
-     * @param cx The center's x-axis
-     * *
-     * @param cy The center's y-axis
-     * *
      * @param duration The duration of the animation
      * *
      * @param removesFromViewOnPush If true, the view being replaced will be removed from the view hierarchy on pushes
      */
-    @JvmOverloads constructor(cx: Int, cy: Int, duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush) {
+    constructor(cx: Int, cy: Int, duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush) {
         this.cx = cx
         this.cy = cy
     }
 
     override fun getAnimator(container: ViewGroup, from: View?, to: View?, isPush: Boolean, toAddedToContainer: Boolean): Animator {
         calculateSize(from, container)
-        val radius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()
+        val radius = Math.max(cx.toDouble() * 2, cy.toDouble() * 2).toFloat()
         val (x, y) = calculateHalfPosition(from, to)
 
         if (isPush && to != null) {

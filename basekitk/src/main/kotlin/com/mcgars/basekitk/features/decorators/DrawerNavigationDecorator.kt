@@ -40,11 +40,9 @@ open class DrawerNavigationDecorator (
     }
 
     override fun postCreateView(controller: Controller, view: View) {
-        view.post {
-            drawerTool = DrawerNavigationToolHelper(viewController, pageListener, viewController.toolbar)
-            drawerTool!!.menuResourceId = menu
-            drawerTool!!.initDrawer()
-        }
+        drawerTool = DrawerNavigationToolHelper(viewController, pageListener, viewController.toolbar)
+        drawerTool!!.menuResourceId = menu
+        drawerTool!!.initDrawer()
     }
 
     fun loadPage(pageId: Int) {

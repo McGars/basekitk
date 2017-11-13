@@ -92,7 +92,7 @@ open class DrawerTool(
     }
 
     fun hideDrawer(): Boolean {
-        return if (drawerLayout?.isDrawerOpen(GravityCompat.START) ?: false) {
+        return if (drawerLayout?.isDrawerOpen(GravityCompat.START) == true) {
             drawerLayout!!.closeDrawers()
             true
         } else false

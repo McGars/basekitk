@@ -24,11 +24,11 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
     /**
      * Headers views
      */
-    internal var headers: MutableList<View> = ArrayList()
+    private var headers: MutableList<View> = ArrayList()
     /**
      * Footer views
      */
-    internal var footers: MutableList<View> = ArrayList()
+    private var footers: MutableList<View> = ArrayList()
     /**
      * Click for items
      */

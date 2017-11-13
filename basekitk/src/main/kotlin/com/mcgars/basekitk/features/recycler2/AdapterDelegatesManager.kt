@@ -52,7 +52,7 @@ class AdapterDelegatesManager<T> {
     /**
      * Map for ViewType to AdapterDelegate
      */
-    protected var delegates: SparseArrayCompat<AdapterDelegate<T>> = SparseArrayCompat()
+    var delegates: SparseArrayCompat<AdapterDelegate<T>> = SparseArrayCompat()
     /**
      * Get the fallback delegate
      * @return The fallback delegate or `null` if no fallback delegate has been set

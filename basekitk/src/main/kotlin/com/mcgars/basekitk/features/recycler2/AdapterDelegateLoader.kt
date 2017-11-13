@@ -1,24 +1,33 @@
 package com.mcgars.basekitk.features.recycler2
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mcgars.basekitk.R
 
 /**
- * Created by gars on 20.04.2017.
+ * Loader
  */
-class AdapterDelegateLoader<T>(context: Context, list: MutableList<T>) : AdapterDelegateHeader<T>(list) {
+class AdapterViewLoader<T>(
+        private val rootAdapter: AdapterDelegateHeader<T>,
+        private val loaderObject: T) : AdapterDelegate<MutableList<T>> {
 
     init {
-        addDelegate(AdapterViewLoader(context))
+        if (loaderObject !is BottomLoader)
+            throw IllegalAccessException("Implement 'BottomLoader' to your object")
+        rootAdapter.addDelegate(this)
     }
-}
 
-class AdapterViewLoader<T>(context: Context) : AdapterDelegate<MutableList<T>> {
-
-    private val inflater = LayoutInflater.from(context)
+    /**
+     * Add or remove loader in bottom list
+     */
+    fun showLoader(show: Boolean) {
+        if (!show)
+            rootAdapter.removeFooter(loaderObject)
+        else {
+            rootAdapter.addFooter(loaderObject)
+        }
+    }
 
     override fun isForViewType(items: MutableList<T>, position: Int): Boolean {
         return items[position] is BottomLoader
@@ -26,7 +35,7 @@ class AdapterViewLoader<T>(context: Context) : AdapterDelegate<MutableList<T>> {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         return object : RecyclerView.ViewHolder(
-                inflater.inflate(R.layout.basekit_view_loading, parent, false)) {}
+                LayoutInflater.from(parent.context).inflate(R.layout.basekit_view_loading, parent, false)) {}
     }
 
     override fun onBindViewHolder(items: MutableList<T>, position: Int, holder: RecyclerView.ViewHolder, payloads: List<Any>) {
@@ -35,4 +44,4 @@ class AdapterViewLoader<T>(context: Context) : AdapterDelegate<MutableList<T>> {
 
 }
 
-class BottomLoader
+interface BottomLoader
