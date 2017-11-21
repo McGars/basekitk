@@ -421,3 +421,9 @@ fun Context.getStatusBarHeight(): Int {
     }
     return result
 }
+
+/**
+ * Inflate view
+ */
+fun <T : View> Context.inflate(layout: Int, parent: ViewGroup? = null) =
+        LayoutInflater.from(this).inflate(layout, parent, false) as T
