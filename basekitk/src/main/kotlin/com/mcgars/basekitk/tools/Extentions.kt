@@ -183,7 +183,7 @@ fun <C : View?> View.find(id: Int) = findViewById<C?>(id)
 fun <C : View?> Activity.find(id: Int) = findViewById<C?>(id)
 
 inline fun ViewGroup.forEach(action: View.() -> Unit) {
-    (0..childCount).forEach { getChildAt(it).action() }
+    (0 until childCount).forEach { getChildAt(it).action() }
 }
 
 /**

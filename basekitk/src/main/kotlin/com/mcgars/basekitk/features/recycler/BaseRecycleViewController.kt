@@ -96,7 +96,11 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
     /**
      * You must call this when data is ready to show for UI
      */
-    protected fun prepareData(list: List<Any>, hasmore: Boolean = false) {
+    protected fun prepareData(
+            list: List<Any>,
+            hasmore: Boolean = false,
+            customNotify: ((RecyclerView.Adapter<*>) -> Unit)? = null
+    ) {
         if (activity == null)
             return
 
@@ -109,7 +113,9 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
             adapter = getAdapter(allList)
             setAdapter(adapter!!)
         } else {
-            if ((!clearOnFirstPage || page > DEFAULT_FIRST_PAGE) && list.isNotEmpty())
+            if (customNotify != null)
+                customNotify.invoke(adapter!!)
+            else if ((!clearOnFirstPage || page > DEFAULT_FIRST_PAGE) && list.isNotEmpty())
                 adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)
             else
                 adapter?.notifyDataSetChanged()

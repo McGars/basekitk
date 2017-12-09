@@ -123,7 +123,11 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     /**
      * You must call this when data is ready to show for UI
      */
-    protected fun prepareData(list: List<Any>, hasmore: Boolean = false) {
+    protected fun prepareData(
+            list: List<Any>,
+            hasmore: Boolean = false,
+            customNotify: ((RecyclerView.Adapter<*>) -> Unit)? = null
+    ) {
         if (activity == null)
             return
 
@@ -136,7 +140,9 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             adapter = getAdapter(allList)
             setAdapter(adapter!!)
         } else {
-            if ((!clearOnFirstPage || page > DEFAULT_FIRST_PAGE) && list.isNotEmpty()) {
+            if (customNotify != null)
+                customNotify.invoke(adapter!!)
+            else if ((!clearOnFirstPage || page > DEFAULT_FIRST_PAGE) && list.isNotEmpty()) {
                 if (adapter is AdapterDelegateHeader<*>) {
                     (adapter as AdapterDelegateHeader<*>).notifyItemsInserted(allList.size - list.size, list.size)
                 } else {
