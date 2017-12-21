@@ -113,8 +113,8 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     /**
      * Life cycle of the Activity
      */
-    fun <C : ActivityController<BaseKitActivity<C>>> getAc(): C? {
-        return (activity as BaseKitActivity<C>).getAC()
+    fun <C : ActivityController> getAc(): C? {
+        return (activity as? BaseKitActivity<C>)?.getAC()
     }
 
     /**

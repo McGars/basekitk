@@ -8,9 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
-
 import com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler
-import com.mcgars.basekitk.tools.log
 
 /**
  * An [AnimatorChangeHandler] that will perform a circular reveal
@@ -28,7 +26,7 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
 
     constructor()
 
-    constructor(duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true): super(duration, removesFromViewOnPush)
+    constructor(duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush)
 
     /**
      * Constructor that will create a circular reveal from the center of the fromView parameter.
@@ -56,7 +54,7 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
 
     fun calculateSize(fromView: View?, containerView: View) {
 
-        if(fromView == null)
+        if (fromView == null)
             return
 
         val fromLocation = IntArray(2)
@@ -110,7 +108,7 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
             RIGHT_CENTER -> Pair(width, height / 2)
             BOTTOM_CENTER -> Pair(width / 2, height)
             LEFT_CENTER -> Pair(0, height / 2)
-            else -> Pair(if(locationX >= 0) locationX else cx, if(locationY >= 0) locationY else cy)
+            else -> Pair(if (locationX >= 0) locationX else cx, if (locationY >= 0) locationY else cy)
         }
     }
 

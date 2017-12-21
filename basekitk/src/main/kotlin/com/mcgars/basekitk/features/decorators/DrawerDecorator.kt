@@ -60,7 +60,7 @@ open class DrawerDecorator(
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        if(drawerTool?.onOptionsItemSelected(item) ?: false)
+        if (drawerTool?.onOptionsItemSelected(item) ?: false)
             return true
 
         return false

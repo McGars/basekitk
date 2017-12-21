@@ -19,7 +19,6 @@ package com.mcgars.basekitk.features.recycler2
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import java.util.Collections
 
 /**
  * This class is the element that ties [RecyclerView.Adapter] together with [ ].
@@ -218,8 +217,9 @@ class AdapterDelegatesManager<T> {
      * @throws NullPointerException if no AdapterDelegate has been registered for ViewHolders
      * * viewType
      */
-    @JvmOverloads fun onBindViewHolder(items: T, position: Int,
-                                       viewHolder: RecyclerView.ViewHolder, payloads: List<Any> = PAYLOADS_EMPTY_LIST) {
+    @JvmOverloads
+    fun onBindViewHolder(items: T, position: Int,
+                         viewHolder: RecyclerView.ViewHolder, payloads: List<Any> = PAYLOADS_EMPTY_LIST) {
 
         val delegate = getDelegateForViewType(viewHolder.itemViewType) ?: throw NullPointerException("No delegate found for item at position = "
                 + position

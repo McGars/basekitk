@@ -1,10 +1,7 @@
 package com.mcgars.basekitk.features.recycler2
 
-import android.support.annotation.CallSuper
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import java.util.*
 
 /**

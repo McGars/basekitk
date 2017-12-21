@@ -12,7 +12,7 @@ open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
 
     constructor()
 
-    constructor(duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true): super(duration, removesFromViewOnPush)
+    constructor(duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush)
 
     constructor(fromView: View, containerView: View) : super(fromView, containerView)
 

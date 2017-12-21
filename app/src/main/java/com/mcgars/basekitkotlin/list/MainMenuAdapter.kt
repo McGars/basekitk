@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.mcgars.basekitk.features.recycler.ListRecycleAdapter
-import com.mcgars.basekitkotlin.R
 
 /**
  * Created by gars on 13.05.2017.

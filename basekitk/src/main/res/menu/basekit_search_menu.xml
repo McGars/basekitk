@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:library="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/basekit_item_search"
+    <item
+        android:id="@+id/basekit_item_search"
         android:title="@android:string/search_go"
         library:showAsAction="always"
         library:actionViewClass="android.support.v7.widget.SearchView" />

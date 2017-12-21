@@ -11,15 +11,15 @@ import kotlinx.android.synthetic.main.view_empry.view.*
 /**
  * Created by Владимир on 12.01.2017.
  */
-open class EmptyViewController(bundle: Bundle? = null) : BaseViewController(bundle){
+open class EmptyViewController(bundle: Bundle? = null) : BaseViewController(bundle) {
 
     init {
         addDecorator(ToolbarColorDecorator(this))
     }
 
-    constructor(text: String, isCustom: Boolean = false): this(Bundle().apply {
-       putString("text", text)
-       putBoolean("isCustom", isCustom)
+    constructor(text: String, isCustom: Boolean = false) : this(Bundle().apply {
+        putString("text", text)
+        putBoolean("isCustom", isCustom)
     })
 
     override var isCustomLayout = args.getBoolean("isCustom")
@@ -39,7 +39,6 @@ open class EmptyViewController(bundle: Bundle? = null) : BaseViewController(bund
             setHomeArrow(homeArrowBool)
         }
     }
-
 
 
 }

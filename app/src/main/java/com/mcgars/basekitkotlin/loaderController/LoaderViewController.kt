@@ -5,13 +5,11 @@ import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.tools.Timer
 import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
-import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandler
-import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
  * Created by Владимир on 13.01.2017.
  */
-class LoaderViewController : BaseViewController(){
+class LoaderViewController : BaseViewController() {
 
     init {
         addDecorator(ToolbarColorDecorator(this))

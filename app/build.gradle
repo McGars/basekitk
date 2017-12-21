@@ -3,8 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 tasks.whenTaskAdded { task ->
-    if(task.name.contains("AndroidTest"))
-    {
+    if (task.name.contains("AndroidTest")) {
         //this is what you need
         task.enabled = false
     }
@@ -37,7 +36,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support.constraint:constraint-layout:1.0.+'
+    compile 'com.android.support.constraint:constraint-layout:1.1.0+'
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile project(":basekitk")

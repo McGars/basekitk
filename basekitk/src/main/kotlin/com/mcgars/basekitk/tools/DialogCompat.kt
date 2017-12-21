@@ -42,20 +42,20 @@ class DialogCompat(activity: Context) {
 
     fun show(title: Int, text: Int): AlertDialog {
         return dialog.setTitle(title)
-              .setMessage(text)
-              .show()
+                .setMessage(text)
+                .show()
     }
 
     fun show(title: Int, text: String): AlertDialog {
         return dialog.setTitle(title)
-              .setMessage(text)
-              .show()
+                .setMessage(text)
+                .show()
     }
 
     fun show(title: String, text: Int): AlertDialog {
         return dialog.setTitle(title)
-              .setMessage(text)
-              .show()
+                .setMessage(text)
+                .show()
     }
 
     fun show(text: String): AlertDialog {

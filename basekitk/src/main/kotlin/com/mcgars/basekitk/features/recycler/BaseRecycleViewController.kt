@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.bluelinelabs.conductor.Controller
-import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.R
+import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.tools.find
 import java.util.*
@@ -80,8 +79,8 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         isLoading = false
         hasMoreItems = b
 
-        if(adapter is ListRecycleAdapter<*,*>)
-            (adapter as ListRecycleAdapter<*,*>).showLoader(b)
+        if (adapter is ListRecycleAdapter<*, *>)
+            (adapter as ListRecycleAdapter<*, *>).showLoader(b)
     }
 
     fun setDefaultPage() {
@@ -131,14 +130,14 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
     }
 
     protected fun removeItem(position: Int) {
-        if (allList.size > position && adapter is HeaderRecyclerAdapter<*,*>) {
-            (adapter as HeaderRecyclerAdapter<*,*>).removeItemByPosition(position)
+        if (allList.size > position && adapter is HeaderRecyclerAdapter<*, *>) {
+            (adapter as HeaderRecyclerAdapter<*, *>).removeItemByPosition(position)
         }
     }
 
     protected fun removeItem(item: Any) {
         adapter?.let {
-            (adapter as HeaderRecyclerAdapter<Any,*>).removeItem(item)
+            (adapter as HeaderRecyclerAdapter<Any, *>).removeItem(item)
         }
     }
 

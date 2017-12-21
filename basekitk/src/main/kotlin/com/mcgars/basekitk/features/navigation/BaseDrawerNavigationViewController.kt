@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.support.annotation.MenuRes
 import android.support.design.widget.NavigationView
 import android.view.MenuItem
-import android.view.View
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.base.BaseViewController
-import com.mcgars.basekitk.features.decorators.DrawerDecorator
 import com.mcgars.basekitk.features.decorators.DrawerNavigationDecorator
 
 /**
@@ -28,6 +26,7 @@ abstract class BaseDrawerNavigationViewController(args: Bundle? = null) : BaseVi
 
     @MenuRes
     abstract fun getMenuId(): Int
+
     /**
      * Это котроллер, который выполяет всю логику
      * по инициализации и управлению [android.support.v4.widget.DrawerLayout]

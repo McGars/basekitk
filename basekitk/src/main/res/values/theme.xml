@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
+
     <style name="BaseKitThemeAbs" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Цвет подсветки нажатия -->
         <!--<item name="colorControlHighlight">@color/black_owerlay_20</item>-->
@@ -8,6 +9,7 @@
 
         <item name="windowActionModeOverlay">true</item>
     </style>
+
     <style name="KitTheme" parent="BaseKitThemeAbs">
 
         <item name="windowActionBar">false</item>
@@ -18,7 +20,8 @@
         <!-- style button-->
         <!--<item name="android:buttonStyle">@style/uiButton</item>-->
         <!-- dialog theme stuff -->
-        <item name="android:datePickerDialogTheme" ns1:ignore="NewApi">@style/KitTheme.DialogTheme</item>
+        <item name="android:datePickerDialogTheme" ns1:ignore="NewApi">@style/KitTheme.DialogTheme
+        </item>
         <!-- styles button-->
         <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
         <!-- Цвет текста на кнопках -->
@@ -36,7 +39,7 @@
     <style name="KitTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-        <!-- Customize your theme here. -->
+    <!-- Customize your theme here. -->
     <style name="ToolbarStyle.Theme">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/white_overlay_90</item>

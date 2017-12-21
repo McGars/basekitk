@@ -9,17 +9,14 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.base.BaseViewController
-import com.mcgars.basekitk.features.drawer.BaseDrawerAdapter
-import com.mcgars.basekitk.features.drawer.DrawerToolHelper
 import com.mcgars.basekitk.features.drawer.OnViewLoadPageListener
 import com.mcgars.basekitk.features.navigation.DrawerNavigationToolHelper
 import com.mcgars.basekitk.tools.find
-import kotlin.concurrent.timer
 
 /**
  * Created by gars on 07.08.17.
  */
-open class DrawerNavigationDecorator (
+open class DrawerNavigationDecorator(
         private val viewController: BaseViewController,
         private val pageListener: OnViewLoadPageListener,
         @MenuRes private val menu: Int) : DecoratorListener() {
@@ -34,7 +31,7 @@ open class DrawerNavigationDecorator (
 
     override fun onViewCreated(view: View) {
         val contentFrameDrawer = view.find<ViewGroup>(R.id.contentFrameDrawer)
-                ?:  throw NullPointerException("Please put ChangeHandlerFrameLayout calls with id R.id.contentFrameDrawer to your xml layout")
+                ?: throw NullPointerException("Please put ChangeHandlerFrameLayout calls with id R.id.contentFrameDrawer to your xml layout")
 
         drawerRouter = viewController.getChildRouter(contentFrameDrawer, this::class.java.simpleName)
     }
@@ -60,8 +57,7 @@ open class DrawerNavigationDecorator (
     }
 
     fun onBackPressed(): Boolean {
-        return if (drawerTool?.hideDrawer() ?: false) true
-        else drawerRouter?.handleBack() ?: false
+        return drawerTool?.hideDrawer() ?: drawerRouter?.handleBack() ?: false
     }
 
     /**
@@ -77,7 +73,7 @@ open class DrawerNavigationDecorator (
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        if(drawerTool?.onOptionsItemSelected(item) ?: false)
+        if (drawerTool?.onOptionsItemSelected(item) ?: false)
             return true
 
         return false

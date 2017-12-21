@@ -14,8 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat"
-            android:text="@string/pullable_text"
-            />
+            android:text="@string/pullable_text" />
 
     </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

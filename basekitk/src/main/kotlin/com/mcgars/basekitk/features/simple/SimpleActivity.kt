@@ -19,7 +19,7 @@ import com.mcgars.basekitk.features.base.BaseKitActivity
  * У билдера есть множество разных комбинаций
  * Можно также не запускать отдельную активити, а загрузить фрагмет в текущей .loadPage()
  */
-open class SimpleActivity : BaseKitActivity<ActivityController<*>>() {
+open class SimpleActivity : BaseKitActivity<ActivityController>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ open class SimpleActivity : BaseKitActivity<ActivityController<*>>() {
         pageController.loadPage()
     }
 
-    override fun initActivityController(): ActivityController<*>? {
+    override fun initActivityController(): ActivityController? {
         return pageController.initParamsFromActivity()
                 .getActivityController()
     }

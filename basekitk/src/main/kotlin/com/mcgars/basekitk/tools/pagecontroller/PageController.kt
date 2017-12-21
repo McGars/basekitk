@@ -8,8 +8,8 @@ import android.os.Parcelable
 import android.text.TextUtils
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.config.KitConfiguration
-import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.base.BaseKitActivity
+import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.BaseKitConstants
 import java.io.Serializable
@@ -38,17 +38,17 @@ import java.io.Serializable
  * return controller;
  * }
  */
-class PageController(private val context: BaseKitActivity<ActivityController<*>>) {
+class PageController(private val context: BaseKitActivity<ActivityController>) {
     private var activityClass: Class<out Activity> = SimpleActivity::class.java
 
     internal var params = Bundle()
     private var viewClass: Class<out Controller>? = null
     internal var pageAnn: Page? = null
     private var uri: Uri? = null
-    private var activityController: Class<out ActivityController<*>>? = null
+    private var activityController: Class<out ActivityController>? = null
     private var baseActivityController = getBaseActivityController(context)
 
-    fun setActivityController(activityController: Class<out ActivityController<*>>): PageController {
+    fun setActivityController(activityController: Class<out ActivityController>): PageController {
         this.activityController = activityController
         return this
     }
@@ -149,16 +149,16 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
             params.putSerializable(ACTIVITY_CONTROLLER, baseActivityController)
     }
 
-    fun <C : ActivityController<*>> getActivityController(): C? {
-        var _class = params.getSerializable(ACTIVITY_CONTROLLER) as? Class<out ActivityController<*>>
+    fun <C : ActivityController> getActivityController(): C? {
+        var _class = params.getSerializable(ACTIVITY_CONTROLLER) as? Class<out ActivityController>
         if (_class == null)
             _class = baseActivityController
 
         if (_class != null) {
             try {
                 val controller = _class.newInstance()
-                controller.activity = context
-                return controller as C?
+                controller.setActivity(context)
+                return controller as? C
             } catch (e: Exception) {
                 e.printStackTrace()
                 throw IllegalStateException(e.message)
@@ -352,6 +352,7 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
     companion object {
 
         val CONTROLLER = "viewController"
+        val AUTH_CONTROLLER = "authController"
         val ACTIVITY_CONTROLLER = "controller"
         val ADDTOBACKSTACK = "addtobackstack"
 
@@ -365,8 +366,8 @@ class PageController(private val context: BaseKitActivity<ActivityController<*>>
             }
         }
 
-        fun getBaseActivityController(context: Activity): Class<out ActivityController<*>>? {
-            return if(context.applicationContext is KitConfiguration) {
+        fun getBaseActivityController(context: Activity): Class<out ActivityController>? {
+            return if (context.applicationContext is KitConfiguration) {
                 (context.application as KitConfiguration).getConfiguration()?.baseActivityController
             } else null
         }

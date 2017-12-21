@@ -11,9 +11,11 @@ import android.os.CountDownTimer
  * @param countDownInterval The interval along the way to receive
  * *                          [.onTick] callbacks.
  */
-class Timer(millisInFuture: Long, countDownInterval: Long = millisInFuture, val action: (()->Unit)? = null) :
+class Timer(millisInFuture: Long, countDownInterval: Long = millisInFuture, val action: (() -> Unit)? = null) :
         CountDownTimer(countDownInterval, countDownInterval) {
-    override fun onTick(millisUntilFinished: Long) { }
-    override fun onFinish() { action?.invoke()}
+    override fun onTick(millisUntilFinished: Long) {}
+    override fun onFinish() {
+        action?.invoke()
+    }
 }
 

@@ -78,7 +78,7 @@ abstract class AbsListItemAdapterDelegate<in I : T, T, VH : RecyclerView.ViewHol
      * @param parent The ViewGroup parent of the given datasource
      * @return ViewHolder
      */
-     abstract override fun onCreateViewHolder(parent: ViewGroup): VH
+    abstract override fun onCreateViewHolder(parent: ViewGroup): VH
 
     /**
      * Called to bind the [RecyclerView.ViewHolder] to the item of the dataset

@@ -1,12 +1,10 @@
 package com.mcgars.basekitk.tools.behavior
 
 import android.content.Context
-import android.os.Build
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.View
-import com.mcgars.basekitk.R
 
 /**
  * Created by Altarix on 01.04.2016.

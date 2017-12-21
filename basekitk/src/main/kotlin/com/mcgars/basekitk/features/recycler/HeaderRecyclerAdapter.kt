@@ -15,7 +15,7 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         val context: Context,
         protected val items: MutableList<T>,
         private val layout: Int,
-        var onItemClickListener: ((item: T, position: Int)->Unit)? = null) :
+        var onItemClickListener: ((item: T, position: Int) -> Unit)? = null) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     /**
      * Inflater
@@ -54,7 +54,7 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         return this.layout
     }
 
-    fun setList(list : List<T>) {
+    fun setList(list: List<T>) {
         notifyItemRangeRemoved(headers.size, headers.size + items.size)
         items.clear()
         items.addAll(list)

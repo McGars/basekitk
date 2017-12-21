@@ -1,6 +1,5 @@
 package com.mcgars.basekitk.features.drawer
 
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.AdapterView

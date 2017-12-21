@@ -1,15 +1,15 @@
 package com.mcgars.basekitk.config
 
-import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.base.BaseKitActivity
+import com.mcgars.basekitk.features.simple.ActivityController
 
 /**
  * Created by gars on 03.08.17.
  */
-class KitBuilder private constructor(){
+class KitBuilder private constructor() {
     private val options = KitConfig()
 
-    fun setActivityController(ac: Class<out ActivityController<*>>): KitBuilder {
+    fun setActivityController(ac: Class<out ActivityController>): KitBuilder {
         options.baseActivityController = ac
         return this
     }
@@ -27,7 +27,7 @@ class KitBuilder private constructor(){
 }
 
 class KitConfig internal constructor() {
-    var baseActivityController: Class<out ActivityController<*>>? = null
+    var baseActivityController: Class<out ActivityController>? = null
         internal set
     var baseLauncherActivity: Class<out BaseKitActivity<*>>? = null
         internal set

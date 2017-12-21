@@ -29,7 +29,7 @@ class DrawerNavigationViewController : BaseDrawerNavigationViewController() {
     }
 
     override fun getViewController(pageId: Int): BaseViewController? {
-        return when(pageId) {
+        return when (pageId) {
             R.id.page1 -> EmptyViewController("page 1")
             R.id.page2 -> EmptyViewController("page 2")
             else -> null

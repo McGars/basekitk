@@ -4,8 +4,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
-
-import java.util.HashSet
+import java.util.*
 
 /**
  * Created by Владимир on 09.10.2015.
@@ -14,7 +13,7 @@ class BasePermissionController(private val activity: AppCompatActivity) {
     private var allRequest: ((Set<String>?) -> Unit)? = null
     private var onePermission: ((allow: Boolean) -> Unit)? = null
 
-            /**
+    /**
      * Request all permissions, after user done, system call method
      * Activity.onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
      * @param allRequest

@@ -13,7 +13,7 @@ abstract class ListRecycleAdapter<T, H : RecyclerView.ViewHolder>(
         context: Context,
         items: MutableList<T>,
         layout: Int,
-        onItemClickListener: ((item: T, position: Int)->Unit)? = null) :
+        onItemClickListener: ((item: T, position: Int) -> Unit)? = null) :
         HeaderRecyclerAdapter<T, H>(context, items, layout, onItemClickListener) {
 
     private var loaderView: View? = null

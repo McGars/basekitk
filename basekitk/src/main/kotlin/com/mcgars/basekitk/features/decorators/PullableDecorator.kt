@@ -28,7 +28,7 @@ class PullableDecorator private constructor(
 
     override fun onViewCreated(view: View) {
         if (viewId != 0) {
-            view.find<View?>(viewId)?.let{
+            view.find<View?>(viewId)?.let {
                 swipeRefreshLayout = SwipeRefreshLayout(view.context)
                 swipeRefreshLayout!!.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 WrapperUiTool(it, swipeRefreshLayout!!).insert()
@@ -39,7 +39,7 @@ class PullableDecorator private constructor(
 
         swipeRefreshLayout?.apply {
             setOnRefreshListener(onRefreshListener)
-            setColorSchemeColors(context.colorAttr(R.attr.colorAccent ))
+            setColorSchemeColors(context.colorAttr(R.attr.colorAccent))
         }
 
     }
@@ -61,15 +61,15 @@ class PullableDecorator private constructor(
         /**
          * Id view which become attached to swipe
          */
-        fun forView(@IdRes viewId: Int, refreshListener: ()->Unit): PullableDecorator {
-            return PullableDecorator(viewId, 0, SwipeRefreshLayout.OnRefreshListener {refreshListener()})
+        fun forView(@IdRes viewId: Int, refreshListener: () -> Unit): PullableDecorator {
+            return PullableDecorator(viewId, 0, SwipeRefreshLayout.OnRefreshListener { refreshListener() })
         }
 
         /**
          * Id swipeLayout which swipe behavior
          */
-        fun forSwipeLayout(@IdRes viewId: Int, refreshListener: ()->Unit): PullableDecorator {
-            return PullableDecorator(0, viewId, SwipeRefreshLayout.OnRefreshListener {refreshListener()})
+        fun forSwipeLayout(@IdRes viewId: Int, refreshListener: () -> Unit): PullableDecorator {
+            return PullableDecorator(0, viewId, SwipeRefreshLayout.OnRefreshListener { refreshListener() })
         }
     }
 }

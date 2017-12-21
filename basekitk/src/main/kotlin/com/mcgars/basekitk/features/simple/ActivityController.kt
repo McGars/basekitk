@@ -4,7 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import com.mcgars.basekitk.features.base.BaseKitActivity
+
+/**
+ *
+ */
+interface ActivityHolder {
+    fun setActivity(activity: Activity)
+}
 
 /**
  * Created by Владимир on 12.10.2015.
@@ -12,8 +18,11 @@ import com.mcgars.basekitk.features.base.BaseKitActivity
  * Так как мы не можем унаследовать все активити от базового активити
  * то используеться этот [ActivityController]
  */
-open class ActivityController<T : BaseKitActivity<ActivityController<T>>>(activity: T? = null) {
-    var activity: Activity?= activity
+open class ActivityController : ActivityHolder {
+
+    override fun setActivity(activity: Activity) {
+        // ignore
+    }
 
     open fun onResume() {
 

@@ -28,7 +28,7 @@ import kotlin.properties.Delegates
  * Базовая активити, от которой наследуються все активити проекта в основном
  */
 @Suppress("UNCHECKED_CAST")
-abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
+abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
 
     val TAG = "BaseKitActivity"
 
@@ -146,7 +146,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
         val transition = RouterTransaction.with(view)
         router.run {
             if (view is BaseViewController) {
-                view.addDecorator(object :DecoratorListener() {
+                view.addDecorator(object : DecoratorListener() {
                     override fun postAttach(controller: Controller, view: View) {
                         setHomeArrow(isShowArrow())
                     }
@@ -224,7 +224,7 @@ abstract class BaseKitActivity<out C : ActivityController<*>> : AppCompatActivit
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (activityController?.onOptionsItemSelected(item) ?: false)
+        if (activityController?.onOptionsItemSelected(item) == true)
             return true
         if (item.itemId == android.R.id.home) {
             if (router.onOptionsItemSelected(item))

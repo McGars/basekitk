@@ -3,9 +3,6 @@ package com.mcgars.basekitk.features.recycler2
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import com.mcgars.basekitk.features.recycler.HeaderRecyclerAdapter.Companion.TYPE_FOOTER
-import com.mcgars.basekitk.features.recycler.HeaderRecyclerAdapter.Companion.TYPE_HEADER
-import com.mcgars.basekitk.features.recycler.HeaderRecyclerAdapter.Companion.TYPE_ITEM
 
 /**
  * Created by Владимир on 22.09.2015.
@@ -52,8 +49,8 @@ abstract class BaseRecycleViewGridDelegateController(args: Bundle? = null) : Bas
 
     inner class AutoSpanSizeLookup : GridLayoutManager.SpanSizeLookup() {
         override fun getSpanSize(position: Int): Int {
-            if(getAdapter() is AdapterDelegateHeader<*>) {
-                return if((getAdapter() as AdapterDelegateHeader<*>).isHeaderOrFooter(position))
+            if (getAdapter() is AdapterDelegateHeader<*>) {
+                return if ((getAdapter() as AdapterDelegateHeader<*>).isHeaderOrFooter(position))
                     2 else 1
             }
             return 1

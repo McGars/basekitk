@@ -11,7 +11,7 @@ import com.mcgars.basekitk.tools.find
  * if you not use [com.mcgars.basekitk.features.recycler.BaseRecycleViewController]
  * yuo may use this decorator for load more items when list reached to the end
  */
-class MoreLoadDecorator(@IdRes val recyclerView: Int, val listener: (page: Int)->Unit) : DecoratorListener(){
+class MoreLoadDecorator(@IdRes val recyclerView: Int, val listener: (page: Int) -> Unit) : DecoratorListener() {
 
     internal var page = 0
 
@@ -44,7 +44,7 @@ class MoreLoadDecorator(@IdRes val recyclerView: Int, val listener: (page: Int)-
     private fun getLoadingListener(): RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-            if(!(recyclerView.layoutManager is LinearLayoutManager))
+            if (!(recyclerView.layoutManager is LinearLayoutManager))
                 return
 
             val visibleItemCount = recyclerView.layoutManager.childCount

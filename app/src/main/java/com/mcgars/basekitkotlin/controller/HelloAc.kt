@@ -1,13 +1,18 @@
 package com.mcgars.basekitkotlin.controller
 
-import com.mcgars.basekitk.features.simple.ActivityController
+import android.app.Activity
 import com.mcgars.basekitk.features.base.BaseKitActivity
+import com.mcgars.basekitk.features.simple.ActivityController
 
 /**
  * Created by gars on 13.05.2017.
  */
-class HelloAc(activity: BaseKitActivity<HelloAc>?)
-    : ActivityController<BaseKitActivity<HelloAc>>(activity) {
-    constructor() : this(null)
+class HelloAc : ActivityController() {
+
+    var context: BaseKitActivity<HelloAc>? = null
+
+    override fun setActivity(activity: Activity) {
+        context = activity as BaseKitActivity<HelloAc>
+    }
 }
 
