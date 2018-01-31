@@ -7,7 +7,7 @@ import com.mcgars.basekitk.tools.Timer
 import com.mcgars.basekitk.tools.snack
 import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
-import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
+import com.mcgars.basekitk.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
  * Created by gars on 13.05.2017.

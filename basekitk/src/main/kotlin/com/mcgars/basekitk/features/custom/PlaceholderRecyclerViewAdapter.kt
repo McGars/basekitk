@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.mcgars.basekitk.R
+import com.mcgars.basekitk.features.recycler2.AdapterDelegate
+import com.mcgars.basekitk.features.recycler2.KitAdapter
 
 /**
  * Адаптер [RecyclerView] для отображения плейсхолдера при пустом списке.
@@ -18,11 +20,6 @@ import com.mcgars.basekitk.R
  * Плейсхолдер отобразится только после первого вызова одного из notify- методов, если данных нет.
  * Работа проверена на [GridLayoutManager] и [LinearLayoutManager]
 
- * Created by gars and amak on 4/13/17.
- */
-
-class PlaceholderRecyclerViewAdapter
-/**
  * Создает плейсхолдер-адаптер с вьюхой по умолчанию
  * @param originalAdapter адаптер, отображающий сам список
  * *
@@ -30,17 +27,15 @@ class PlaceholderRecyclerViewAdapter
  * *
  * @param errorTextViewId - id [TextView], в котором будет отображено сообщение об ошибке.
  */
-@JvmOverloads constructor(
+
+class PlaceholderRecyclerViewAdapter<T>(
         var originalAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,
         @LayoutRes
         private val placeholderViewId: Int = R.layout.basekit_view_placeholder,
         @IdRes
-        private val errorTextViewId: Int = R.id.tvEmptyListMessage) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private val errorTextViewId: Int = R.id.tvEmptyListMessage
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KitAdapter<T> {
 
-    /**
-     * Позволяет узнать viewType, соответствующий плейсхолдеру.
-     * @return viewType плейсхолдера
-     */
     /**
      * Позволяет при необходимости изменить [Integer], соответствующий viewType. По умолчанию - [Integer.MAX_VALUE]
      * @param placeholderViewType желаемый viewType плейсхолдера.
@@ -130,7 +125,7 @@ class PlaceholderRecyclerViewAdapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == placeholderViewType) {
             holder.itemView.visibility = if (isNotified) View.VISIBLE else View.GONE
-            (holder as ViewHolder).setMessage(message)
+            (holder as PlaceholderRecyclerViewAdapter<*>.ViewHolder).setMessage(message)
         } else {
             originalAdapter.bindViewHolder(holder, position)
         }
@@ -257,6 +252,36 @@ class PlaceholderRecyclerViewAdapter
     init {
         this.originalAdapter.registerAdapterDataObserver(originalAdapterObserver)
         this.registerAdapterDataObserver(placeholderAdapterObserver)
+    }
+
+    override fun removeItemByPosition(position: Int) {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<*>).removeItemByPosition(position)
+        }
+    }
+
+    override fun removeItem(item: T) {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>).removeItem(item)
+        }
+    }
+
+    override fun addItem(item: T) {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>).addItem(item)
+        }
+    }
+
+    override fun addItem(position: Int, item: T) {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>).addItem(position, item)
+        }
+    }
+
+    override fun getDelegates(): List<AdapterDelegate<MutableList<T>>>? {
+        return if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>).getDelegates()
+        } else null
     }
 
 }

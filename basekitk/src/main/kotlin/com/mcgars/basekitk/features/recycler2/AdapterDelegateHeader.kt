@@ -5,13 +5,32 @@ import android.view.ViewGroup
 import java.util.*
 
 /**
- * Created by gars on 20.04.2017.
+ * Component for update nested adapters
+ */
+interface KitAdapter<T> {
+
+    fun removeItemByPosition(position: Int)
+
+    fun removeItem(item: T)
+
+    fun addItem(item: T)
+
+    fun addItem(position: Int, item: T)
+
+    /**
+     * @return list of declared delegates
+     */
+    fun getDelegates(): List<AdapterDelegate<MutableList<T>>>?
+}
+
+/**
+ * Delegate adapter
  */
 open class AdapterDelegateHeader<T>(
         private val items: MutableList<T>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KitAdapter<T> {
 
-    val manager = AdapterDelegatesManager<MutableList<T>>()
+    private val manager = AdapterDelegatesManager<MutableList<T>>()
 
     private val headers = mutableListOf<T>()
     private val footers = mutableListOf<T>()
@@ -39,23 +58,17 @@ open class AdapterDelegateHeader<T>(
     }
 
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int)
-            = manager.onBindViewHolder(items, position, holder)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = manager.onBindViewHolder(items, position, holder)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            = manager.onCreateViewHolder(parent, viewType)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = manager.onCreateViewHolder(parent, viewType)
 
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder)
-            = manager.onViewRecycled(holder)
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) = manager.onViewRecycled(holder)
 
-    override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder)
-            = manager.onFailedToRecycleView(holder)
+    override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder) = manager.onFailedToRecycleView(holder)
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder)
-            = manager.onViewAttachedToWindow(holder)
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) = manager.onViewAttachedToWindow(holder)
 
-    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder)
-            = manager.onViewDetachedFromWindow(holder)
+    override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) = manager.onViewDetachedFromWindow(holder)
 
     /**
      * Show before items, on top
@@ -100,13 +113,13 @@ open class AdapterDelegateHeader<T>(
         }
     }
 
-    fun removeItemByPosition(position: Int) {
+    override fun removeItemByPosition(position: Int) {
         val fixPos = position + headers.size
         items.removeAt(position)
         notifyItemRemoved(fixPos)
     }
 
-    fun removeItem(item: T) {
+    override fun removeItem(item: T) {
         val position = items.indexOf(item)
         if (position >= 0) {
             val fixPos = position + headers.size
@@ -138,14 +151,14 @@ open class AdapterDelegateHeader<T>(
 
     fun getItemPosition(item: T) = items.indexOf(item)
 
-    fun addItem(item: T) {
+    override fun addItem(item: T) {
         items.add(item)
         val position = items.indexOf(item)
         val fixPos = position + headers.size
         notifyItemInserted(fixPos)
     }
 
-    fun addItem(position: Int, item: T) {
+    override fun addItem(position: Int, item: T) {
         val fixPos = position + headers.size
         items.add(position, item)
         notifyItemInserted(fixPos)
@@ -164,8 +177,16 @@ open class AdapterDelegateHeader<T>(
         else -> false
     }
 
+    override fun getDelegates(): List<AdapterDelegate<MutableList<T>>>? {
+        return manager.run {
+            val size = delegates.size()
+            return (0..size).map {
+                delegates[it]
+            }
+        }
+    }
+
     private fun isHeader(position: Int) = position >= 0 && position < headers.size
-    private fun isFooter(position: Int)
-            = position >= 0 && position >= items.size && position < itemCount
+    private fun isFooter(position: Int) = position >= 0 && position >= items.size && position < itemCount
 
 }

@@ -9,8 +9,8 @@ import com.mcgars.basekitk.features.drawer.BaseDrawerNavigationViewController
 import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.decorator.ToolbarColorDecorator
 import com.mcgars.basekitkotlin.sample.EmptyViewController
-import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandler
-import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
+import com.mcgars.basekitk.animatorHandlers.CircularRevealChangeHandler
+import com.mcgars.basekitk.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
  * Created by gars on 07.08.17.

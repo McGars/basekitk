@@ -5,7 +5,7 @@
         <activity
             android:name=".features.simple.SimpleActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

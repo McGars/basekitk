@@ -1,4 +1,4 @@
-package ru.mos.helloworldk.features.animatorHandlers
+package com.mcgars.basekitk.animatorHandlers
 
 import android.annotation.TargetApi
 import android.os.Build

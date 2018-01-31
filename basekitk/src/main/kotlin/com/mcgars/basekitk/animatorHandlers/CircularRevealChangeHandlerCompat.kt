@@ -1,4 +1,4 @@
-package ru.mos.helloworldk.features.animatorHandlers
+package com.mcgars.basekitk.animatorHandlers
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -38,10 +38,11 @@ open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
             removesFromViewOnPush)
 
     override fun getAnimator(container: ViewGroup, from: View?, to: View?, isPush: Boolean, toAddedToContainer: Boolean): Animator {
+        val animator: Animator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return super.getAnimator(container, from, to, isPush, toAddedToContainer)
+            animator = super.getAnimator(container, from, to, isPush, toAddedToContainer)
         } else {
-            val animator = AnimatorSet()
+            animator = AnimatorSet()
             if (to != null && toAddedToContainer) {
                 animator.play(ObjectAnimator.ofFloat<View>(to, View.ALPHA, 0f, 1f))
             }
@@ -50,7 +51,9 @@ open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
                 animator.play(ObjectAnimator.ofFloat<View>(from, View.ALPHA, 0f))
             }
 
-            return animator
+        }
+        return animator.apply {
+            AnimatorChangeHandlerWrapper(this, from, to)
         }
     }
 }

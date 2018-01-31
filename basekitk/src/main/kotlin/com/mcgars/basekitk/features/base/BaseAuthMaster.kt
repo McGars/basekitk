@@ -117,7 +117,7 @@ abstract class BaseAuthSendler(
             // add activity controller
             if (activityController != null) putSerializable(PageController.ACTIVITY_CONTROLLER, activityController)
             // set type auth
-            arguments.putSerializable(PageController.AUTH_CONTROLLER, auth)
+            putSerializable(PageController.AUTH_CONTROLLER, auth)
         }
     }
 
@@ -206,6 +206,9 @@ abstract class BaseAuthSendler(
 
 /**
  * Class help for route after success user auth
+ *
+ * In order to receiver is work correctly need add constructor with params: Bundle
+ * to your page
  */
 class AuthReceiver(
         private val params: Bundle

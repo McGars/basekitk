@@ -1,4 +1,4 @@
-package ru.mos.helloworldk.features.animatorHandlers
+package com.mcgars.basekitk.animatorHandlers
 
 import android.animation.Animator
 import android.animation.AnimatorSet

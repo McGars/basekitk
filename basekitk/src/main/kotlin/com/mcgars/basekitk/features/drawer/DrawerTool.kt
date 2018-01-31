@@ -31,10 +31,8 @@ open class DrawerTool(
 
     val drawerToggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(viewController.activity, drawerLayout,
             toolbar, R.string.app_name, R.string.app_name) {
-        /**
-         * Called when a drawer has settled in a completely closed state.
-         */
-        override fun onDrawerClosed(view: View?) {
+
+        override fun onDrawerClosed(view: View) {
             super.onDrawerClosed(view)
             (viewController.activity as AppCompatActivity).invalidateOptionsMenu()
             syncState()
@@ -44,7 +42,7 @@ open class DrawerTool(
         /**
          * Called when a drawer has settled in a completely open state.
          */
-        override fun onDrawerOpened(drawerView: View?) {
+        override fun onDrawerOpened(drawerView: View) {
             super.onDrawerOpened(drawerView)
             (viewController.activity as AppCompatActivity).invalidateOptionsMenu()
             syncState()

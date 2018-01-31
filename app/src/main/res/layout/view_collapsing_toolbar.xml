@@ -23,11 +23,11 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <ImageView
+                android:id="@+id/ivBack"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
-                android:src="@drawable/android_background"
                 android:fitsSystemWindows="true" />
 
             <android.support.v7.widget.Toolbar

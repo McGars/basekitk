@@ -83,27 +83,18 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
         isLoading = false
         hasMoreItems = has
 
-        if (adapter is AdapterDelegateHeader<*>)
-            showAdapterLoader(adapter as AdapterDelegateHeader<*>)
-        else if (adapter is PlaceholderRecyclerViewAdapter) {
-            val originalAdapter = (adapter as PlaceholderRecyclerViewAdapter).originalAdapter
-            if (originalAdapter is AdapterDelegateHeader<*>) {
-                showAdapterLoader(originalAdapter)
-            }
+        if (adapter is KitAdapter<*>) {
+            showAdapterLoader((adapter as KitAdapter<*>).getDelegates())
         }
     }
 
-    /**
+    /*
      * Try show pagination loader
      */
-    fun showAdapterLoader(adpr: AdapterDelegateHeader<*>) {
-        adpr.manager.let { manarer ->
-            val size = manarer.delegates.size()
-            (0..size).forEach {
-                val delegate = manarer.delegates[it]
-                if (delegate is AdapterViewLoader<*>) {
-                    delegate.showLoader(hasMoreItems)
-                }
+    private fun showAdapterLoader(delegates: List<AdapterDelegate<out MutableList<out Any?>>>?) {
+        delegates?.forEach {
+            if (it is AdapterViewLoader<*>) {
+                it.showLoader(hasMoreItems)
             }
         }
     }
@@ -162,14 +153,26 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     }
 
     protected fun removeItem(position: Int) {
-        if (allList.size > position && adapter is AdapterDelegateHeader<*>) {
-            (adapter as AdapterDelegateHeader<*>).removeItemByPosition(position)
+        if (allList.size > position && adapter is KitAdapter<*>) {
+            (adapter as KitAdapter<*>).removeItemByPosition(position)
         }
     }
 
     protected fun removeItem(item: Any) {
-        (adapter is AdapterDelegateHeader<*>).let {
-            (adapter as AdapterDelegateHeader<Any>).removeItem(item)
+        (adapter is KitAdapter<*>).let {
+            (adapter as KitAdapter<Any>).removeItem(item)
+        }
+    }
+
+    protected fun addItem(item: Any) {
+        (adapter is KitAdapter<*>).let {
+            (adapter as KitAdapter<Any>).addItem(item)
+        }
+    }
+
+    protected fun addItem(position: Int, item: Any) {
+        (adapter is KitAdapter<*>).let {
+            (adapter as KitAdapter<Any>).addItem(position, item)
         }
     }
 

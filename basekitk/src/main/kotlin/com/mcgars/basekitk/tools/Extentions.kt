@@ -72,11 +72,11 @@ fun EditText?.txt(): String {
 }
 
 fun EditText?.toInt(defVal: Int = 0): Int {
-    return if (txt()?.isEmpty() ?: true) defVal else txt()!!.toInt()
+    return if (txt().isEmpty()) defVal else txt().toInt()
 }
 
 fun EditText?.toFloat(defVal: Float = 0f): Float {
-    return if (txt()?.isEmpty() ?: true) defVal else txt()!!.toFloat()
+    return if (txt().isEmpty()) defVal else txt().toFloat()
 }
 
 inline fun trying(func: () -> Unit): Boolean {

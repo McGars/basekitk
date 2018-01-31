@@ -9,8 +9,8 @@ import com.mcgars.basekitk.tools.pagecontroller.ExTabs
 import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.sample.EmptyViewController
 import kotlinx.android.synthetic.main.view_pager.view.*
-import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandler
-import ru.mos.helloworldk.features.animatorHandlers.CircularRevealChangeHandlerCompat
+import com.mcgars.basekitk.animatorHandlers.CircularRevealChangeHandler
+import com.mcgars.basekitk.animatorHandlers.CircularRevealChangeHandlerCompat
 
 /**
  * Created by Владимир on 12.01.2017.

@@ -3,6 +3,7 @@ package com.mcgars.basekitk.features.base
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.annotation.CallSuper
 import android.support.annotation.DrawableRes
 import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
@@ -186,7 +187,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      */
     open var isCustomLayout = false
 
-    override final fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val v: View = if (isCustomLayout) {
             inflater.inflate(getLayoutId(), container, false)
         } else {
@@ -298,6 +299,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         }
     }
 
+    @CallSuper
     override fun onChangeEnded(changeHandler: ControllerChangeHandler, changeType: ControllerChangeType) {
         if (changeType == ControllerChangeType.PUSH_ENTER || changeType == ControllerChangeType.POP_ENTER) {
             // show menu if in setHasOptionsMenu() setted true
