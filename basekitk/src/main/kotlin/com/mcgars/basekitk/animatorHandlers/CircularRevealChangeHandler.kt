@@ -131,11 +131,11 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
         private val KEY_CX = "CircularRevealChangeHandler.cx"
         private val KEY_CY = "CircularRevealChangeHandler.cy"
 
-        val DEFAULT = 0
-        val TOP_CENTER = 1
-        val RIGHT_CENTER = 2
-        val BOTTOM_CENTER = 3
-        val LEFT_CENTER = 4
+        const val DEFAULT = 0
+        const val TOP_CENTER = 1
+        const val RIGHT_CENTER = 2
+        const val BOTTOM_CENTER = 3
+        const val LEFT_CENTER = 4
     }
 
 }

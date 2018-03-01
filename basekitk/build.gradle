@@ -37,10 +37,9 @@ android {
         release.java.srcDirs += 'src/release/kotlin'
     }
 
-    dexOptions {
-        incremental false
-        javaMaxHeapSize "6g"
-    }
+//    dexOptions {
+//        javaMaxHeapSize "6g"
+//    }
 
     lintOptions {
         abortOnError false
@@ -54,10 +53,10 @@ ext {
 }
 
 dependencies {
-    androidTestApi('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testApi 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api "com.android.support:design:$appCompat"
     api "com.android.support:recyclerview-v7:$appCompat"

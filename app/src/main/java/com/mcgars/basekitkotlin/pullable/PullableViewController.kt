@@ -20,7 +20,7 @@ class PullableViewController : BaseViewController() {
 
     init {
         // animation
-        overridePushHandler(CircularRevealChangeHandlerCompat())
+        overridePushHandler(CircularRevealChangeHandlerCompat(removesFromViewOnPush = false))
         overridePopHandler(CircularRevealChangeHandlerCompat())
         addDecorator(ToolbarColorDecorator(this))
     }

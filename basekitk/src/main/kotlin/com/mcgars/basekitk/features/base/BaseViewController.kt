@@ -33,37 +33,52 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
     val decorators: MutableList<DecoratorListener> = ArrayList()
 
+    var isFitSystem = true
+
     init {
         // find toolbar and tabs
         addDecorator(object : DecoratorListener() {
             override fun postCreateView(controller: Controller, view: View) {
-                if (getContainerLayout() != 0)
-                    toolbar = view.find(R.id.toolbar)
+                if (getContainerLayout() != 0) {
+                    toolbar = view.find<Toolbar>(R.id.toolbar)?.also { tb ->
+                        if (isFitSystem) {
+                            tb.post {
+                                setFitSystemToolbarHeight(tb)
+                            }
+                        }
+                    }
+                }
 
                 tabs = view.find(R.id.tablayout)
             }
         })
     }
 
-    var isFitSystem = true
+    /*
+     * trigger when page ready to work
+     */
+    private val readyDecorator = object : DecoratorListener() {
+        override fun postCreateView(controller: Controller, view: View) {
+            setTitle()
+            onReady(view)
+        }
+    }
 
     /**
      * Set padding top when [isFitSystem] = true
      */
     private fun setFitSystemToolbarHeight(toolbar: Toolbar) {
 
-        toolbar.post {
-            val location = IntArray(2)
-            toolbar.getLocationOnScreen(location)
-            if (location[1] > 0) return@post
+        val location = IntArray(2)
+        toolbar.getLocationOnScreen(location)
+        if (location[1] > 0) return
 
-            // Set the padding to match the Status Bar height
-            toolbar.setPadding(
-                    toolbar.paddingLeft,
-                    if (toolbar.paddingTop > 0) toolbar.paddingTop else toolbar.context.getStatusBarHeight(),
-                    toolbar.paddingRight,
-                    toolbar.paddingBottom)
-        }
+        // Set the padding to match the Status Bar height
+        toolbar.setPadding(
+                toolbar.paddingLeft,
+                if (toolbar.paddingTop > 0) toolbar.paddingTop else toolbar.context.getStatusBarHeight(),
+                toolbar.paddingRight,
+                toolbar.paddingBottom)
 
     }
 
@@ -174,12 +189,12 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      * Layout with toolbar
      */
     @LayoutRes
-    open protected fun getContainerLayout() = R.layout.basekit_view_container
+    protected open fun getContainerLayout() = R.layout.basekit_view_container
 
     /**
      * if true then view will behind status bar
      */
-    open protected fun isFitScreen() = false
+    protected open fun isFitScreen() = false
 
     /**
      * If is false then [getLayoutId] wraps by [CoordinatorLayout]
@@ -219,17 +234,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         return coordinator
     }
 
-    /*
-     * trigger when page ready to work with her
-     */
-    private val readyDecorator = object : DecoratorListener() {
-        override fun postCreateView(controller: Controller, view: View) {
-            setTitle()
-            onReady(view)
-            toolbar?.let { setFitSystemToolbarHeight(it) }
-        }
-    }
-
     /**
      * Add extention decorator who modified current page's view
      */
@@ -259,7 +263,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         while (parentController != null) {
             if (parentController is BaseViewController
                     && (parentController.getTitle() != null
-                    || parentController.getTitleInt() != 0)) {
+                            || parentController.getTitleInt() != 0)) {
                 return
             }
             parentController = parentController.parentController

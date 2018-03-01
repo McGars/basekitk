@@ -17,7 +17,7 @@ buildscript {
 }
 
 ext {
-    versionSdkTool = "26.0.2"
+    versionSdkTool = "27.0.3"
     versionSdkAndroid = '26.1.0'
     versionSdkTarget = 25
     versionSdkMin = 19

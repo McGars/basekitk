@@ -48,7 +48,7 @@ open class ActivityController : ActivityHolder {
         return false
     }
 
-    open fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    open fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
     }
 
