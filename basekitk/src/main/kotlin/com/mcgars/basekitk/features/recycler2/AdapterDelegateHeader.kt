@@ -177,12 +177,10 @@ open class AdapterDelegateHeader<T>(
         else -> false
     }
 
-    override fun getDelegates(): List<AdapterDelegate<MutableList<T>>>? {
-        return manager.run {
-            val size = delegates.size()
-            return (0..size).map {
-                delegates[it]
-            }
+    override fun getDelegates(): List<AdapterDelegate<MutableList<T>>> = manager.run {
+        val size = delegates.size()
+        return (0..size).map {
+            delegates[it]
         }
     }
 

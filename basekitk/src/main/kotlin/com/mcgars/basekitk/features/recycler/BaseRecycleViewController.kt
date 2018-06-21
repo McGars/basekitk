@@ -55,7 +55,7 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
     abstract fun loadData(page: Int)
 
     private var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
             val visibleItemCount = layoutManager!!.childCount
             val totalItemCount = layoutManager!!.itemCount

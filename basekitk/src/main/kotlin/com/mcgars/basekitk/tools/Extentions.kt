@@ -123,7 +123,7 @@ fun Array<out View?>.setVisibleState(state: Int) {
 }
 
 fun Context?.hideKeyboard(hostView: View?): Boolean? {
-    var isHide: Boolean = false
+    var isHide = false
     hostView?.windowToken?.run {
         isHide = (this@hideKeyboard?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(this, InputMethodManager.HIDE_NOT_ALWAYS)

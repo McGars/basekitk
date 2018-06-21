@@ -61,18 +61,18 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         notifyItemRangeInserted(headers.size, headers.size + items.size)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, type: Int): RecyclerView.ViewHolder? {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, type: Int): RecyclerView.ViewHolder {
         //if our position is one of our items (this comes from getItemViewType(int position) below)
-        if (type == TYPE_HEADER || type == TYPE_FOOTER) {
+        return if (type == TYPE_HEADER || type == TYPE_FOOTER) {
             //create a new framelayout, or inflate from a resource
             //make sure it fills the space
-            return HeaderFooterViewHolder(FrameLayout(viewGroup.context).apply {
+            HeaderFooterViewHolder(FrameLayout(viewGroup.context).apply {
                 layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
             })
         } else {
             val view = inflater.inflate(getLayout(type), viewGroup, false)
             onItemClickListener?.let { view.setOnClickListener(itemClickListener) }
-            return getViewHolder(view, type).apply { setListeners(this) }
+            getViewHolder(view, type).apply { setListeners(this) }
         }
 
 //        return null
@@ -87,20 +87,24 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
 
     override fun onBindViewHolder(vh: RecyclerView.ViewHolder, position: Int) {
         //check what type of view our position is
-        if (position < headers.size) {
-            val v = headers[position]
-            //add our view to a header view and display it
-            prepareHeaderFooter(vh as HeaderFooterViewHolder, v)
-        } else if (position >= headers.size + items.size) {
-            val v = footers[position - items.size - headers.size]
-            //add oru view to a footer view and display it
-            prepareHeaderFooter(vh as HeaderFooterViewHolder, v)
-        } else {
-            //it's one of our items, display as required
-            val fixPos = position - headers.size
-            val item = items[fixPos]
-            vh.itemView.setTag(R.id.item_position, vh)
-            setValues(vh as H, item, fixPos)
+        when {
+            position < headers.size -> {
+                val v = headers[position]
+                //add our view to a header view and display it
+                prepareHeaderFooter(vh as HeaderFooterViewHolder, v)
+            }
+            position >= headers.size + items.size -> {
+                val v = footers[position - items.size - headers.size]
+                //add oru view to a footer view and display it
+                prepareHeaderFooter(vh as HeaderFooterViewHolder, v)
+            }
+            else -> {
+                //it's one of our items, display as required
+                val fixPos = position - headers.size
+                val item = items[fixPos]
+                vh.itemView.setTag(R.id.item_position, vh)
+                setValues(vh as H, item, fixPos)
+            }
         }
     }
 
@@ -226,18 +230,14 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
 
     //our header/footer RecyclerView.ViewHolder is just a FrameLayout
     class HeaderFooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var base: FrameLayout
-
-        init {
-            this.base = itemView as FrameLayout
-        }
+        internal var base: FrameLayout = itemView as FrameLayout
     }
 
     fun getItem(position: Int) = items[position]
 
     companion object {
-        val TYPE_HEADER = 111
-        val TYPE_FOOTER = 222
-        val TYPE_ITEM = 333
+        const val TYPE_HEADER = 111
+        const val TYPE_FOOTER = 222
+        const val TYPE_ITEM = 333
     }
 }

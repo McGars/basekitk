@@ -6,6 +6,8 @@ import android.animation.ObjectAnimator
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler
 
 open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
@@ -40,7 +42,9 @@ open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
     override fun getAnimator(container: ViewGroup, from: View?, to: View?, isPush: Boolean, toAddedToContainer: Boolean): Animator {
         val animator: Animator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            animator = super.getAnimator(container, from, to, isPush, toAddedToContainer)
+            animator = super.getAnimator(container, from, to, isPush, toAddedToContainer).apply {
+                interpolator = if (!isPush) DecelerateInterpolator() else AccelerateInterpolator()
+            }
         } else {
             animator = AnimatorSet()
             if (to != null && toAddedToContainer) {

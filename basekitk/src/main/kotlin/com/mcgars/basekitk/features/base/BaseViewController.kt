@@ -13,9 +13,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
@@ -35,53 +33,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
     var isFitSystem = true
 
-    init {
-        // find toolbar and tabs
-        addDecorator(object : DecoratorListener() {
-            override fun postCreateView(controller: Controller, view: View) {
-                if (getContainerLayout() != 0) {
-                    toolbar = view.find<Toolbar>(R.id.toolbar)?.also { tb ->
-                        if (isFitSystem) {
-                            tb.post {
-                                setFitSystemToolbarHeight(tb)
-                            }
-                        }
-                    }
-                }
-
-                tabs = view.find(R.id.tablayout)
-            }
-        })
-    }
-
-    /*
-     * trigger when page ready to work
-     */
-    private val readyDecorator = object : DecoratorListener() {
-        override fun postCreateView(controller: Controller, view: View) {
-            setTitle()
-            onReady(view)
-        }
-    }
-
-    /**
-     * Set padding top when [isFitSystem] = true
-     */
-    private fun setFitSystemToolbarHeight(toolbar: Toolbar) {
-
-        val location = IntArray(2)
-        toolbar.getLocationOnScreen(location)
-        if (location[1] > 0) return
-
-        // Set the padding to match the Status Bar height
-        toolbar.setPadding(
-                toolbar.paddingLeft,
-                if (toolbar.paddingTop > 0) toolbar.paddingTop else toolbar.context.getStatusBarHeight(),
-                toolbar.paddingRight,
-                toolbar.paddingBottom)
-
-    }
-
     /**
      * Если в разметке есть тулбар то  автоматически подхватится
      * по умолчанию id=R.id.toolbar
@@ -99,8 +50,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         }
         private set(value) {
             field = value
-            if (value != null)
+            if (value != null) {
                 (activity as AppCompatActivity).setSupportActionBar(value)
+            }
         }
 
     /**
@@ -127,6 +79,76 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     val loader: LoaderController by lazy { LoaderController(view as ViewGroup) }
 
     /**
+     * Settings for all app
+     */
+    val settings: SharedPreferences
+        get() = (activity as BaseKitActivity<*>).settings
+
+    /**
+     * If is false then [getLayoutId] wraps by [CoordinatorLayout]
+     * and added[getToolbarLayout]
+     */
+    open var isCustomLayout = false
+
+    /*
+     * trigger when page ready to work
+     */
+    private val readyDecorator = object : DecoratorListener() {
+        override fun postCreateView(controller: Controller, view: View) {
+            setTitle()
+            onReady(view)
+        }
+    }
+
+    init {
+        // find toolbar and tabs
+        addDecorator(object : DecoratorListener() {
+            override fun postCreateView(controller: Controller, view: View) {
+                if (getContainerLayout() != 0) {
+                    toolbar = view.find<Toolbar>(R.id.toolbar)?.also { tb ->
+                        if (isFitSystem) {
+                                setFitSystemToolbarHeight(tb)
+                        }
+                    }
+                }
+
+                tabs = view.find(R.id.tablayout)
+            }
+
+            override fun postAttach(controller: Controller, view: View) {
+                super.postAttach(controller, view)
+                toolbar?.let {
+                    setFitSystemToolbarHeight(it)
+                }
+            }
+        })
+    }
+
+    /**
+     * Layout of the page
+     */
+    @LayoutRes
+    protected abstract fun getLayoutId(): Int
+
+    /**
+     * Call when view is ready to work
+     */
+    protected abstract fun onReady(view: View)
+
+    /**
+     * Set title manually
+     */
+    fun setTitle(title: String) {
+        activity?.title = title
+    }
+
+    /**
+     * Title from resources
+     */
+    @StringRes
+    protected open fun getTitleInt() = 0
+
+    /**
      * Life cycle of the Activity
      */
     fun <C : ActivityController> getAc(): C? {
@@ -134,16 +156,19 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     }
 
     /**
-     * Settings for all app
-     */
-    val settings: SharedPreferences
-        get() = (activity as BaseKitActivity<*>).settings
-
-    /**
      * Show page to user
      */
-    fun loadPage(viewController: Controller, backStack: Boolean = true) {
+    open fun loadPage(viewController: Controller, backStack: Boolean = true) {
         (activity as BaseKitActivity<*>).loadPage(viewController, backStack)
+    }
+
+    /**
+     * Add extention decorator who modified current page's view
+     */
+    fun <D : DecoratorListener> addDecorator(decoratorListener: D): D {
+        addLifecycleListener(decoratorListener)
+        decorators.add(decoratorListener)
+        return decoratorListener
     }
 
     /**
@@ -180,12 +205,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     }
 
     /**
-     * Layout of the page
-     */
-    @LayoutRes
-    protected abstract fun getLayoutId(): Int
-
-    /**
      * Layout with toolbar
      */
     @LayoutRes
@@ -196,63 +215,16 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      */
     protected open fun isFitScreen() = false
 
-    /**
-     * If is false then [getLayoutId] wraps by [CoordinatorLayout]
-     * and added[getToolbarLayout]
-     */
-    open var isCustomLayout = false
-
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val v: View = if (isCustomLayout) {
             inflater.inflate(getLayoutId(), container, false)
         } else {
-            buildView(inflater)
+            buildView(inflater, container)
         }
         decorators.forEach { it.onViewCreated(v) }
 
         addDecorator(readyDecorator)
         return v
-    }
-
-    private fun buildView(inflater: LayoutInflater): View {
-
-        val coordinator = inflater.inflate(getContainerLayout(), null, false) as ViewGroup
-
-        // add content view
-        val layoutView = inflater.inflate(getLayoutId(), coordinator, false)
-        coordinator.addView(layoutView)
-        // attach scroll behavior for app bar
-        (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
-            if (layoutParams.behavior == null)
-                layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
-        }
-
-        if (isFitSystem) {
-            ViewCompat.setFitsSystemWindows(coordinator, true)
-        }
-
-        return coordinator
-    }
-
-    /**
-     * Add extention decorator who modified current page's view
-     */
-    fun <D : DecoratorListener> addDecorator(decoratorListener: D): D {
-        addLifecycleListener(decoratorListener)
-        decorators.add(decoratorListener)
-        return decoratorListener
-    }
-
-    /**
-     * Call when view is ready to work
-     */
-    protected abstract fun onReady(view: View)
-
-    /**
-     * Set title manually
-     */
-    fun setTitle(title: String) {
-        activity?.title = title
     }
 
     /**
@@ -282,13 +254,50 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      */
     protected open fun getTitle(): String? = null
 
-    /**
-     * Title from resources
-     */
-    @StringRes
-    protected open fun getTitleInt() = 0
 
-//    private var pageVisibleToUser = true
+    /*
+     * Set padding top when [isFitSystem] = true
+     */
+    private fun setFitSystemToolbarHeight(toolbar: Toolbar) {
+
+        toolbar.addOnLayoutChangeListener(object  : View.OnLayoutChangeListener {
+            override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
+
+                val location = IntArray(2)
+                toolbar.getLocationOnScreen(location)
+                if (location[1] == 0) {
+                    toolbar.setPadding(
+                            toolbar.paddingLeft,
+                            if (toolbar.paddingTop > 0) toolbar.paddingTop else toolbar.context.getStatusBarHeight(),
+                            toolbar.paddingRight,
+                            toolbar.paddingBottom)
+                }
+
+                toolbar.removeOnLayoutChangeListener(this)
+            }
+
+        })
+    }
+
+    private fun buildView(inflater: LayoutInflater, container: ViewGroup): View {
+
+        val coordinator = inflater.inflate(getContainerLayout(), container, false) as ViewGroup
+
+        // add content view
+        val layoutView = inflater.inflate(getLayoutId(), coordinator, false)
+        coordinator.addView(layoutView)
+        // attach scroll behavior for app bar
+        (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
+            if (layoutParams.behavior == null)
+                layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
+        }
+
+        if (isFitSystem) {
+            ViewCompat.setFitsSystemWindows(coordinator, true)
+        }
+
+        return coordinator
+    }
 
     override fun onChangeStarted(changeHandler: ControllerChangeHandler, changeType: ControllerChangeType) {
         // if use ControllerChangeHandler.removesFromViewOnPush() == false

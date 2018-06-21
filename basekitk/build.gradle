@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.5.0'
+        classpath 'com.novoda:bintray-release:0.7.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,7 +20,7 @@ android {
     buildToolsVersion rootProject.ext.versionSdkTool
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion rootProject.ext.versionSdkMin
         targetSdkVersion rootProject.ext.versionSdkTarget
         versionCode 1
         versionName versionN

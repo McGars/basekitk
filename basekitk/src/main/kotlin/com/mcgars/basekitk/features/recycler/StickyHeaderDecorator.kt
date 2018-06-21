@@ -166,7 +166,7 @@ class StickyHeaderDecorator(var adapter: StickyHeaderAdapter<RecyclerView.ViewHo
             if (i == 0 || isFirstUnderHeader(position)) {
 
                 val headerHolder = getHeader(parent, position)
-                if (headerHolder == null || headerHolder.itemView == null)
+                if (headerHolder?.itemView == null)
                     continue
 
                 //fetches the header from header provider, which is basically just call to adapters getHeader/bindHeader

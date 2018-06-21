@@ -23,13 +23,13 @@ object PageType {
      * Opened auth page in new activity
      * [com.mcgars.basekitk.features.simple.SimpleActivity] by default
      */
-    const val ACTIVITY = 1L
+    const val ACTIVITY = 1
 
     /**
      * Opened auth page in same activity using [BaseKitActivity.loadPage]
      * using by default
      */
-    const val VIEW = 0L
+    const val VIEW = 0
 }
 
 /**
@@ -67,7 +67,7 @@ interface AuthItem : Serializable {
      * Type authorization, see [PageType]
      */
     @PageType.ID
-    fun getPageType(): Long = PageType.VIEW
+    fun getPageType() = PageType.VIEW
 
 
 }

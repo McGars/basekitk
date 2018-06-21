@@ -8,7 +8,7 @@ import com.mcgars.basekitk.R
 /**
  * Loader
  */
-class AdapterViewLoader<T>(
+class AdapterViewLoader<T : Any>(
         private val rootAdapter: AdapterDelegateHeader<T>,
         private val loaderObject: T) : AdapterDelegate<MutableList<T>> {
 

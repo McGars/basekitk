@@ -86,7 +86,7 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
     }
 
     override fun getAnimator(container: ViewGroup, from: View?, to: View?, isPush: Boolean, toAddedToContainer: Boolean): Animator {
-        calculateSize(from, container)
+        calculateSize(from ?: to, container)
         val radius = Math.max(cx.toDouble() * 2, cy.toDouble() * 2).toFloat()
         val (x, y) = calculateHalfPosition(from, to)
 
@@ -100,8 +100,8 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
 
     private fun calculateHalfPosition(from: View?, to: View?): Pair<Int, Int> {
 
-        val width = from?.width ?: 0
-        val height = from?.height ?: 0
+        val width = (from ?: to)?.width ?: 0
+        val height = (from ?: to)?.height ?: 0
 
         return when (halfPosition) {
             TOP_CENTER -> Pair(width / 2, 0)

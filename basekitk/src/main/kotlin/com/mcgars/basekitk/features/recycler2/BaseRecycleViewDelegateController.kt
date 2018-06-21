@@ -8,7 +8,6 @@ import android.view.View
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.base.BaseViewController
-import com.mcgars.basekitk.features.custom.PlaceholderRecyclerViewAdapter
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.tools.find
 import java.util.*
@@ -31,32 +30,6 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
      */
     var clearOnFirstPage = true
 
-    init {
-        addDecorator(object : DecoratorListener() {
-            override fun postCreateView(controller: Controller, view: View) {
-                recyclerView = view.find(R.id.recycleView)
-                recyclerView?.layoutManager = initLayoutManager()
-                initLoading()
-            }
-        })
-    }
-
-    override fun getLayoutId() = R.layout.basekit_view_recycler
-
-    protected open fun initLayoutManager() = LinearLayoutManager(activity)
-
-    /**
-     * Load more items when list scrolls to end
-     */
-    protected fun initLoading() {
-        recyclerView!!.addOnScrollListener(loadingScroll)
-    }
-
-    /**
-     * Calls when list scrolls to end
-     */
-    abstract fun loadData(page: Int)
-
     private var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
 
@@ -75,6 +48,46 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
         }
     }
 
+    init {
+        addDecorator(object : DecoratorListener() {
+            override fun postCreateView(controller: Controller, view: View) {
+                recyclerView = view.find(R.id.recycleView)
+                recyclerView?.layoutManager = initLayoutManager()
+                initLoading()
+            }
+        })
+    }
+
+    override fun getLayoutId() = R.layout.basekit_view_recycler
+
+    /**
+     * Drop page to default
+     */
+    fun setDefaultPage() {
+        page = DEFAULT_FIRST_PAGE
+    }
+
+    fun getAdapter() = adapter
+
+    protected open fun initLayoutManager() = LinearLayoutManager(activity)
+
+    /**
+     * Load more items when list scrolls to end
+     */
+    protected fun initLoading() {
+        recyclerView!!.addOnScrollListener(loadingScroll)
+    }
+
+    /**
+     * Call when [adapter] is null, in first init
+     */
+    abstract fun getAdapter(list: MutableList<*>): RecyclerView.Adapter<*>
+
+    /**
+     * Calls when list scrolls to end
+     */
+    abstract fun loadData(page: Int)
+
     /**
      * Indicate have more items and when list scrolls to end call [loadData]
      */
@@ -87,29 +100,6 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             showAdapterLoader((adapter as KitAdapter<*>).getDelegates())
         }
     }
-
-    /*
-     * Try show pagination loader
-     */
-    private fun showAdapterLoader(delegates: List<AdapterDelegate<out MutableList<out Any?>>>?) {
-        delegates?.forEach {
-            if (it is AdapterViewLoader<*>) {
-                it.showLoader(hasMoreItems)
-            }
-        }
-    }
-
-    /**
-     * Drop page to default
-     */
-    fun setDefaultPage() {
-        page = DEFAULT_FIRST_PAGE
-    }
-
-    /**
-     * Call when [adapter] is null, in first init
-     */
-    abstract fun getAdapter(list: MutableList<*>): RecyclerView.Adapter<*>
 
     /**
      * You must call this when data is ready to show for UI
@@ -180,7 +170,16 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
         recyclerView?.adapter = adapter
     }
 
-    fun getAdapter() = adapter
+    /*
+    * Try show pagination loader
+    */
+    private fun showAdapterLoader(delegates: List<AdapterDelegate<out MutableList<out Any?>>>?) {
+        delegates?.forEach {
+            if (it is AdapterViewLoader<*>) {
+                it.showLoader(hasMoreItems)
+            }
+        }
+    }
 
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)

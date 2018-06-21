@@ -6,10 +6,13 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.UiThread
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toolbar
 import com.bluelinelabs.conductor.*
 import com.bluelinelabs.conductor.internal.ThreadUtils
 import com.mcgars.basekitk.R
@@ -55,7 +58,6 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
      * а уже в коде вызывать activity.getAC().getNeedMethod()
      */
     private var activityController: C? = null
-        private set
 
     private var router: Router by Delegates.notNull()
 
@@ -118,12 +120,12 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
     /**
      * Default in animation for page
      */
-    open protected fun getDefaultPopAnimate(): ControllerChangeHandler? = null
+    protected open fun getDefaultPopAnimate(): ControllerChangeHandler? = null
 
     /**
      * Default out animation for page
      */
-    open protected fun getDefaultPushAnimate(): ControllerChangeHandler? = null
+    protected open fun getDefaultPushAnimate(): ControllerChangeHandler? = null
 
 
     /**

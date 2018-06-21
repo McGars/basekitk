@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bluelinelabs.conductor.ChangeHandlerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mcgars.basekitk.tools.custom.StatusBarFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/contentFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
