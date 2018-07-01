@@ -105,11 +105,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         addDecorator(object : DecoratorListener() {
             override fun postCreateView(controller: Controller, view: View) {
                 if (getContainerLayout() != 0) {
-                    toolbar = view.find<Toolbar>(R.id.toolbar)?.also { tb ->
-                        if (isFitSystem) {
-                                setFitSystemToolbarHeight(tb)
-                        }
-                    }
+                    toolbar = view.find<Toolbar>(R.id.toolbar)
                 }
 
                 tabs = view.find(R.id.tablayout)
@@ -117,8 +113,10 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
             override fun postAttach(controller: Controller, view: View) {
                 super.postAttach(controller, view)
-                toolbar?.let {
-                    setFitSystemToolbarHeight(it)
+                if (isFitSystem) {
+                    toolbar?.let {
+                        setFitSystemToolbarHeight(it)
+                    }
                 }
             }
         })

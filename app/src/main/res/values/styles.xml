@@ -6,8 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-
-        <item name="android:statusBarColor" tools:ignore="NewApi">@color/black_overlay_40</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 </resources>

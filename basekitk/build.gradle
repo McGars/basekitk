@@ -1,11 +1,12 @@
 buildscript {
 //    ext.kotlin_version = '1.1.4'
     repositories {
+        google()
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.7.0'
+        classpath 'com.novoda:bintray-release:0.8.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -53,10 +54,10 @@ ext {
 }
 
 dependencies {
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+//    testImplementation 'junit:junit:4.12'
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api "com.android.support:design:$appCompat"
     api "com.android.support:recyclerview-v7:$appCompat"
@@ -79,6 +80,8 @@ if (file(filePatch).exists()) {
         dryRun = false
         groupId = 'com.github.msgars'
         artifactId = 'basekitk'
+        desc = "help made android app faster"
+        userOrg = 'msGars'
         //    repoName = 'ImageFactory'
         publishVersion = versionN
         //    website = 'https://github.com/McGars/ImageFactory'
