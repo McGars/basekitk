@@ -2,6 +2,7 @@ package com.mcgars.basekitk.features.base
 
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.annotation.DrawableRes
@@ -13,15 +14,20 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.tools.*
+import com.mcgars.basekitk.tools.LoaderController
+import com.mcgars.basekitk.tools.find
+import com.mcgars.basekitk.tools.hideKeyboard
 import com.mcgars.basekitk.tools.pagecontroller.PageController
+import com.mcgars.basekitk.tools.visible
 import java.util.*
 
 /**
@@ -31,6 +37,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
     val decorators: MutableList<DecoratorListener> = ArrayList()
 
+    /**
+     * Disable call [ViewCompat.setFitsSystemWindows]
+     */
     var isFitSystem = true
 
     /**
@@ -111,12 +120,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
                 tabs = view.find(R.id.tablayout)
             }
 
-            override fun postAttach(controller: Controller, view: View) {
-                super.postAttach(controller, view)
-                if (isFitSystem) {
-                    toolbar?.let {
-                        setFitSystemToolbarHeight(it)
-                    }
+            override fun onChangeEnd(controller: Controller, changeHandler: ControllerChangeHandler, changeType: ControllerChangeType) {
+                if (Build.VERSION.SDK_INT >= 20) {
+                    controller.view?.requestApplyInsets()
                 }
             }
         })
@@ -251,31 +257,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      * Custom title
      */
     protected open fun getTitle(): String? = null
-
-
-    /*
-     * Set padding top when [isFitSystem] = true
-     */
-    private fun setFitSystemToolbarHeight(toolbar: Toolbar) {
-
-        toolbar.addOnLayoutChangeListener(object  : View.OnLayoutChangeListener {
-            override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-
-                val location = IntArray(2)
-                toolbar.getLocationOnScreen(location)
-                if (location[1] == 0) {
-                    toolbar.setPadding(
-                            toolbar.paddingLeft,
-                            if (toolbar.paddingTop > 0) toolbar.paddingTop else toolbar.context.getStatusBarHeight(),
-                            toolbar.paddingRight,
-                            toolbar.paddingBottom)
-                }
-
-                toolbar.removeOnLayoutChangeListener(this)
-            }
-
-        })
-    }
 
     private fun buildView(inflater: LayoutInflater, container: ViewGroup): View {
 

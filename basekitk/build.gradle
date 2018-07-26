@@ -14,7 +14,7 @@ buildscript {
 }
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-def versionN = "0.2.1"
+def versionN = "0.2.2"
 
 android {
     compileSdkVersion rootProject.ext.versionSdkCompile
@@ -38,10 +38,6 @@ android {
         release.java.srcDirs += 'src/release/kotlin'
     }
 
-//    dexOptions {
-//        javaMaxHeapSize "6g"
-//    }
-
     lintOptions {
         abortOnError false
     }
@@ -49,19 +45,13 @@ android {
 
 ext {
     appCompat = rootProject.ext.versionSdkAndroid
-    gsonV = "2.7"
     conductor = "2.1.4"
 }
 
 dependencies {
-//    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    })
-//    testImplementation 'junit:junit:4.12'
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api "com.android.support:design:$appCompat"
     api "com.android.support:recyclerview-v7:$appCompat"
-    api "com.google.code.gson:gson:$gsonV"
     api "com.bluelinelabs:conductor-support:$conductor"
 }
 
@@ -81,7 +71,7 @@ if (file(filePatch).exists()) {
         groupId = 'com.github.msgars'
         artifactId = 'basekitk'
         desc = "help made android app faster"
-        userOrg = 'msGars'
+        userOrg = 'gars'
         //    repoName = 'ImageFactory'
         publishVersion = versionN
         //    website = 'https://github.com/McGars/ImageFactory'
@@ -91,7 +81,4 @@ if (file(filePatch).exists()) {
         //    licences = ['Apache-2.0']
     }
 
-}
-repositories {
-    mavenCentral()
 }
