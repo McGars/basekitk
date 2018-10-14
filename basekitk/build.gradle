@@ -44,15 +44,16 @@ android {
 }
 
 ext {
-    appCompat = rootProject.ext.versionSdkAndroid
     conductor = "2.1.4"
 }
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    api "com.android.support:design:$appCompat"
-    api "com.android.support:recyclerview-v7:$appCompat"
-    api "com.bluelinelabs:conductor-support:$conductor"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api ("com.bluelinelabs:conductor-support:$conductor") {
+        exclude group: 'com.android.support'
+    }
+    compileOnly "com.android.support:design:${rootProject.ext.versionSdkAndroid}"
+    compileOnly "com.android.support:recyclerview-v7:${rootProject.ext.versionSdkAndroid}"
 }
 
 def filePatch = "$project.rootDir/keybitray.properties"

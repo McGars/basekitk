@@ -47,7 +47,7 @@ open class DrawerToolHelper(
      * Listener click drawer
      */
     internal var drawerClickItemListener: AdapterView.OnItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
+            AdapterView.OnItemClickListener { _, view, position, _ ->
                 val itemId = view.id
                 if (itemId == drawerAdapter.selectedId) {
                     drawerTool.drawerLayout?.closeDrawers()

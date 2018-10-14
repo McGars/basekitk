@@ -23,11 +23,8 @@ import com.bluelinelabs.conductor.ControllerChangeType
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.tools.LoaderController
-import com.mcgars.basekitk.tools.find
-import com.mcgars.basekitk.tools.hideKeyboard
+import com.mcgars.basekitk.tools.*
 import com.mcgars.basekitk.tools.pagecontroller.PageController
-import com.mcgars.basekitk.tools.visible
 import java.util.*
 
 /**
@@ -120,9 +117,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
                 tabs = view.find(R.id.tablayout)
             }
 
-            override fun onChangeEnd(controller: Controller, changeHandler: ControllerChangeHandler, changeType: ControllerChangeType) {
-                if (Build.VERSION.SDK_INT >= 20) {
-                    controller.view?.requestApplyInsets()
+            override fun postAttach(controller: Controller, view: View) {
+                if (isFitSystem) {
+                    toolbar?.let { setFitSystemToolbarHeight(it) }
                 }
             }
         })
@@ -214,11 +211,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     @LayoutRes
     protected open fun getContainerLayout() = R.layout.basekit_view_container
 
-    /**
-     * if true then view will behind status bar
-     */
-    protected open fun isFitScreen() = false
-
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val v: View = if (isCustomLayout) {
             inflater.inflate(getLayoutId(), container, false)
@@ -258,26 +250,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      */
     protected open fun getTitle(): String? = null
 
-    private fun buildView(inflater: LayoutInflater, container: ViewGroup): View {
-
-        val coordinator = inflater.inflate(getContainerLayout(), container, false) as ViewGroup
-
-        // add content view
-        val layoutView = inflater.inflate(getLayoutId(), coordinator, false)
-        coordinator.addView(layoutView)
-        // attach scroll behavior for app bar
-        (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
-            if (layoutParams.behavior == null)
-                layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
-        }
-
-        if (isFitSystem) {
-            ViewCompat.setFitsSystemWindows(coordinator, true)
-        }
-
-        return coordinator
-    }
-
     override fun onChangeStarted(changeHandler: ControllerChangeHandler, changeType: ControllerChangeType) {
         // if use ControllerChangeHandler.removesFromViewOnPush() == false
         // then onCreateOptionMenu fired in page with which user carried out
@@ -286,8 +258,8 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         // if in setHasOptionsMenu() setted true
         setOptionsMenuHidden(true)
 
-        if (changeType == ControllerChangeType.POP_EXIT) {
-            activity.hideKeyboard(activity?.window?.decorView)
+        if (changeType == ControllerChangeType.PUSH_EXIT) {
+            activity.hideKeyboard()
         }
     }
 
@@ -302,5 +274,75 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     override fun onDestroy() {
         super.onDestroy()
         decorators.clear()
+    }
+
+    private fun buildView(inflater: LayoutInflater, container: ViewGroup): View {
+
+        val coordinator = inflater.inflate(getContainerLayout(), container, false) as ViewGroup
+
+        // add content view
+        val layoutView = inflater.inflate(getLayoutId(), coordinator, false)
+        coordinator.addView(layoutView)
+        // attach scroll behavior for app bar
+        (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
+            if (layoutParams.behavior == null)
+                layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
+        }
+
+        if (isFitSystem && Build.VERSION.SDK_INT >= 20) {
+            coordinator.fitsSystemWindows = true
+        }
+
+        return coordinator
+    }
+
+    protected fun <T : View> Array<out T>.offsetForStatusBarByMargin() {
+        if (!this.iterator().hasNext()) return
+
+        val offset = first().context.getStatusBarHeight()
+
+        if (offset == 0) return
+
+        forEach {
+            val params = it.layoutParams as ViewGroup.MarginLayoutParams
+            params.topMargin = offset
+        }
+    }
+
+    protected fun <T : View> Array<out T>.offsetForStatusBarByPadding() {
+        if (!this.iterator().hasNext()) return
+
+        val offset = first().context.getStatusBarHeight()
+
+        if (offset == 0) return
+
+        forEach {
+            it.paddingFast(top = offset + it.paddingTop)
+        }
+    }
+
+    /*
+     * Set padding top when [isFitSystem] = true
+     */
+    private fun setFitSystemToolbarHeight(toolbar: Toolbar) {
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
+            insets.replaceSystemWindowInsets(0, 0, 0, 0)
+        }
+
+        toolbar.requestApplyInsets()
+
+        toolbar.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
+                val location = IntArray(2)
+                toolbar.getLocationOnScreen(location)
+                if (location[1] == 0) {
+                    toolbar.paddingFast(top = toolbar.context.getStatusBarHeight())
+                }
+
+                toolbar.removeOnLayoutChangeListener(this)
+            }
+
+        })
     }
 }

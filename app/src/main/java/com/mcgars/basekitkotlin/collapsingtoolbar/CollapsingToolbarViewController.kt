@@ -16,7 +16,6 @@ class CollapsingToolbarViewController : BaseViewController() {
 
     init {
         isCustomLayout = true
-        isFitSystem = false
         overridePushHandler(CircularRevealChangeHandlerCompat().apply {
             halfPosition = CircularRevealChangeHandler.LEFT_CENTER
         })

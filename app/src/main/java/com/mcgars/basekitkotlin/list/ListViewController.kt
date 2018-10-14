@@ -37,7 +37,7 @@ class ListViewController : BaseRecycleViewController() {
         })
     }
 
-    override fun getAdapter(list: MutableList<*>) = MainMenuAdapter(activity!!, list as MutableList<MenuItem>) { item, position ->
+    override fun getAdapter(list: MutableList<*>) = MainMenuAdapter(activity!!, list as MutableList<MenuItem>) { item, _ ->
         when (item.id) {
             DRAWER -> loadPage(DrawerNavigationViewController())
             PULLABLE -> loadPage(PullableViewController())

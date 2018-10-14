@@ -9,7 +9,11 @@ import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.ConnectivityManager
 import android.os.Build
-import android.support.annotation.*
+import android.support.annotation.AttrRes
+import android.support.annotation.ColorRes
+import android.support.annotation.DrawableRes
+import android.support.annotation.LayoutRes
+import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
@@ -31,7 +35,7 @@ import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.regex.Pattern
+import java.util.regex.*
 
 /**
  * Created by gars on 02.01.2017.
@@ -57,11 +61,9 @@ inline fun View.snack(message: Int, length: Int = Snackbar.LENGTH_LONG, f: Snack
     }.show()
 }
 
-fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG)
-        = Snackbar.make(this, message, length).show()
+fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG) = Snackbar.make(this, message, length).show()
 
-fun View.snack(message: Int, length: Int = Snackbar.LENGTH_LONG)
-        = Snackbar.make(this, message, length).show()
+fun View.snack(message: Int, length: Int = Snackbar.LENGTH_LONG) = Snackbar.make(this, message, length).show()
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
@@ -182,8 +184,8 @@ fun <C : View?> View.find(id: Int) = findViewById<C?>(id)
 
 fun <C : View?> Activity.find(id: Int) = findViewById<C?>(id)
 
-inline fun ViewGroup.forEach(action: View.() -> Unit) {
-    (0 until childCount).forEach { getChildAt(it).action() }
+inline fun ViewGroup.forEach(action: (View) -> Unit) {
+    (0 until childCount).forEach { action(getChildAt(it)) }
 }
 
 /**
@@ -312,8 +314,7 @@ fun Context.getAttributeResourceId(attr: Int): Int {
  * @param attr
  * @return
  */
-fun Context.colorAttr(@AttrRes attr: Int)
-        = ContextCompat.getColor(this, getAttributeResourceId(attr))
+fun Context.colorAttr(@AttrRes attr: Int) = ContextCompat.getColor(this, getAttributeResourceId(attr))
 
 fun Context.color(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 
@@ -323,29 +324,25 @@ fun Context.color(@ColorRes color: Int) = ContextCompat.getColor(this, color)
  * @param attr
  * @return
  */
-fun Context.drawable(@DrawableRes drawable: Int)
-        = ContextCompat.getDrawable(this, drawable)
+fun Context.drawable(@DrawableRes drawable: Int) = ContextCompat.getDrawable(this, drawable)
 
-fun Context.drawableAttr(@AttrRes attr: Int)
-        = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
+fun Context.drawableAttr(@AttrRes attr: Int) = ContextCompat.getDrawable(this, getAttributeResourceId(attr))
 
-fun String.md5(): String? {
-    return trying2<String> {
-        val messageDigest = MessageDigest.getInstance("MD5").run {
-            update(toByteArray())
-            digest()
-        }
-
-        // Create Hex String
-        val hexString = StringBuffer()
-        for (i in messageDigest.indices) {
-            var h = Integer.toHexString(0xFF and messageDigest[i].toInt())
-            while (h.length < 2)
-                h = "0" + h
-            hexString.append(h)
-        }
-        return hexString.toString()
+fun String.md5(): String {
+    val messageDigest = MessageDigest.getInstance("MD5").run {
+        update(toByteArray())
+        digest()
     }
+
+    // Create Hex String
+    val hexString = StringBuffer()
+    for (i in messageDigest.indices) {
+        var h = Integer.toHexString(0xFF and messageDigest[i].toInt())
+        while (h.length < 2)
+            h = "0" + h
+        hexString.append(h)
+    }
+    return hexString.toString()
 }
 
 /**
@@ -431,5 +428,4 @@ fun <T : View> Context.inflate(layout: Int, parent: ViewGroup? = null) =
 /**
  * Inflate view
  */
-fun <T : View> View.inflate(layout: Int, parent: ViewGroup? = null)
-        = context.inflate<T>(layout, parent)
+fun <T : View> View.inflate(layout: Int, parent: ViewGroup? = null) = context.inflate<T>(layout, parent)
