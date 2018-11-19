@@ -4,8 +4,7 @@
     android:id="@+id/appBarlayout"
     android:theme="@style/ToolbarStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fitsSystemWindows="true">
+    android:layout_height="wrap_content">
 
     <include layout="@layout/basekit_toolbaronly" />
 

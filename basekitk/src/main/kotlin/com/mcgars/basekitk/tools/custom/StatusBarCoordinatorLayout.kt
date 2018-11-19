@@ -3,13 +3,10 @@ package com.mcgars.basekitk.tools.custom
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.os.Build
+import android.support.design.widget.CoordinatorLayout
 import android.util.AttributeSet
-import android.view.WindowInsets
-import com.bluelinelabs.conductor.ChangeHandlerFrameLayout
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.tools.colorAttr
-import com.mcgars.basekitk.tools.forEach
 import com.mcgars.basekitk.tools.getStatusBarHeight
 
 
@@ -17,11 +14,11 @@ import com.mcgars.basekitk.tools.getStatusBarHeight
  * In some case fitsystem not work correctly, this draw behind
  * status bar rect with colorAccent
  */
-class StatusBarFrameLayout @JvmOverloads constructor(
+class StatusBarCoordinatorLayout @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ChangeHandlerFrameLayout(context, attrs, defStyleAttr) {
+) : CoordinatorLayout(context, attrs, defStyleAttr) {
 
     private var statusBarHeight = 0f
 
@@ -44,14 +41,4 @@ class StatusBarFrameLayout @JvmOverloads constructor(
             canvas.drawRect(0f, 0f, width.toFloat(), statusBarHeight, paint)
         }
     }
-
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        forEach {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-                it.dispatchApplyWindowInsets(insets)
-            }
-        }
-        return insets
-    }
-
 }

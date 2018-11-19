@@ -12,11 +12,27 @@ import com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler
 
 open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
 
-    constructor()
+    private var modify: AnimationModify? = null
 
-    constructor(duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush)
+    constructor(modify: AnimationModify? = null) {
+        this.modify = modify
+    }
 
-    constructor(fromView: View, containerView: View) : super(fromView, containerView)
+    constructor(
+            duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION,
+            removesFromViewOnPush: Boolean = true,
+            modify: AnimationModify? = null
+    ) : super(duration, removesFromViewOnPush) {
+        this.modify = modify
+    }
+
+    constructor(
+            fromView: View,
+            containerView: View,
+            modify: AnimationModify? = null
+    ) : super(fromView, containerView) {
+        this.modify = modify
+    }
 
     /**
      * Constructor that will create a circular reveal from the center of the fromView parameter.
@@ -32,12 +48,16 @@ open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
             fromView: View,
             containerView: View,
             duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION,
-            removesFromViewOnPush: Boolean = true
+            removesFromViewOnPush: Boolean = true,
+            modify: AnimationModify? = null
     ) : super(
             fromView,
             containerView,
             duration,
-            removesFromViewOnPush)
+            removesFromViewOnPush
+    ) {
+        this.modify = modify
+    }
 
     override fun getAnimator(container: ViewGroup, from: View?, to: View?, isPush: Boolean, toAddedToContainer: Boolean): Animator {
         val animator: Animator
@@ -57,7 +77,7 @@ open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
 
         }
         return animator.apply {
-            AnimatorChangeHandlerWrapper(this, from, to)
+            modify?.apply(this, from, to)
         }
     }
 }

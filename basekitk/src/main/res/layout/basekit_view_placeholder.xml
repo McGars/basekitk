@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView android:id="@+id/tvEmptyListMessage"
+    style="@style/TextAppearance.AppCompat.Title"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/dp16">
-
-    <TextView
-        android:id="@+id/tvEmptyListMessage"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/no_data" />
-
-</FrameLayout>
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:paddingBottom="@dimen/dp16"
+    android:paddingLeft="@dimen/dp16"
+    android:paddingRight="@dimen/dp16"
+    android:paddingTop="100dp"
+    android:text="@string/no_data" />

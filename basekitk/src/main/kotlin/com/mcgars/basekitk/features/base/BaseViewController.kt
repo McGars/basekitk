@@ -23,16 +23,19 @@ import com.bluelinelabs.conductor.ControllerChangeType
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.features.simple.ActivityController
-import com.mcgars.basekitk.tools.*
+import com.mcgars.basekitk.tools.LoaderController
+import com.mcgars.basekitk.tools.colorAttr
+import com.mcgars.basekitk.tools.find
+import com.mcgars.basekitk.tools.hideKeyboard
 import com.mcgars.basekitk.tools.pagecontroller.PageController
-import java.util.*
+import com.mcgars.basekitk.tools.visible
 
 /**
  * Created by gars on 29.12.2016.
  */
 abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
-    val decorators: MutableList<DecoratorListener> = ArrayList()
+    val decorators = mutableListOf<DecoratorListener>()
 
     /**
      * Disable call [ViewCompat.setFitsSystemWindows]
@@ -102,25 +105,17 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     private val readyDecorator = object : DecoratorListener() {
         override fun postCreateView(controller: Controller, view: View) {
             setTitle()
-            onReady(view)
         }
     }
 
     init {
         // find toolbar and tabs
         addDecorator(object : DecoratorListener() {
-            override fun postCreateView(controller: Controller, view: View) {
+            override fun onViewCreated(view: View) {
                 if (getContainerLayout() != 0) {
                     toolbar = view.find<Toolbar>(R.id.toolbar)
                 }
-
                 tabs = view.find(R.id.tablayout)
-            }
-
-            override fun postAttach(controller: Controller, view: View) {
-                if (isFitSystem) {
-                    toolbar?.let { setFitSystemToolbarHeight(it) }
-                }
             }
         })
     }
@@ -220,7 +215,13 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         decorators.forEach { it.onViewCreated(v) }
 
         addDecorator(readyDecorator)
+
         return v
+    }
+
+    override fun onAttach(view: View) {
+        super.onAttach(view)
+        onReady(view)
     }
 
     /**
@@ -282,6 +283,9 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
 
         // add content view
         val layoutView = inflater.inflate(getLayoutId(), coordinator, false)
+
+        fillBackgroundColor(layoutView)
+
         coordinator.addView(layoutView)
         // attach scroll behavior for app bar
         (layoutView.layoutParams as CoordinatorLayout.LayoutParams).let { layoutParams ->
@@ -289,60 +293,19 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
                 layoutParams.behavior = AppBarLayout.ScrollingViewBehavior()
         }
 
-        if (isFitSystem && Build.VERSION.SDK_INT >= 20) {
+        if (isFitSystem && Build.VERSION.SDK_INT >= 21) {
             coordinator.fitsSystemWindows = true
         }
 
         return coordinator
     }
 
-    protected fun <T : View> Array<out T>.offsetForStatusBarByMargin() {
-        if (!this.iterator().hasNext()) return
-
-        val offset = first().context.getStatusBarHeight()
-
-        if (offset == 0) return
-
-        forEach {
-            val params = it.layoutParams as ViewGroup.MarginLayoutParams
-            params.topMargin = offset
+    private fun fillBackgroundColor(v: View) {
+        if (v.background != null) return
+        val backgroundColor = v.context.colorAttr(android.R.attr.windowBackground)
+        if (backgroundColor != 0) {
+            v.setBackgroundColor(backgroundColor)
         }
     }
 
-    protected fun <T : View> Array<out T>.offsetForStatusBarByPadding() {
-        if (!this.iterator().hasNext()) return
-
-        val offset = first().context.getStatusBarHeight()
-
-        if (offset == 0) return
-
-        forEach {
-            it.paddingFast(top = offset + it.paddingTop)
-        }
-    }
-
-    /*
-     * Set padding top when [isFitSystem] = true
-     */
-    private fun setFitSystemToolbarHeight(toolbar: Toolbar) {
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { _, insets ->
-            insets.replaceSystemWindowInsets(0, 0, 0, 0)
-        }
-
-        toolbar.requestApplyInsets()
-
-        toolbar.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-            override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-                val location = IntArray(2)
-                toolbar.getLocationOnScreen(location)
-                if (location[1] == 0) {
-                    toolbar.paddingFast(top = toolbar.context.getStatusBarHeight())
-                }
-
-                toolbar.removeOnLayoutChangeListener(this)
-            }
-
-        })
-    }
 }

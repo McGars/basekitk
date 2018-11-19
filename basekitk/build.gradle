@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.8.1'
+        classpath 'com.novoda:bintray-release:0.9'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -14,7 +14,7 @@ buildscript {
 }
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-def versionN = "0.2.2"
+def versionN = "0.2.3"
 
 android {
     compileSdkVersion rootProject.ext.versionSdkCompile
@@ -29,7 +29,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     sourceSets {

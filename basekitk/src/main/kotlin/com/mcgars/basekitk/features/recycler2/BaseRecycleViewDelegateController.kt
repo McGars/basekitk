@@ -10,6 +10,8 @@ import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.tools.find
+import com.mcgars.basekitk.tools.gone
+import com.mcgars.basekitk.tools.visible
 import java.util.*
 
 /**
@@ -75,7 +77,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
      * Load more items when list scrolls to end
      */
     protected fun initLoading() {
-        recyclerView!!.addOnScrollListener(loadingScroll)
+        recyclerView?.addOnScrollListener(loadingScroll)
     }
 
     /**
@@ -118,8 +120,11 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
         list.indices.mapTo(allList) { list[it] }
 
         if (adapter == null) {
-            adapter = getAdapter(allList)
-            setAdapter(adapter!!)
+            recyclerView?.gone()
+            adapter = getAdapter(allList).also {
+                setAdapter(it)
+            }
+            recyclerView?.visible()
         } else {
             if (customNotify != null)
                 customNotify.invoke(adapter!!)

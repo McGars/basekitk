@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mcgars.basekitk.tools.custom.StatusBarCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground"
-    android:fitsSystemWindows="true"
     android:clickable="true"
     android:focusable="true">
 
     <include layout="@layout/basekit_toolbar" />
 
-</android.support.design.widget.CoordinatorLayout>
+</com.mcgars.basekitk.tools.custom.StatusBarCoordinatorLayout>

@@ -4,7 +4,6 @@ import android.support.annotation.ColorInt
 import android.support.annotation.IdRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
-import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.tools.WrapperUiTool
@@ -18,7 +17,8 @@ import com.mcgars.basekitk.tools.find
 class PullableDecorator private constructor(
         val viewId: Int,
         var swipeLayoutId: Int,
-        val onRefreshListener: SwipeRefreshLayout.OnRefreshListener) : DecoratorListener() {
+        val onRefreshListener: SwipeRefreshLayout.OnRefreshListener
+) : DecoratorListener() {
 
     var swipeRefreshLayout: SwipeRefreshLayout? = null
 
@@ -29,9 +29,10 @@ class PullableDecorator private constructor(
     override fun onViewCreated(view: View) {
         if (viewId != 0) {
             view.find<View?>(viewId)?.let {
-                swipeRefreshLayout = SwipeRefreshLayout(view.context)
-                swipeRefreshLayout!!.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                WrapperUiTool(it, swipeRefreshLayout!!).insert()
+                swipeRefreshLayout = SwipeRefreshLayout(view.context).apply {
+                    layoutParams = it.layoutParams
+                    WrapperUiTool(it, this).insert()
+                }
             }
         } else if (swipeLayoutId != 0) {
             swipeRefreshLayout = view.find(swipeLayoutId)

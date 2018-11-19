@@ -8,12 +8,9 @@ import android.view.View
  * [AnimatorChangeHandler.removesFromViewOnPush]
  * because cpu overdraw
  */
-class AnimatorChangeHandlerWrapper(
-        private val animator: Animator,
-        private val from: View?,
-        private val to: View?
-) {
-    init {
+class AnimatorChangeHandlerWrapper : AnimationModify {
+
+    override fun apply(animator: Animator, from: View?, to: View?) {
         animator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
 

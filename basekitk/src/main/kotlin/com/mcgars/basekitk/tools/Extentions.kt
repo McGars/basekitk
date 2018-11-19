@@ -65,10 +65,6 @@ fun View.snack(message: String, length: Int = Snackbar.LENGTH_LONG) = Snackbar.m
 
 fun View.snack(message: Int, length: Int = Snackbar.LENGTH_LONG) = Snackbar.make(this, message, length).show()
 
-fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
-    return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
-}
-
 fun EditText?.txt(): String {
     return this?.text?.toString()?.trim() ?: ""
 }
@@ -424,8 +420,3 @@ fun Context.getStatusBarHeight(): Int {
  */
 fun <T : View> Context.inflate(layout: Int, parent: ViewGroup? = null) =
         LayoutInflater.from(this).inflate(layout, parent, false) as T
-
-/**
- * Inflate view
- */
-fun <T : View> View.inflate(layout: Int, parent: ViewGroup? = null) = context.inflate<T>(layout, parent)
