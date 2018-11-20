@@ -12,9 +12,11 @@ import com.bluelinelabs.conductor.changehandler.AnimatorChangeHandler
 
 open class CircularRevealChangeHandlerCompat : CircularRevealChangeHandler {
 
-    private var modify: AnimationModify? = null
+    var modify: AnimationModify? = null
 
-    constructor(modify: AnimationModify? = null) {
+    constructor() : super()
+
+    constructor(modify: AnimationModify? = null) : super() {
         this.modify = modify
     }
 
