@@ -6,19 +6,22 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.UiThread
-import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toolbar
-import com.bluelinelabs.conductor.*
+import com.bluelinelabs.conductor.Conductor
+import com.bluelinelabs.conductor.Controller
+import com.bluelinelabs.conductor.ControllerChangeHandler
+import com.bluelinelabs.conductor.Router
+import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.internal.ThreadUtils
 import com.mcgars.basekitk.R
+import com.mcgars.basekitk.config.KitConfig
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.features.simple.ActivityController
+import com.mcgars.basekitk.tools.log
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import com.mcgars.basekitk.tools.permission.BasePermissionController
 import com.mcgars.basekitk.tools.toast
@@ -87,13 +90,13 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
      * @return ActivityController inited in your activity or from [KitConfiguration]
      */
     open fun getAC(): C {
-        if (activityController == null) {
-            if (application is KitConfiguration) {
-                return (application as KitConfiguration).getConfiguration()?.baseActivityController as? C
-                        ?: throw NullPointerException("Please implements KitConfiguration in you Application and init global configuration by KitBuilder")
-            }
-            throw NullPointerException("Please implements KitConfiguration in you Application and init global configuration by KitBuilder")
-        } else return activityController as C
+        return when (activityController) {
+            null -> getKitConfig()?.baseActivityController as? C
+                    ?: throw NullPointerException(
+                            "Please implements KitConfiguration in you Application and " +
+                                    "init global configuration by KitBuilder")
+            else -> return activityController as C
+        }
     }
 
     /**
@@ -155,6 +158,10 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
                 })
             }
 
+            if (getKitConfig()?.isDebug == true) {
+                log { "load page: ${view.javaClass.simpleName}" }
+            }
+
             if (backstack) pushController(transition) else replaceTopController(transition)
         }
     }
@@ -179,9 +186,6 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
             router.popCurrentController()
             return
         }
-
-//        if (alwaysArrow && router.backstackSize > 0)
-//            setHomeArrow(router.backstackSize > 1)
 
         if (doubleBack && !doubleBackPressed())
             return
@@ -312,6 +316,10 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
 
     override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
         isPageLoading = true
+    }
+
+    private fun getKitConfig(): KitConfig? {
+        return (application as? KitConfiguration)?.getConfiguration()
     }
 }
 

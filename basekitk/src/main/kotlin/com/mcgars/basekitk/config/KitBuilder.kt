@@ -19,6 +19,11 @@ class KitBuilder private constructor() {
         return this
     }
 
+    fun setDebug(isDebug: Boolean): KitBuilder {
+        options.isDebug = isDebug
+        return this
+    }
+
     fun build() = options
 
     companion object {
@@ -31,5 +36,6 @@ class KitConfig internal constructor() {
         internal set
     var baseLauncherActivity: Class<out BaseKitActivity<*>>? = null
         internal set
-
+    var isDebug: Boolean = false
+        internal set
 }
