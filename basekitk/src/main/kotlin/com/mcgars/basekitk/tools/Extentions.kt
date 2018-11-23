@@ -1,5 +1,6 @@
 package com.mcgars.basekitk.tools
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
@@ -248,6 +249,7 @@ fun String.match(regexp: String): Boolean {
     return Pattern.compile(regexp).matcher(this).find()
 }
 
+@SuppressLint("MissingPermission")
 fun Context.isInternetAvailable(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     return cm.activeNetworkInfo?.isConnectedOrConnecting ?: false
@@ -393,7 +395,7 @@ inline fun log(tag: String = "supperloger", text: () -> Any?) {
 
 inline fun String?.isNotEmpty(action: (String) -> Unit): String? {
     return if (!this.isNullOrEmpty()) {
-        action(this!!); this
+        action(this); this
     } else null
 }
 
