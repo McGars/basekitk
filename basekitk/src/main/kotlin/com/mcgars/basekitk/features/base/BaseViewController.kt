@@ -105,6 +105,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     private val readyDecorator = object : DecoratorListener() {
         override fun postCreateView(controller: Controller, view: View) {
             setTitle()
+            onReady(view)
         }
     }
 
@@ -217,11 +218,6 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         addDecorator(readyDecorator)
 
         return v
-    }
-
-    override fun onAttach(view: View) {
-        super.onAttach(view)
-        onReady(view)
     }
 
     /**
