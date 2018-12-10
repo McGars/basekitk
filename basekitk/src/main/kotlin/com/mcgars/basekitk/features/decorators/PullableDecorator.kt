@@ -4,11 +4,13 @@ import android.support.annotation.ColorInt
 import android.support.annotation.IdRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
+import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.tools.WrapperUiTool
 import com.mcgars.basekitk.tools.colorAttr
 import com.mcgars.basekitk.tools.find
+import com.mcgars.basekitk.tools.log
 
 /**
  * Created by gars on 09.01.2017.
@@ -28,10 +30,15 @@ class PullableDecorator private constructor(
 
     override fun onViewCreated(view: View) {
         if (viewId != 0) {
-            view.find<View?>(viewId)?.let {
+            view.find<View?>(viewId)?.let { wrappedView ->
                 swipeRefreshLayout = SwipeRefreshLayout(view.context).apply {
-                    layoutParams = it.layoutParams
-                    WrapperUiTool(it, this).insert()
+                    layoutParams = wrappedView.layoutParams
+                    wrappedView.layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+
+                    WrapperUiTool(wrappedView, this).insert()
                 }
             }
         } else if (swipeLayoutId != 0) {
@@ -46,7 +53,7 @@ class PullableDecorator private constructor(
     }
 
     fun showLoader(show: Boolean) = with(swipeRefreshLayout) {
-        this?.post({ isRefreshing = show })
+        this?.post { isRefreshing = show }
     }
 
     override fun preDestroyView(controller: Controller, view: View) {
