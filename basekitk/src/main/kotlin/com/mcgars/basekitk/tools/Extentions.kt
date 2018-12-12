@@ -13,7 +13,6 @@ import android.os.Build
 import android.support.annotation.AttrRes
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
-import android.support.annotation.LayoutRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
