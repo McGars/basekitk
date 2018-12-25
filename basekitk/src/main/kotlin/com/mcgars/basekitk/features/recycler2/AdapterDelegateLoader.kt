@@ -10,7 +10,8 @@ import com.mcgars.basekitk.R
  */
 class AdapterViewLoader<T : Any>(
         private val rootAdapter: AdapterDelegateHeader<T>,
-        private val loaderObject: T) : AdapterDelegate<MutableList<T>> {
+        private val loaderObject: T
+) : AdapterDelegate<T> {
 
     init {
         if (loaderObject !is BottomLoader)
@@ -29,16 +30,16 @@ class AdapterViewLoader<T : Any>(
         }
     }
 
-    override fun isForViewType(items: MutableList<T>, position: Int): Boolean {
+    override fun isForViewType(items: List<T>, position: Int): Boolean {
         return items[position] is BottomLoader
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(kitAdapter: KitAdapter<T>, parent: ViewGroup): RecyclerView.ViewHolder {
         return object : RecyclerView.ViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.basekit_view_loading, parent, false)) {}
     }
 
-    override fun onBindViewHolder(items: MutableList<T>, position: Int, holder: RecyclerView.ViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolder(items: List<T>, position: Int, holder: RecyclerView.ViewHolder, payloads: List<Any>) {
 
     }
 

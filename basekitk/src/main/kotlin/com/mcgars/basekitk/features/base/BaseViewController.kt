@@ -159,6 +159,10 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         (activity as BaseKitActivity<*>).loadPage(viewController, backStack)
     }
 
+    open fun checkPermission(permission: String, listener: ((allow: Boolean) -> Unit)) {
+        (activity as BaseKitActivity<*>).checkPermission(permission, listener)
+    }
+
     /**
      * Add extention decorator who modified current page's view
      */

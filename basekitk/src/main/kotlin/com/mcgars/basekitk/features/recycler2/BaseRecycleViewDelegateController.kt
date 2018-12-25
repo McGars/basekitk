@@ -25,7 +25,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     private var hasMoreItems: Boolean = false
     private var isLoading: Boolean = false
     private var adapter: RecyclerView.Adapter<*>? = null
-    val allList = ArrayList<Any>()
+    val allList = mutableListOf<Any>()
     protected var page = DEFAULT_FIRST_PAGE
     /**
      * If user on the first page, then all list will be cleared when new data arrived
@@ -99,7 +99,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
         hasMoreItems = has
 
         if (adapter is KitAdapter<*>) {
-            showAdapterLoader((adapter as KitAdapter<*>).getDelegates())
+            showAdapterLoader((adapter as KitAdapter<Any>).getDelegates())
         }
     }
 
@@ -134,8 +134,9 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
                 } else {
                     adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)
                 }
-            } else
-                adapter?.notifyDataSetChanged()
+            } else {
+                adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)
+            }
         }
         hasMoreItems(hasmore)
     }
@@ -178,7 +179,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     /*
     * Try show pagination loader
     */
-    private fun showAdapterLoader(delegates: List<AdapterDelegate<out MutableList<out Any?>>>?) {
+    private fun showAdapterLoader(delegates: List<AdapterDelegate<Any>>?) {
         delegates?.forEach {
             if (it is AdapterViewLoader<*>) {
                 it.showLoader(hasMoreItems)

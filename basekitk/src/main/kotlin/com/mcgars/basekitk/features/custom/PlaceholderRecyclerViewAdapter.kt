@@ -135,6 +135,12 @@ class PlaceholderRecyclerViewAdapter<T>(
         return if (isEmpty) 1 else originalAdapter.itemCount
     }
 
+    override fun getItem(position: Int): T {
+        if (isEmpty) throw RuntimeException("List is empty")
+        if (originalAdapter !is KitAdapter<*>) RuntimeException("originalAdapter must implementation KitAdapter ")
+        return (originalAdapter as KitAdapter<T>).getItem(position)
+    }
+
     internal inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var tvMessage: TextView? = itemView.findViewById<View>(errorTextViewId)?.run {
             if (this is TextView) this else null
@@ -278,7 +284,7 @@ class PlaceholderRecyclerViewAdapter<T>(
         }
     }
 
-    override fun getDelegates(): List<AdapterDelegate<MutableList<T>>>? {
+    override fun getDelegates(): List<AdapterDelegate<T>>? {
         return if (originalAdapter is KitAdapter<*>) {
             (originalAdapter as KitAdapter<T>).getDelegates()
         } else null

@@ -7,7 +7,7 @@ import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 
 
-class StateMashineDecorator(
+class StateMachineDecorator(
         private val stateView: StateView
 ) : DecoratorListener() {
 

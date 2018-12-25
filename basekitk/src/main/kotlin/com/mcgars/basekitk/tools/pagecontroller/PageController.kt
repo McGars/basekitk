@@ -1,6 +1,7 @@
 package com.mcgars.basekitk.tools.pagecontroller
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.text.TextUtils
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.base.BaseKitActivity
+import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.BaseKitConstants
@@ -356,24 +358,24 @@ class PageController(private val context: BaseKitActivity<ActivityController>) {
         val ACTIVITY_CONTROLLER = "controller"
         val ADDTOBACKSTACK = "addtobackstack"
 
-        fun getBaseLauncherActivity(context: Activity): Class<out BaseKitActivity<*>> {
-            return when {
-                (context.application is KitConfiguration)
-                        && (context.applicationContext as KitConfiguration).getConfiguration()?.baseLauncherActivity != null -> {
-                    (context.applicationContext as KitConfiguration).getConfiguration()!!.baseLauncherActivity!!
-                }
-                else -> SimpleActivity::class.java
-            }
+        fun getBaseLauncherActivity(context: Context): Class<out BaseKitActivity<*>> {
+            return (context.applicationContext as? KitConfiguration)
+                    ?.getConfiguration()?.baseLauncherActivity
+                    ?: SimpleActivity::class.java
         }
 
-        fun getBaseActivityController(context: Activity): Class<out ActivityController>? {
-            return if (context.applicationContext is KitConfiguration) {
-                (context.application as KitConfiguration).getConfiguration()?.baseActivityController
-            } else null
+        fun getBaseActivityController(context: Context): Class<out ActivityController>? {
+            return (context.applicationContext as? KitConfiguration)?.getConfiguration()?.baseActivityController
         }
 
         fun init(context: BaseKitActivity<*>): PageController {
             return PageController(context)
+        }
+
+        fun getSimpleIntent(context: Context, view: Class<out Controller>): Intent {
+            return Intent(context, getBaseLauncherActivity(context)).apply {
+                putExtra(PageController.CONTROLLER, view)
+            }
         }
     }
 }

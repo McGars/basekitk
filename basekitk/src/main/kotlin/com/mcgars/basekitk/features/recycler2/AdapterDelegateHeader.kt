@@ -1,5 +1,6 @@
 package com.mcgars.basekitk.features.recycler2
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import java.util.*
@@ -17,20 +18,22 @@ interface KitAdapter<T> {
 
     fun addItem(position: Int, item: T)
 
+    fun getItem(position: Int): T
+
     /**
      * @return list of declared delegates
      */
-    fun getDelegates(): List<AdapterDelegate<MutableList<T>>>?
+    fun getDelegates(): List<AdapterDelegate<T>>?
 }
 
 /**
  * Delegate adapter
  */
-open class AdapterDelegateHeader<T>(
-        private val items: MutableList<T>
+open class AdapterDelegateHeader<T : Any>(
+        private var items: MutableList<T>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), KitAdapter<T> {
 
-    private val manager = AdapterDelegatesManager<MutableList<T>>()
+    private val manager = AdapterDelegatesManager<T>()
 
     private val headers = mutableListOf<T>()
     private val footers = mutableListOf<T>()
@@ -39,11 +42,11 @@ open class AdapterDelegateHeader<T>(
     val count
         get() = items.size
 
-    fun addDelegate(deletate: AdapterDelegate<MutableList<T>>) {
+    fun addDelegate(deletate: AdapterDelegate<T>) {
         manager.addDelegate(deletate)
     }
 
-    fun removeDelegate(deletate: AdapterDelegate<MutableList<T>>) {
+    fun removeDelegate(deletate: AdapterDelegate<T>) {
         manager.removeDelegate(deletate)
     }
 
@@ -60,7 +63,7 @@ open class AdapterDelegateHeader<T>(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = manager.onBindViewHolder(items, position, holder)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = manager.onCreateViewHolder(parent, viewType)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = manager.onCreateViewHolder(this, parent, viewType)
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) = manager.onViewRecycled(holder)
 
@@ -151,6 +154,12 @@ open class AdapterDelegateHeader<T>(
 
     fun getItemPosition(item: T) = items.indexOf(item)
 
+    fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback) {
+        val diffResult = DiffUtil.calculateDiff(diffUtilsCallbackProducer.invoke(this.items, items), false)
+        this.items = items.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
     override fun addItem(item: T) {
         items.add(item)
         val position = items.indexOf(item)
@@ -169,7 +178,7 @@ open class AdapterDelegateHeader<T>(
         notifyItemMoved(firstPosition, secondPosition)
     }
 
-    fun getItem(position: Int) = items[position]
+    override fun getItem(position: Int) = items[position]
 
     fun isHeaderOrFooter(position: Int) = when {
         isHeader(position) -> true
@@ -177,7 +186,7 @@ open class AdapterDelegateHeader<T>(
         else -> false
     }
 
-    override fun getDelegates(): List<AdapterDelegate<MutableList<T>>> = manager.run {
+    override fun getDelegates(): List<AdapterDelegate<T>> = manager.run {
         val size = delegates.size()
         return (0..size).map {
             delegates[it]

@@ -49,14 +49,17 @@ import android.view.ViewGroup
  * }
  *
  */
-abstract class AbsListItemAdapterDelegate<in I : T, T, VH : RecyclerView.ViewHolder> : AdapterDelegate<MutableList<T>> {
+abstract class AbsListItemAdapterDelegate<I : T, T, VH : RecyclerView.ViewHolder> : AdapterDelegate<T> {
 
-    override fun isForViewType(items: MutableList<T>, position: Int): Boolean {
+    override fun isForViewType(items: List<T>, position: Int): Boolean {
         return isForViewType(items[position], items, position)
     }
 
-    override fun onBindViewHolder(items: MutableList<T>, position: Int,
-                                  holder: RecyclerView.ViewHolder, payloads: List<Any>) {
+    override fun onBindViewHolder(
+            items: List<T>, position: Int,
+            holder: RecyclerView.ViewHolder,
+            payloads: List<Any>
+    ) {
         onBindViewHolder(items[position] as I, holder as VH)
     }
 
@@ -78,7 +81,7 @@ abstract class AbsListItemAdapterDelegate<in I : T, T, VH : RecyclerView.ViewHol
      * @param parent The ViewGroup parent of the given datasource
      * @return ViewHolder
      */
-    abstract override fun onCreateViewHolder(parent: ViewGroup): VH
+    abstract override fun onCreateViewHolder(kitAdapter: KitAdapter<T>, parent: ViewGroup): VH
 
     /**
      * Called to bind the [RecyclerView.ViewHolder] to the item of the dataset

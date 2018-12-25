@@ -108,8 +108,11 @@ class AdapterDelegatesManager<T> {
      * @see .addDelegate
      * @see .setFallbackDelegate
      */
-    fun addDelegate(viewType: Int,
-                    delegate: AdapterDelegate<T>, allowReplacingDelegate: Boolean = false): AdapterDelegatesManager<T> {
+    fun addDelegate(
+            viewType: Int,
+            delegate: AdapterDelegate<T>,
+            allowReplacingDelegate: Boolean = false
+    ): AdapterDelegatesManager<T> {
 
         if (viewType == FALLBACK_DELEGATE_VIEW_TYPE) {
             throw IllegalArgumentException("The view type = "
@@ -169,14 +172,10 @@ class AdapterDelegatesManager<T> {
      * * ViewType)
      * @throws NullPointerException if items is null
      */
-    fun getItemViewType(items: T, position: Int): Int {
-
-        if (items == null) {
-            throw NullPointerException("Items datasource is null!")
-        }
+    fun getItemViewType(items: List<T>, position: Int): Int {
 
         val delegatesCount = delegates.size()
-        for (i in 0..delegatesCount - 1) {
+        for (i in 0 until delegatesCount) {
             val delegate = delegates.valueAt(i)
             if (delegate.isForViewType(items, position)) {
                 return delegates.keyAt(i)
@@ -199,9 +198,9 @@ class AdapterDelegatesManager<T> {
      * @throws NullPointerException if no AdapterDelegate has been registered for ViewHolders
      * * viewType
      */
-    fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = getDelegateForViewType(viewType)?.run {
-        onCreateViewHolder(parent)
-    } ?: throw NullPointerException("No AdapterDelegate added for ViewType " + viewType)
+    fun onCreateViewHolder(kitAdapter: KitAdapter<T>, parent: ViewGroup, viewType: Int) = getDelegateForViewType(viewType)?.run {
+        onCreateViewHolder(kitAdapter, parent)
+    } ?: throw NullPointerException("No AdapterDelegate added for ViewType $viewType")
 
     /**
      * Must be called from[RecyclerView.Adapter.onBindViewHolder]
@@ -218,13 +217,14 @@ class AdapterDelegatesManager<T> {
      * * viewType
      */
     @JvmOverloads
-    fun onBindViewHolder(items: T, position: Int,
+    fun onBindViewHolder(items: List<T>, position: Int,
                          viewHolder: RecyclerView.ViewHolder, payloads: List<Any> = PAYLOADS_EMPTY_LIST) {
 
-        val delegate = getDelegateForViewType(viewHolder.itemViewType) ?: throw NullPointerException("No delegate found for item at position = "
-                + position
-                + " for viewType = "
-                + viewHolder.itemViewType)
+        val delegate = getDelegateForViewType(viewHolder.itemViewType)
+                ?: throw NullPointerException("No delegate found for item at position = "
+                        + position
+                        + " for viewType = "
+                        + viewHolder.itemViewType)
         delegate.onBindViewHolder(items, position, viewHolder, payloads)
     }
 
@@ -234,12 +234,13 @@ class AdapterDelegatesManager<T> {
      * @param viewHolder The ViewHolder for the view being recycled
      */
     fun onViewRecycled(viewHolder: RecyclerView.ViewHolder) {
-        val delegate = getDelegateForViewType(viewHolder.itemViewType) ?: throw NullPointerException("No delegate found for "
-                + viewHolder
-                + " for item at position = "
-                + viewHolder.adapterPosition
-                + " for viewType = "
-                + viewHolder.itemViewType)
+        val delegate = getDelegateForViewType(viewHolder.itemViewType)
+                ?: throw NullPointerException("No delegate found for "
+                        + viewHolder
+                        + " for item at position = "
+                        + viewHolder.adapterPosition
+                        + " for viewType = "
+                        + viewHolder.itemViewType)
         delegate.onViewRecycled(viewHolder)
     }
 
@@ -256,12 +257,13 @@ class AdapterDelegatesManager<T> {
      * * Default implementation returns false.
      */
     fun onFailedToRecycleView(viewHolder: RecyclerView.ViewHolder): Boolean {
-        val delegate = getDelegateForViewType(viewHolder.itemViewType) ?: throw NullPointerException("No delegate found for "
-                + viewHolder
-                + " for item at position = "
-                + viewHolder.adapterPosition
-                + " for viewType = "
-                + viewHolder.itemViewType)
+        val delegate = getDelegateForViewType(viewHolder.itemViewType)
+                ?: throw NullPointerException("No delegate found for "
+                        + viewHolder
+                        + " for item at position = "
+                        + viewHolder.adapterPosition
+                        + " for viewType = "
+                        + viewHolder.itemViewType)
         return delegate.onFailedToRecycleView(viewHolder)
     }
 
@@ -271,12 +273,13 @@ class AdapterDelegatesManager<T> {
      * @param viewHolder Holder of the view being attached
      */
     fun onViewAttachedToWindow(viewHolder: RecyclerView.ViewHolder) {
-        val delegate = getDelegateForViewType(viewHolder.itemViewType) ?: throw NullPointerException("No delegate found for "
-                + viewHolder
-                + " for item at position = "
-                + viewHolder.adapterPosition
-                + " for viewType = "
-                + viewHolder.itemViewType)
+        val delegate = getDelegateForViewType(viewHolder.itemViewType)
+                ?: throw NullPointerException("No delegate found for "
+                        + viewHolder
+                        + " for item at position = "
+                        + viewHolder.adapterPosition
+                        + " for viewType = "
+                        + viewHolder.itemViewType)
         delegate.onViewAttachedToWindow(viewHolder)
     }
 
@@ -286,12 +289,13 @@ class AdapterDelegatesManager<T> {
      * @param viewHolder Holder of the view being attached
      */
     fun onViewDetachedFromWindow(viewHolder: RecyclerView.ViewHolder) {
-        val delegate = getDelegateForViewType(viewHolder.itemViewType) ?: throw NullPointerException("No delegate found for "
-                + viewHolder
-                + " for item at position = "
-                + viewHolder.adapterPosition
-                + " for viewType = "
-                + viewHolder.itemViewType)
+        val delegate = getDelegateForViewType(viewHolder.itemViewType)
+                ?: throw NullPointerException("No delegate found for "
+                        + viewHolder
+                        + " for item at position = "
+                        + viewHolder.adapterPosition
+                        + " for viewType = "
+                        + viewHolder.itemViewType)
         delegate.onViewDetachedFromWindow(viewHolder)
     }
 

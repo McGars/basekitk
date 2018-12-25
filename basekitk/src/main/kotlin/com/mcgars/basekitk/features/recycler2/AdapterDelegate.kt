@@ -43,7 +43,7 @@ interface AdapterDelegate<T> {
      * *
      * @return true, if this item is responsible,  otherwise false
      */
-    fun isForViewType(items: T, position: Int): Boolean
+    fun isForViewType(items: List<T>, position: Int): Boolean
 
     /**
      * Creates the  [RecyclerView.ViewHolder] for the given data source item
@@ -52,7 +52,7 @@ interface AdapterDelegate<T> {
      * *
      * @return The new instantiated [RecyclerView.ViewHolder]
      */
-    fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
+    fun onCreateViewHolder(kitAdapter: KitAdapter<T>, parent: ViewGroup): RecyclerView.ViewHolder
 
     /**
      * Called to bind the [RecyclerView.ViewHolder] to the item of the datas source set
@@ -65,7 +65,7 @@ interface AdapterDelegate<T> {
      * *
      * @param payloads A non-null list of merged payloads. Can be empty list if requires full update.
      */
-    fun onBindViewHolder(items: T, position: Int, holder: RecyclerView.ViewHolder, payloads: List<Any>)
+    fun onBindViewHolder(items: List<T>, position: Int, holder: RecyclerView.ViewHolder, payloads: List<Any>)
 
     /**
      * Called when a view created by this adapter has been recycled.
