@@ -10,7 +10,6 @@ import android.text.TextUtils
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.base.BaseKitActivity
-import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.BaseKitConstants
@@ -295,16 +294,13 @@ class PageController(private val context: BaseKitActivity<ActivityController>) {
         get() = initView(classView)
 
     private fun initView(_class: Class<out Controller>): Controller? {
-        var view: Controller? = null
-        try {
+        return try {
             val constructor = _class.getConstructor(Bundle::class.java)
-            view = constructor.newInstance(params)
-        } catch (e: NoSuchMethodException) {
+            constructor.newInstance(params)
+        } catch (e: Exception) {
             e.printStackTrace()
-            view = _class.newInstance()
+            _class.newInstance()
         }
-
-        return view
     }
 
     val classView: Class<out Controller>

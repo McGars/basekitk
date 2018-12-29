@@ -164,8 +164,6 @@ abstract class BaseAuthSendler(
         val intent = Intent().apply {
             // put base params
             putExtras(buildParams(auth))
-            //
-            putExtra(PageController.CONTROLLER, (auth as? AuthNext)?.next ?: authViewClass)
             // clear back stack
             if (auth is AuthLogin) {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or
