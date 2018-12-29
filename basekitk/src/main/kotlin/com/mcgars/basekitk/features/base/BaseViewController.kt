@@ -85,7 +85,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     /**
      * Loader blocking ui when show
      */
-    val loader: LoaderController by lazy { LoaderController(view as ViewGroup) }
+    val loader: LoaderController by lazy { LoaderController(view as? ViewGroup) }
 
     /**
      * Settings for all app

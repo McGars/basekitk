@@ -135,7 +135,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
                     adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)
                 }
             } else {
-                adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)
+                adapter?.notifyDataSetChanged()
             }
         }
         hasMoreItems(hasmore)

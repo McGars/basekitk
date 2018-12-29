@@ -16,7 +16,7 @@ import com.mcgars.basekitk.R
 /**
  * Created by Владимир on 25.06.2014.
  */
-class LoaderController constructor(groupToAdd: ViewGroup) {
+class LoaderController constructor(groupToAdd: ViewGroup?) {
 
     private var root: ViewGroup? = null
     private var loader: View? = null
@@ -24,18 +24,14 @@ class LoaderController constructor(groupToAdd: ViewGroup) {
     private var layout: Int = 0
 
     init {
-        var height = ViewGroup.LayoutParams.WRAP_CONTENT
-
+        val height = ViewGroup.LayoutParams.WRAP_CONTENT
         root = groupToAdd
-//        if (root == null) {
-//            root = (activity.findViewById<ViewGroup>(android.R.id.content)).getChildAt(0) as ViewGroup
-//            height = ViewGroup.LayoutParams.MATCH_PARENT
-//        }
-        val coordinator = findCoordinator(root!!)
+
+        val coordinator = findCoordinator(root)
         if (coordinator != null)
             root = coordinator
 
-        if (root !is RelativeLayout && root !is FrameLayout && root !is CoordinatorLayout) {
+        if (root != null && root !is RelativeLayout && root !is FrameLayout && root !is CoordinatorLayout) {
 
             val parent = root!!.parent as ViewGroup
 
@@ -65,25 +61,11 @@ class LoaderController constructor(groupToAdd: ViewGroup) {
         }
     }
 
-    private fun findCoordinatorLayout(root: ViewGroup): ViewGroup? {
-        if (root is CoordinatorLayout)
-            return root
-        for (i in 0..root.childCount - 1) {
-            val v = root.getChildAt(i)
-            if (v is CoordinatorLayout)
-                return v
-            if (v is ViewGroup) {
-                val chaildView = findCoordinatorLayout(v)
-                if (chaildView is CoordinatorLayout)
-                    return chaildView
-            }
-        }
-        return null
-    }
-
     private fun init() {
-        loader = LayoutInflater.from(root!!.context).inflate(if (layout != 0) layout else R.layout.basekit_global_loader, root, false)
-        root?.addView(loader)
+        root?.let {
+            loader = LayoutInflater.from(it.context).inflate(if (layout != 0) layout else R.layout.basekit_global_loader, root, false)
+            root?.addView(loader)
+        }
     }
 
     fun show() {
@@ -122,7 +104,7 @@ class LoaderController constructor(groupToAdd: ViewGroup) {
 
     private fun getAnimation(anim: Int): Animation {
         loader?.clearAnimation()
-        return AnimationUtils.loadAnimation(root!!.context, anim)
+        return AnimationUtils.loadAnimation(loader!!.context, anim)
     }
 
     fun setLoaderView(@LayoutRes layout: Int) {

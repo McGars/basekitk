@@ -10,7 +10,6 @@ import com.mcgars.basekitk.R
 import com.mcgars.basekitk.tools.WrapperUiTool
 import com.mcgars.basekitk.tools.colorAttr
 import com.mcgars.basekitk.tools.find
-import com.mcgars.basekitk.tools.log
 
 /**
  * Created by gars on 09.01.2017.
@@ -23,6 +22,7 @@ class PullableDecorator private constructor(
 ) : DecoratorListener() {
 
     var swipeRefreshLayout: SwipeRefreshLayout? = null
+        private set
 
     fun setColor(@ColorInt color: Int) {
         swipeRefreshLayout?.setColorSchemeColors(color)
