@@ -118,8 +118,10 @@ open class AdapterDelegateHeader<T : Any>(
 
     override fun removeItemByPosition(position: Int) {
         val fixPos = position + headers.size
-        items.removeAt(position)
-        notifyItemRemoved(fixPos)
+        if (items.size > fixPos) {
+            items.removeAt(position)
+            notifyItemRemoved(fixPos)
+        }
     }
 
     override fun removeItem(item: T) {

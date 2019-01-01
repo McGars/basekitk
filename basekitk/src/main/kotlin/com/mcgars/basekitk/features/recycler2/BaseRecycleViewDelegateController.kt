@@ -2,6 +2,7 @@ package com.mcgars.basekitk.features.recycler2
 
 import android.os.Bundle
 import android.support.annotation.CallSuper
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -12,7 +13,7 @@ import com.mcgars.basekitk.features.decorators.DecoratorListener
 import com.mcgars.basekitk.tools.find
 import com.mcgars.basekitk.tools.gone
 import com.mcgars.basekitk.tools.visible
-import java.util.*
+import java.lang.RuntimeException
 
 /**
  * Created by Владимир on 22.09.2015.
@@ -104,7 +105,25 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     }
 
     /**
+     * TODO через стратегию переделать
+     */
+    protected fun prepareData(
+            list: List<Any>,
+            diffUtil: (List<Any>, List<Any>) -> DiffUtil.Callback
+    ) {
+        if (adapter == null) {
+            adapter = getAdapter(mutableListOf<Any>()).also {
+                setAdapter(it)
+            }
+        }
+
+        (adapter as? AdapterDelegateHeader<Any>)?.set(list, diffUtil)
+                ?: throw  RuntimeException("Use AdapterDelegateHeader only")
+    }
+
+    /**
      * You must call this when data is ready to show for UI
+     * TODO через стратегию переделать
      */
     protected fun prepareData(
             list: List<Any>,
@@ -114,8 +133,9 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
         if (activity == null)
             return
 
-        if (clearOnFirstPage && page == DEFAULT_FIRST_PAGE)
+        if (clearOnFirstPage && page == DEFAULT_FIRST_PAGE) {
             allList.clear()
+        }
 
         list.indices.mapTo(allList) { list[it] }
 
@@ -149,7 +169,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     }
 
     protected fun removeItem(position: Int) {
-        if (allList.size > position && adapter is KitAdapter<*>) {
+        if (adapter is KitAdapter<*>) {
             (adapter as KitAdapter<*>).removeItemByPosition(position)
         }
     }
