@@ -30,6 +30,15 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
+fun View.offsetForStatusBarByMargin() {
+
+    val offset = context.getStatusBarHeight()
+
+    if (offset == 0) return
+    val params = layoutParams as ViewGroup.MarginLayoutParams
+    params.topMargin = offset
+}
+
 fun <T : View> Array<out T>.offsetForStatusBarByMargin() {
     if (!this.iterator().hasNext()) return
 

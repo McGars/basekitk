@@ -1,4 +1,4 @@
-package ru.altarix.mos.reception.tools
+package com.mcgars.basekitk.features.recycler
 
 import android.graphics.Rect
 import android.support.v7.widget.LinearLayoutManager
