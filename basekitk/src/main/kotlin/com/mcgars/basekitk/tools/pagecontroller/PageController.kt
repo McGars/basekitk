@@ -293,7 +293,8 @@ class PageController(private val context: BaseKitActivity<ActivityController>) {
     val controller: Controller?
         get() = initView(classView)
 
-    private fun initView(_class: Class<out Controller>): Controller? {
+    private fun initView(_class: Class<out Controller>?): Controller? {
+        if (_class == null) return null
         return try {
             val constructor = _class.getConstructor(Bundle::class.java)
             constructor.newInstance(params)
@@ -303,8 +304,8 @@ class PageController(private val context: BaseKitActivity<ActivityController>) {
         }
     }
 
-    val classView: Class<out Controller>
-        get() = params.getSerializable(CONTROLLER) as Class<out Controller>
+    private val classView: Class<out Controller>?
+        get() = params.getSerializable(CONTROLLER) as? Class<out Controller>
 
     private fun setParamFromAnno(pageAnn: Page?, pos: Int, `val`: Any) {
         if (pageAnn != null) {
