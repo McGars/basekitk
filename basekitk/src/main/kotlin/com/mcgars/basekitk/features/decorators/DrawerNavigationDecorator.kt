@@ -1,6 +1,6 @@
 package com.mcgars.basekitk.features.decorators
 
-import android.support.annotation.MenuRes
+import androidx.annotation.MenuRes
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup

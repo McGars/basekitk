@@ -1,9 +1,9 @@
 package com.mcgars.basekitk.features.search
 
-import android.support.annotation.IdRes
-import android.support.annotation.MenuRes
-import android.support.v4.view.MenuItemCompat
-import android.support.v7.widget.SearchView
+import androidx.annotation.IdRes
+import androidx.annotation.MenuRes
+import androidx.core.view.MenuItemCompat
+import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem

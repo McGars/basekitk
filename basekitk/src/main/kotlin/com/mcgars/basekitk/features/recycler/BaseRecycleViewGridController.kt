@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.features.recycler
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mcgars.basekitk.features.recycler.HeaderRecyclerAdapter.Companion.TYPE_FOOTER
 import com.mcgars.basekitk.features.recycler.HeaderRecyclerAdapter.Companion.TYPE_HEADER
 import com.mcgars.basekitk.features.recycler.HeaderRecyclerAdapter.Companion.TYPE_ITEM

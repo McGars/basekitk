@@ -4,16 +4,16 @@ import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.annotation.DrawableRes
-import android.support.annotation.LayoutRes
-import android.support.annotation.StringRes
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.annotation.CallSuper
+import androidx.annotation.DrawableRes
+import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import com.google.android.material.appbar.AppBarLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.tabs.TabLayout
+import androidx.core.view.ViewCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +22,6 @@ import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.ControllerChangeType
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.decorators.DecoratorListener
-import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.tools.LoaderController
 import com.mcgars.basekitk.tools.colorAttr
 import com.mcgars.basekitk.tools.find
@@ -80,7 +79,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      * Run page in new Activity without create new Activity
      */
     val pageController: PageController
-        get() = (activity as BaseKitActivity<*>).pageController
+        get() = (activity as BaseKitActivity).pageController
 
     /**
      * Loader blocking ui when show
@@ -91,7 +90,7 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
      * Settings for all app
      */
     val settings: SharedPreferences
-        get() = (activity as BaseKitActivity<*>).settings
+        get() = (activity as BaseKitActivity).settings
 
     /**
      * If is false then [getLayoutId] wraps by [CoordinatorLayout]
@@ -146,21 +145,14 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
     protected open fun getTitleInt() = 0
 
     /**
-     * Life cycle of the Activity
-     */
-    fun <C : ActivityController> getAc(): C? {
-        return (activity as? BaseKitActivity<C>)?.getAC()
-    }
-
-    /**
      * Show page to user
      */
     open fun loadPage(viewController: Controller, backStack: Boolean = true) {
-        (activity as BaseKitActivity<*>).loadPage(viewController, backStack)
+        (activity as BaseKitActivity).loadPage(viewController, backStack)
     }
 
     open fun checkPermission(permission: String, listener: ((allow: Boolean) -> Unit)) {
-        (activity as BaseKitActivity<*>).checkPermission(permission, listener)
+        (activity as BaseKitActivity).checkPermission(permission, listener)
     }
 
     /**

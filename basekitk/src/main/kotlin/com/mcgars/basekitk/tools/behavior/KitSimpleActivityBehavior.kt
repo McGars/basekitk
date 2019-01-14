@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.tools.behavior
 
 import android.content.Context
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.CoordinatorLayout
+import com.google.android.material.appbar.AppBarLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import android.util.AttributeSet
 import android.view.View
 
@@ -14,7 +14,7 @@ class KitSimpleActivityBehavior : AppBarLayout.ScrollingViewBehavior {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
-    override fun onDependentViewChanged(parent: CoordinatorLayout?, child: View?, dependency: View): Boolean {
+    override fun onDependentViewChanged(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
         val bool = super.onDependentViewChanged(parent, child, dependency)
 //        child?.let {
 //            if (child.id == R.id.contentFrame && child.paddingTop >= 0) {

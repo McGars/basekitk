@@ -16,7 +16,7 @@
 
 package com.mcgars.basekitk.features.recycler2
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 
 /**

@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.features.navigation
 
-import android.support.annotation.MenuRes
-import android.support.design.widget.NavigationView
-import android.support.v7.widget.Toolbar
+import androidx.annotation.MenuRes
+import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.base.BaseViewController

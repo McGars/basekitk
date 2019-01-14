@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.features.recycler2
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 
 /**
  * Created by Владимир on 22.09.2015.

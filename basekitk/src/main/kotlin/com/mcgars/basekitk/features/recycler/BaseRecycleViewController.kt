@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.features.recycler
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.base.BaseViewController

@@ -1,10 +1,10 @@
 package com.mcgars.basekitk.features.recycler2
 
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.CallSuper
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
@@ -34,11 +34,13 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     var clearOnFirstPage = true
 
     private var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-            val visibleItemCount = layoutManager!!.childCount
-            val totalItemCount = layoutManager!!.itemCount
-            val pastVisiblesItems = layoutManager!!.findFirstVisibleItemPosition()
+            val  recyclerLayoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+
+            val visibleItemCount = recyclerLayoutManager.childCount
+            val totalItemCount = recyclerLayoutManager.itemCount
+            val pastVisiblesItems = recyclerLayoutManager.findFirstVisibleItemPosition()
 
             val lastVisibleItem = visibleItemCount + pastVisiblesItems
             if (!isLoading && hasMoreItems) {

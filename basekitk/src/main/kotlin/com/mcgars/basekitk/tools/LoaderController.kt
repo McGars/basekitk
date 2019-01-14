@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.tools
 
 import android.os.Build
-import android.support.annotation.LayoutRes
-import android.support.design.widget.CoordinatorLayout
+import androidx.annotation.LayoutRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

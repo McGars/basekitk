@@ -1,15 +1,14 @@
 package com.mcgars.basekitk.features.base
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.UiThread
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.UiThread
+import androidx.appcompat.app.AppCompatActivity
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
@@ -20,7 +19,6 @@ import com.mcgars.basekitk.R
 import com.mcgars.basekitk.config.KitConfig
 import com.mcgars.basekitk.config.KitConfiguration
 import com.mcgars.basekitk.features.decorators.DecoratorListener
-import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.tools.log
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import com.mcgars.basekitk.tools.permission.BasePermissionController
@@ -34,7 +32,7 @@ import kotlin.properties.Delegates
  * Базовая активити, от которой наследуються все активити проекта в основном
  */
 @Suppress("UNCHECKED_CAST")
-abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
+abstract class BaseKitActivity : AppCompatActivity(), ControllerChangeHandler.ControllerChangeListener {
 
     val TAG = "BaseKitActivity"
 
@@ -54,14 +52,6 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
 
     protected val permissionController: BasePermissionController by lazy { BasePermissionController(this) }
 
-    /**
-     * Контроллер, который включает в себя жизненный цикл активити
-     * все базовые инициализации которые дожны быть в базовом активити
-     * необходимо писать туда
-     * а уже в коде вызывать activity.getAC().getNeedMethod()
-     */
-    private var activityController: C? = null
-
     private var router: Router by Delegates.notNull()
 
     /**
@@ -71,32 +61,9 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityController = initActivityController()
         setContentView(getLayoutId())
         router = Conductor.attachRouter(this, findViewById(R.id.contentFrame), savedInstanceState)
         router.addChangeListener(this)
-        activityController?.onCreate(savedInstanceState)
-    }
-
-    /**
-     * Контроллер, который включает в себя жизненный цикл активити
-     * все базовые инициализации которые дожны быть в базовом активити
-     * необходимо писать туда
-     * а уже в коде вызывать activity.getAC().getNeedMethod()
-     */
-    abstract fun initActivityController(): C?
-
-    /**
-     * @return ActivityController inited in your activity or from [KitConfiguration]
-     */
-    open fun getAC(): C {
-        return when (activityController) {
-            null -> getKitConfig()?.baseActivityController as? C
-                    ?: throw NullPointerException(
-                            "Please implements KitConfiguration in you Application and " +
-                                    "init global configuration by KitBuilder")
-            else -> return activityController as C
-        }
     }
 
     /**
@@ -178,10 +145,6 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
             return
         }
 
-        // Check if we can back pressed from activity controller
-        if (activityController?.onBackPressed() == true)
-            return
-
         if (router.backstackSize > 1) {
             router.popCurrentController()
             return
@@ -230,8 +193,6 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (activityController?.onOptionsItemSelected(item) == true)
-            return true
         if (item.itemId == android.R.id.home) {
             if (router.onOptionsItemSelected(item))
                 return true
@@ -241,14 +202,8 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        activityController?.onActivityResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onResume() {
         super.onResume()
-        activityController?.onResume()
         if (CLOSE_APLICATION) {
             if (isTaskRoot)
                 CLOSE_APLICATION = false
@@ -257,14 +212,8 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
     }
 
     override fun onDestroy() {
-        activityController?.onDestroy()
         router.removeChangeListener(this)
         super.onDestroy()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        activityController?.onPause()
     }
 
     open fun setHomeArrow(arrow: Boolean) {
@@ -286,16 +235,6 @@ abstract class BaseKitActivity<out C : ActivityController> : AppCompatActivity()
     }
 
     override fun setTitle(text: Int) = setTitle(getString(text))
-
-    override fun onStart() {
-        super.onStart()
-        activityController?.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        activityController?.onStop()
-    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

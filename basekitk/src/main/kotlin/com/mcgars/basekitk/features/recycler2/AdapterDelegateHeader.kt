@@ -1,7 +1,7 @@
 package com.mcgars.basekitk.features.recycler2
 
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import java.util.*
 
@@ -190,7 +190,7 @@ open class AdapterDelegateHeader<T : Any>(
 
     override fun getDelegates(): List<AdapterDelegate<T>> = manager.run {
         val size = delegates.size()
-        return (0..size).map {
+        return (0 until size).mapNotNull {
             delegates[it]
         }
     }

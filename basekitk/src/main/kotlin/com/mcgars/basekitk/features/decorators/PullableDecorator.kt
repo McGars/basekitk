@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.features.decorators
 
-import android.support.annotation.ColorInt
-import android.support.annotation.IdRes
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.annotation.ColorInt
+import androidx.annotation.IdRes
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller

@@ -3,7 +3,7 @@ package com.mcgars.basekitk.tools.custom
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.support.design.widget.CoordinatorLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import android.util.AttributeSet
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.tools.colorAttr

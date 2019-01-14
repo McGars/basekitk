@@ -4,12 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.annotation.IntDef
+import androidx.annotation.IdRes
+import androidx.annotation.IntDef
 import com.bluelinelabs.conductor.Controller
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.drawer.BaseDrawerNavigationViewController
-import com.mcgars.basekitk.features.simple.ActivityController
 import com.mcgars.basekitk.features.simple.SimpleActivity
 import com.mcgars.basekitk.tools.pagecontroller.PageController
 import java.io.Serializable
@@ -74,8 +73,7 @@ interface AuthItem : Serializable {
 
 abstract class BaseAuthSendler(
         open val authViewClass: Class<out BaseViewController>,
-        open val authActivityClass: Class<out Activity> = SimpleActivity::class.java,
-        open val activityController: Class<out ActivityController>? = null
+        open val authActivityClass: Class<out Activity> = SimpleActivity::class.java
 ) {
 
     /**
@@ -93,7 +91,7 @@ abstract class BaseAuthSendler(
      *
      * @return true if user already authorized
      */
-    fun launch(context: BaseKitActivity<*>, auth: AuthItem): Boolean {
+    fun launch(context: BaseKitActivity, auth: AuthItem): Boolean {
         // flag that user is authorized
         if (isAuth() && auth is AuthReturn) return true
         // start activity
@@ -114,8 +112,6 @@ abstract class BaseAuthSendler(
         return Bundle().apply {
             // fill users params
             putAll(arguments)
-            // add activity controller
-            if (activityController != null) putSerializable(PageController.ACTIVITY_CONTROLLER, activityController)
             // set type auth
             putSerializable(PageController.AUTH_CONTROLLER, auth)
         }
@@ -148,7 +144,7 @@ abstract class BaseAuthSendler(
      * @param context activity
      * @param auth logic for route
      */
-    fun loadPage(context: BaseKitActivity<*>, auth: AuthItem) {
+    fun loadPage(context: BaseKitActivity, auth: AuthItem) {
         // if no auth load auth page or page that request
         if (auth is AuthNext) {
             context.loadPage(createViewController(auth.next, auth))
@@ -159,7 +155,7 @@ abstract class BaseAuthSendler(
     }
 
     /** returns intent prepared to start. Only for activity mode */
-    fun getIntent(context: BaseKitActivity<*>, auth: AuthItem): Intent {
+    fun getIntent(context: BaseKitActivity, auth: AuthItem): Intent {
 
         val intent = Intent().apply {
             // put base params

@@ -1,8 +1,8 @@
 package com.mcgars.basekitk.features.decorators
 
-import android.support.annotation.IdRes
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.IdRes
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.mcgars.basekitk.tools.find
 
@@ -44,12 +44,11 @@ class MoreLoadDecorator(@IdRes val recyclerView: Int, val listener: (page: Int) 
     private fun getLoadingListener(): RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-            if (!(recyclerView.layoutManager is LinearLayoutManager))
-                return
+            val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
 
-            val visibleItemCount = recyclerView.layoutManager.childCount
-            val totalItemCount = recyclerView.layoutManager.itemCount
-            val pastVisiblesItems = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val pastVisiblesItems = layoutManager.findFirstVisibleItemPosition()
 
             val lastVisibleItem = visibleItemCount + pastVisiblesItems
             if (!isLoading && hasMoreItems) {
