@@ -53,8 +53,8 @@ dependencies {
     api ("com.bluelinelabs:conductor-support:$conductor") {
         exclude group: 'com.android.support'
     }
-    compileOnly "com.google.android.material:material:${rootProject.ext.versionSdkAndroid}"
-    compileOnly "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkAndroid}"
+    implementation "com.google.android.material:material:${rootProject.ext.versionSdkAndroid}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkAndroid}"
 }
 
 def filePatch = "$project.rootDir/keybitray.properties"
