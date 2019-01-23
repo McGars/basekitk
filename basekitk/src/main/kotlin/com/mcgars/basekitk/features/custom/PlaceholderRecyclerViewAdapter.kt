@@ -135,7 +135,7 @@ class PlaceholderRecyclerViewAdapter<T>(
         return if (isEmpty) 1 else originalAdapter.itemCount
     }
 
-    override fun getItem(position: Int): T {
+    override fun getItem(position: Int): T? {
         if (isEmpty) throw RuntimeException("List is empty")
         if (originalAdapter !is KitAdapter<*>) RuntimeException("originalAdapter must implementation KitAdapter ")
         return (originalAdapter as KitAdapter<T>).getItem(position)

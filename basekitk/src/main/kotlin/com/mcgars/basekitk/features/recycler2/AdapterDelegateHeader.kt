@@ -18,7 +18,7 @@ interface KitAdapter<T> {
 
     fun addItem(position: Int, item: T)
 
-    fun getItem(position: Int): T
+    fun getItem(position: Int): T?
 
     /**
      * @return list of declared delegates
@@ -180,7 +180,7 @@ open class AdapterDelegateHeader<T : Any>(
         notifyItemMoved(firstPosition, secondPosition)
     }
 
-    override fun getItem(position: Int) = items[position]
+    override fun getItem(position: Int): T? = if (position == RecyclerView.NO_POSITION) null else items[position]
 
     fun isHeaderOrFooter(position: Int) = when {
         isHeader(position) -> true
