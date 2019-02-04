@@ -111,7 +111,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
      */
     protected fun prepareData(
             list: List<Any>,
-            diffUtil: (List<Any>, List<Any>) -> DiffUtil.Callback
+            diffUtil: (oldItems: List<Any>, newItems: List<Any>) -> DiffUtil.Callback
     ) {
         if (adapter == null) {
             adapter = getAdapter(mutableListOf<Any>()).also {
