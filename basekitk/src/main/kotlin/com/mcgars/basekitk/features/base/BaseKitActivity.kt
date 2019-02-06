@@ -2,6 +2,7 @@ package com.mcgars.basekitk.features.base
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -255,6 +256,16 @@ abstract class BaseKitActivity : AppCompatActivity(), ControllerChangeHandler.Co
 
     override fun onChangeStarted(to: Controller?, from: Controller?, isPush: Boolean, container: ViewGroup, handler: ControllerChangeHandler) {
         isPageLoading = true
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        router.backstack.forEach { transition ->
+            val controller = transition.controller()
+            if (controller is BaseViewController) {
+                controller.onConfigurationChanged(newConfig)
+            }
+        }
     }
 
     private fun getKitConfig(): KitConfig? {

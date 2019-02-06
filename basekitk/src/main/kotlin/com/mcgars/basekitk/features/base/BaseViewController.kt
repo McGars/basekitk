@@ -1,6 +1,7 @@
 package com.mcgars.basekitk.features.base
 
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -261,6 +262,17 @@ abstract class BaseViewController(args: Bundle? = null) : Controller(args) {
         if (changeType == ControllerChangeType.PUSH_ENTER || changeType == ControllerChangeType.POP_ENTER) {
             // show menu if in setHasOptionsMenu() setted true
             setOptionsMenuHidden(false)
+        }
+    }
+
+    open fun onConfigurationChanged(newConfig: Configuration) {
+        childRouters.forEach { childRouter ->
+            childRouter.backstack.forEach { transition ->
+                val controller = transition.controller()
+                if (controller is BaseViewController) {
+                    controller.onConfigurationChanged(newConfig)
+                }
+            }
         }
     }
 
