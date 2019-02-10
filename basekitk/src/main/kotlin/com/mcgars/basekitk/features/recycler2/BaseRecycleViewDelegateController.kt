@@ -119,6 +119,9 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             }
         }
 
+        allList.clear()
+        list.mapTo(allList) { it }
+
         (adapter as? AdapterDelegateHeader<Any>)?.set(list, diffUtil)
                 ?: throw  RuntimeException("Use AdapterDelegateHeader only")
     }
@@ -139,7 +142,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             allList.clear()
         }
 
-        list.indices.mapTo(allList) { list[it] }
+        list.mapTo(allList) { it }
 
         if (adapter == null) {
             recyclerView?.gone()

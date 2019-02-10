@@ -18,6 +18,8 @@ interface KitAdapter<T> {
 
     fun addItem(position: Int, item: T)
 
+    fun setItem(position: Int, item: T)
+
     fun getItem(position: Int): T?
 
     /**
@@ -155,6 +157,13 @@ open class AdapterDelegateHeader<T : Any>(
     }
 
     fun getItemPosition(item: T) = items.indexOf(item)
+
+    override fun setItem(position: Int, item: T) {
+        if (position >= 0 && items.size > position) {
+            items[position] = item
+            notifyItem(position)
+        }
+    }
 
     fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback) {
         val diffResult = DiffUtil.calculateDiff(diffUtilsCallbackProducer.invoke(this.items, items), false)

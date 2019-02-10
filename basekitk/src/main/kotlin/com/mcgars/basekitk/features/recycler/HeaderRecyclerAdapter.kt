@@ -205,6 +205,14 @@ abstract class HeaderRecyclerAdapter<T, H : RecyclerView.ViewHolder>(
         notifyItemInserted(fixPos)
     }
 
+    fun set(position: Int, item: T) {
+        val fixPos = position + headers.size
+        if (position > 0 && items.size > position) {
+            items[position] = item
+            notifyItem(fixPos)
+        }
+    }
+
     //add a footer to the adapter
     fun addFooter(footer: View) {
         if (!footers.contains(footer)) {

@@ -284,6 +284,12 @@ class PlaceholderRecyclerViewAdapter<T>(
         }
     }
 
+    override fun setItem(position: Int, item: T) {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>).setItem(position, item)
+        }
+    }
+
     override fun getDelegates(): List<AdapterDelegate<T>>? {
         return if (originalAdapter is KitAdapter<*>) {
             (originalAdapter as KitAdapter<T>).getDelegates()
