@@ -19,14 +19,11 @@ import java.lang.RuntimeException
  * Created by Владимир on 22.09.2015.
  */
 abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseViewController(args) {
-    protected open var layoutManager: LinearLayoutManager? = null
-        get() = recyclerView?.layoutManager as LinearLayoutManager?
     var recyclerView: RecyclerView? = null
         private set
     private var hasMoreItems: Boolean = false
     private var isLoading: Boolean = false
     private var adapter: RecyclerView.Adapter<*>? = null
-    val allList = mutableListOf<Any>()
     protected var page = DEFAULT_FIRST_PAGE
     /**
      * If user on the first page, then all list will be cleared when new data arrived
@@ -71,6 +68,8 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     fun setDefaultPage() {
         page = DEFAULT_FIRST_PAGE
     }
+
+    fun isFirstPage(): Boolean = page == DEFAULT_FIRST_PAGE
 
     fun getAdapter() = adapter
 
@@ -119,11 +118,8 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             }
         }
 
-        allList.clear()
-        list.mapTo(allList) { it }
-
-        (adapter as? AdapterDelegateHeader<Any>)?.set(list, diffUtil)
-                ?: throw  RuntimeException("Use AdapterDelegateHeader only")
+        (adapter as? KitAdapter<Any>)?.set(list, diffUtil)
+                ?: throw  RuntimeException("Use KitAdapter only")
     }
 
     /**
@@ -139,28 +135,20 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             return
 
         if (clearOnFirstPage && page == DEFAULT_FIRST_PAGE) {
-            allList.clear()
+            (adapter as? KitAdapter<*>)?.clear()
         }
-
-        list.mapTo(allList) { it }
 
         if (adapter == null) {
             recyclerView?.gone()
-            adapter = getAdapter(allList).also {
+            adapter = getAdapter(list as MutableList<*>).also {
                 setAdapter(it)
             }
             recyclerView?.visible()
         } else {
-            if (customNotify != null)
-                customNotify.invoke(adapter!!)
-            else if ((!clearOnFirstPage || page > DEFAULT_FIRST_PAGE) && list.isNotEmpty()) {
-                if (adapter is AdapterDelegateHeader<*>) {
-                    (adapter as AdapterDelegateHeader<*>).notifyItemsInserted(allList.size - list.size, list.size)
-                } else {
-                    adapter?.notifyItemRangeChanged(allList.size - list.size, list.size)
-                }
-            } else {
-                adapter?.notifyDataSetChanged()
+            when {
+                customNotify != null -> customNotify.invoke(adapter!!)
+                list.isNotEmpty() -> (adapter as KitAdapter<Any>).addItems(list)
+                else -> adapter?.notifyDataSetChanged()
             }
         }
         hasMoreItems(hasmore)

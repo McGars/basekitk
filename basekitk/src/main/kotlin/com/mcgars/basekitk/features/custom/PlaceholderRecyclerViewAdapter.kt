@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import com.mcgars.basekitk.R
 import com.mcgars.basekitk.features.recycler2.AdapterDelegate
 import com.mcgars.basekitk.features.recycler2.KitAdapter
@@ -284,9 +285,27 @@ class PlaceholderRecyclerViewAdapter<T>(
         }
     }
 
+    override fun addItems(items: List<T>) {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>)?.addItems(items)
+        }
+    }
+
     override fun setItem(position: Int, item: T) {
         if (originalAdapter is KitAdapter<*>) {
             (originalAdapter as KitAdapter<T>).setItem(position, item)
+        }
+    }
+
+    override fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback) {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>).set(items, diffUtilsCallbackProducer)
+        }
+    }
+
+    override fun clear() {
+        if (originalAdapter is KitAdapter<*>) {
+            (originalAdapter as KitAdapter<T>).clear()
         }
     }
 

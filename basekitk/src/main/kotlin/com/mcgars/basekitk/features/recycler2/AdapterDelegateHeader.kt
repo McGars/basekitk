@@ -16,11 +16,17 @@ interface KitAdapter<T> {
 
     fun addItem(item: T)
 
+    fun addItems(items: List<T>)
+
     fun addItem(position: Int, item: T)
 
     fun setItem(position: Int, item: T)
 
     fun getItem(position: Int): T?
+
+    fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback)
+
+    fun clear()
 
     /**
      * @return list of declared delegates
@@ -165,7 +171,7 @@ open class AdapterDelegateHeader<T : Any>(
         }
     }
 
-    fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback) {
+    override fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback) {
         val diffResult = DiffUtil.calculateDiff(diffUtilsCallbackProducer.invoke(this.items, items), false)
         this.items = items.toMutableList()
         diffResult.dispatchUpdatesTo(this)
@@ -184,12 +190,20 @@ open class AdapterDelegateHeader<T : Any>(
         notifyItemInserted(fixPos)
     }
 
+    override fun addItems(items: List<T>) {
+        val beforeSize = this.items.size + headers.size
+        this.items.addAll(items)
+        notifyItemsInserted(beforeSize, this.items.size - beforeSize)
+    }
+
     fun swap(firstPosition: Int, secondPosition: Int) {
         Collections.swap(items, firstPosition, secondPosition)
         notifyItemMoved(firstPosition, secondPosition)
     }
 
     override fun getItem(position: Int): T? = if (position == RecyclerView.NO_POSITION) null else items[position]
+
+    override fun clear() = items.clear()
 
     fun isHeaderOrFooter(position: Int) = when {
         isHeader(position) -> true

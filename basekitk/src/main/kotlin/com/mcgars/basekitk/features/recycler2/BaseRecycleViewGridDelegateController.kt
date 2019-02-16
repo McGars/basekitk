@@ -19,7 +19,7 @@ abstract class BaseRecycleViewGridDelegateController(args: Bundle? = null) : Bas
     }
 
     fun setAutoSpan(mCount: Int) {
-        with(layoutManager as GridLayoutManager) {
+        with(recyclerView?.layoutManager as GridLayoutManager) {
             if (spanCount != mCount) {
                 val position = findFirstCompletelyVisibleItemPosition()
                 spanCount = mCount
@@ -36,7 +36,6 @@ abstract class BaseRecycleViewGridDelegateController(args: Bundle? = null) : Bas
     }
 
     fun setCustomLayoutManager(customLayoutManager: LinearLayoutManager) {
-        layoutManager = customLayoutManager
         recyclerView?.layoutManager = customLayoutManager
     }
 
