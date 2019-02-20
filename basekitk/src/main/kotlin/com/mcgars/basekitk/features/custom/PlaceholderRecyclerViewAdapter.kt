@@ -107,7 +107,7 @@ class PlaceholderRecyclerViewAdapter<T>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        if (viewType == placeholderViewType) {
+        return if (viewType == placeholderViewType) {
             val layoutInflater = LayoutInflater.from(parent.context)
             val v = layoutInflater.inflate(placeholderViewId, parent, false)
             val holder = ViewHolder(v)
@@ -116,9 +116,9 @@ class PlaceholderRecyclerViewAdapter<T>(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT
             )
-            return holder
+            holder
         } else {
-            return originalAdapter.createViewHolder(parent, viewType)
+            originalAdapter.createViewHolder(parent, viewType)
         }
 
     }
@@ -262,57 +262,55 @@ class PlaceholderRecyclerViewAdapter<T>(
     }
 
     override fun removeItemByPosition(position: Int) {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<*>).removeItemByPosition(position)
-        }
+        originalAdapter.asKitAdapter { it.removeItemByPosition(position) }
     }
 
     override fun removeItem(item: T) {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>).removeItem(item)
-        }
+        originalAdapter.asKitAdapter { it.removeItem(item) }
     }
 
     override fun addItem(item: T) {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>).addItem(item)
-        }
+        notifyEmptyBeforeInsertData()
+        originalAdapter.asKitAdapter { it.addItem(item) }
     }
 
     override fun addItem(position: Int, item: T) {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>).addItem(position, item)
-        }
+        notifyEmptyBeforeInsertData()
+        originalAdapter.asKitAdapter { it.addItem(position, item) }
     }
 
     override fun addItems(items: List<T>) {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>)?.addItems(items)
-        }
+        notifyEmptyBeforeInsertData()
+        originalAdapter.asKitAdapter { it.addItems(items) }
     }
 
     override fun setItem(position: Int, item: T) {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>).setItem(position, item)
-        }
+        originalAdapter.asKitAdapter { it.setItem(position, item) }
     }
 
     override fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback) {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>).set(items, diffUtilsCallbackProducer)
-        }
+        notifyEmptyBeforeInsertData()
+        originalAdapter.asKitAdapter { it.set(items, diffUtilsCallbackProducer) }
     }
 
     override fun clear() {
-        if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>).clear()
-        }
+        originalAdapter.asKitAdapter { it.clear() }
     }
 
     override fun getDelegates(): List<AdapterDelegate<T>>? {
-        return if (originalAdapter is KitAdapter<*>) {
-            (originalAdapter as KitAdapter<T>).getDelegates()
-        } else null
+        return (originalAdapter as? KitAdapter<T>)?.getDelegates()
+    }
+
+    private fun notifyEmptyBeforeInsertData() {
+        if(isEmpty) {
+            notifyItemRangeRemoved(0, itemCount)
+        }
+    }
+
+    private inline fun RecyclerView.Adapter<*>.asKitAdapter(action: (KitAdapter<T>) -> Unit) {
+        (this as? KitAdapter<T>)?.let {
+            action.invoke(this)
+        }
     }
 
 }

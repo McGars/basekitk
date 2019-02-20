@@ -272,7 +272,7 @@ class AdapterDelegatesManager<T> {
 
      * @param viewHolder Holder of the view being attached
      */
-    fun onViewAttachedToWindow(viewHolder: RecyclerView.ViewHolder) {
+    fun onViewAttachedToWindow(kitAdapter: KitAdapter<T>, viewHolder: RecyclerView.ViewHolder) {
         val delegate = getDelegateForViewType(viewHolder.itemViewType)
                 ?: throw NullPointerException("No delegate found for "
                         + viewHolder
@@ -280,7 +280,7 @@ class AdapterDelegatesManager<T> {
                         + viewHolder.adapterPosition
                         + " for viewType = "
                         + viewHolder.itemViewType)
-        delegate.onViewAttachedToWindow(viewHolder)
+        delegate.onViewAttachedToWindow(kitAdapter, viewHolder)
     }
 
     /**

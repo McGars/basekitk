@@ -77,7 +77,7 @@ open class AdapterDelegateHeader<T : Any>(
 
     override fun onFailedToRecycleView(holder: RecyclerView.ViewHolder) = manager.onFailedToRecycleView(holder)
 
-    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) = manager.onViewAttachedToWindow(holder)
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) = manager.onViewAttachedToWindow(this, holder)
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) = manager.onViewDetachedFromWindow(holder)
 
@@ -203,7 +203,10 @@ open class AdapterDelegateHeader<T : Any>(
 
     override fun getItem(position: Int): T? = if (position == RecyclerView.NO_POSITION) null else items[position]
 
-    override fun clear() = items.clear()
+    override fun clear() {
+        items.clear()
+        notifyDataSetChanged()
+    }
 
     fun isHeaderOrFooter(position: Int) = when {
         isHeader(position) -> true

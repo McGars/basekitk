@@ -1,9 +1,9 @@
 package com.mcgars.basekitk.features.recycler2
 
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mcgars.basekitk.R
+import com.mcgars.basekitk.tools.inflate
 
 /**
  * Loader
@@ -36,7 +36,8 @@ class AdapterViewLoader<T : Any>(
 
     override fun onCreateViewHolder(kitAdapter: KitAdapter<T>, parent: ViewGroup): RecyclerView.ViewHolder {
         return object : RecyclerView.ViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.basekit_view_loading, parent, false)) {}
+                parent.context.inflate(R.layout.basekit_view_loading, parent)
+        ) {}
     }
 
     override fun onBindViewHolder(items: List<T>, position: Int, holder: RecyclerView.ViewHolder, payloads: List<Any>) {

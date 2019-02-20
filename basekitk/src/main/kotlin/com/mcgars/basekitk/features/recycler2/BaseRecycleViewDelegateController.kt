@@ -118,8 +118,13 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             }
         }
 
-        (adapter as? KitAdapter<Any>)?.set(list, diffUtil)
-                ?: throw  RuntimeException("Use KitAdapter only")
+        if (list.isEmpty()) {
+            (adapter as? KitAdapter<Any>)?.clear()
+        } else {
+            (adapter as? KitAdapter<Any>)?.set(list, diffUtil)
+                    ?: throw  RuntimeException("Use KitAdapter only")
+        }
+
     }
 
     /**

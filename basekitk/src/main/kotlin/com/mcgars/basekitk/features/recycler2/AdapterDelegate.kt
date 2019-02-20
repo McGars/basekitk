@@ -131,7 +131,6 @@ interface AdapterDelegate<T> {
 
     /**
      * Called when a view created by this adapter has been attached to a window.
-
      *
      * This can be used as a reasonable signal that the view is about to be seen
      * by the user. If the adapter previously freed any resources in
@@ -140,12 +139,11 @@ interface AdapterDelegate<T> {
 
      * @param holder Holder of the view being attached
      */
-    fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+    fun onViewAttachedToWindow(kitAdapter: KitAdapter<T>, holder: RecyclerView.ViewHolder) {
     }
 
     /**
      * Called when a view created by this adapter has been detached from its window.
-
      *
      * Becoming detached from the window is not necessarily a permanent condition;
      * the consumer of an Adapter's views may choose to cache views offscreen while they

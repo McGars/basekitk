@@ -55,6 +55,7 @@ abstract class AbsListItemAdapterDelegate<I : T, T, VH : RecyclerView.ViewHolder
         return isForViewType(items[position], items, position)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onBindViewHolder(
             items: List<T>, position: Int,
             holder: RecyclerView.ViewHolder,
