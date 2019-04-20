@@ -26,7 +26,7 @@ open class CircularRevealChangeHandler : AnimatorChangeHandler {
 
     constructor()
 
-    constructor(duration: Long = AnimatorChangeHandler.DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush)
+    constructor(duration: Long = DEFAULT_ANIMATION_DURATION, removesFromViewOnPush: Boolean = true) : super(duration, removesFromViewOnPush)
 
     /**
      * Constructor that will create a circular reveal from the center of the fromView parameter.
