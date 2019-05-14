@@ -18,6 +18,9 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
         get() = recyclerView?.layoutManager as LinearLayoutManager?
     var recyclerView: RecyclerView? = null
         private set
+
+    protected var visibleThreshold = 15
+
     private var hasMoreItems: Boolean = false
     private var isLoading: Boolean = false
     private var adapter: RecyclerView.Adapter<*>? = null
@@ -55,20 +58,34 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
     abstract fun loadData(page: Int)
 
     private var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-            val visibleItemCount = layoutManager!!.childCount
-            val totalItemCount = layoutManager!!.itemCount
-            val pastVisiblesItems = layoutManager!!.findFirstVisibleItemPosition()
+            val linearLayoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
 
-            val lastVisibleItem = visibleItemCount + pastVisiblesItems
-            if (!isLoading && hasMoreItems) {
-                if (lastVisibleItem != totalItemCount)
-                    return
+            val totalItemCount = linearLayoutManager.itemCount
+            val lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition()
+
+            if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                 page++
                 isLoading = true
                 loadData(page)
             }
+
+//
+//
+//            val visibleItemCount = layoutManager!!.childCount
+//            val totalItemCount = layoutManager!!.itemCount
+//            val pastVisiblesItems = layoutManager!!.findFirstVisibleItemPosition()
+//
+//            val lastVisibleItem = visibleItemCount + pastVisiblesItems
+//            if (!isLoading && hasMoreItems) {
+//                if (lastVisibleItem != totalItemCount)
+//                    return
+//                page++
+//                isLoading = true
+//                loadData(page)
+//            }
         }
     }
 

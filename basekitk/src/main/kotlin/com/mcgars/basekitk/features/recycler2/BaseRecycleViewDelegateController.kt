@@ -21,6 +21,9 @@ import java.lang.RuntimeException
 abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseViewController(args) {
     var recyclerView: RecyclerView? = null
         private set
+
+    protected var visibleThreshold = 5
+
     private var hasMoreItems: Boolean = false
     private var isLoading: Boolean = false
     private var adapter: RecyclerView.Adapter<*>? = null
@@ -39,7 +42,7 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
             val totalItemCount = recyclerLayoutManager.itemCount
             val pastVisiblesItems = recyclerLayoutManager.findFirstVisibleItemPosition()
 
-            val lastVisibleItem = visibleItemCount + pastVisiblesItems
+            val lastVisibleItem = visibleItemCount + pastVisiblesItems + visibleThreshold
             if (!isLoading && hasMoreItems) {
                 if (lastVisibleItem != totalItemCount)
                     return
