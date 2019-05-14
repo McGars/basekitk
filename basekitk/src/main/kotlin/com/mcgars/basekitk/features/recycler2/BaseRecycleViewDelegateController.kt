@@ -36,16 +36,12 @@ abstract class BaseRecycleViewDelegateController(args: Bundle? = null) : BaseVie
     private var loadingScroll: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-            val  recyclerLayoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+            val linearLayoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
 
-            val visibleItemCount = recyclerLayoutManager.childCount
-            val totalItemCount = recyclerLayoutManager.itemCount
-            val pastVisiblesItems = recyclerLayoutManager.findFirstVisibleItemPosition()
+            val totalItemCount = linearLayoutManager.itemCount
+            val lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition()
 
-            val lastVisibleItem = visibleItemCount + pastVisiblesItems + visibleThreshold
-            if (!isLoading && hasMoreItems) {
-                if (lastVisibleItem != totalItemCount)
-                    return
+            if (!isLoading && hasMoreItems && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                 page++
                 isLoading = true
                 loadData(page)
