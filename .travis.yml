@@ -8,6 +8,11 @@ android:
       - android-28
       - extra-android-m2repository
       # Specify at least one system image,
+
+  licenses:
+    - android-sdk-license-.+
+    - android-sdk-preview-license-.+
+
 jdk:
   - oraclejdk8
   

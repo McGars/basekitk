@@ -35,7 +35,7 @@ class StatusBarFrameLayout @JvmOverloads constructor(
 
         statusBarHeight = context.getStatusBarHeight().toFloat()
         // background color of status bar rect
-        paint.color = context.colorAttr(R.attr.colorPrimary)
+        paint.color = context.colorAttr(R.attr.colorPrimaryDark)
     }
 
     override fun onDraw(canvas: Canvas) {

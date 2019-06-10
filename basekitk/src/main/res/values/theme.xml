@@ -14,7 +14,7 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <!--<item name="android:windowBackground">@android:color/white</item>-->
 
         <!--<item name="colorControlNormal">@color/black_owerlay_20</item>-->
         <!-- style button-->
@@ -25,7 +25,7 @@
         <!-- styles button-->
         <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
         <!-- Цвет текста на кнопках -->
-        <item name="android:textColorPrimary">@color/black_overlay_90</item>
+        <!--<item name="android:textColorPrimary">@color/black_overlay_90</item>-->
     </style>
 
     <style name="KitTheme.DialogTheme" parent="Theme.AppCompat.Light.Dialog">
