@@ -1,7 +1,8 @@
 package com.mcgars.basekitkotlin.list
 
 import android.view.View
-import com.mcgars.basekitk.features.recycler.BaseRecycleViewController
+import com.mcgars.basekitk.features.recycler2.AdapterDelegateHeader
+import com.mcgars.basekitk.features.recycler2.BaseRecycleViewDelegateController
 import com.mcgars.basekitkotlin.R
 import com.mcgars.basekitkotlin.collapsingtoolbar.CollapsingToolbarViewController
 import com.mcgars.basekitkotlin.drawer.DrawerNavigationViewController
@@ -14,7 +15,7 @@ import com.mcgars.basekitkotlin.tabs.TabsViewController
 /**
  * Created by gars on 13.05.2017.
  */
-class ListViewController : BaseRecycleViewController() {
+class ListViewController : BaseRecycleViewDelegateController() {
 
     override fun getTitleInt() = R.string.menu
 
@@ -37,16 +38,19 @@ class ListViewController : BaseRecycleViewController() {
         })
     }
 
-    override fun getAdapter(list: MutableList<*>) = MainMenuAdapter(activity!!, list as MutableList<MenuItem>) { item, _ ->
-        when (item.id) {
-            DRAWER -> loadPage(DrawerNavigationViewController())
-            PULLABLE -> loadPage(PullableViewController())
-            TABS -> loadPage(TabsViewController())
-            LOADER -> loadPage(LoaderViewController())
-            SIMPLE -> pageController.startActivity(EmptyViewController::class.java)
-            ARROW -> loadPage(ArrowToolbarViewController())
-            COLLAPSINGTOOLBAR -> loadPage(CollapsingToolbarViewController())
-        }
+    override fun getAdapter(list: MutableList<*>) = AdapterDelegateHeader(list as MutableList<Any>).apply {
+        addDelegate(MainMenuDelegate { item, _ ->
+            when (item.id) {
+                DRAWER -> loadPage(DrawerNavigationViewController())
+                PULLABLE -> loadPage(PullableViewController())
+                TABS -> loadPage(TabsViewController())
+                LOADER -> loadPage(LoaderViewController())
+                SIMPLE -> pageController.startActivity(EmptyViewController::class.java)
+                ARROW -> loadPage(ArrowToolbarViewController())
+                COLLAPSINGTOOLBAR -> loadPage(CollapsingToolbarViewController())
+            }
+
+        })
     }
 
     companion object {

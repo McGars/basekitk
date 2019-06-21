@@ -1,9 +1,10 @@
 package com.mcgars.basekitk.features.decorators
 
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View
+import com.google.android.material.internal.Experimental
 import com.mcgars.basekitk.tools.find
 
 /**
@@ -11,6 +12,7 @@ import com.mcgars.basekitk.tools.find
  * if you not use [com.mcgars.basekitk.features.recycler.BaseRecycleViewController]
  * yuo may use this decorator for load more items when list reached to the end
  */
+@Experimental
 class MoreLoadDecorator(@IdRes val recyclerView: Int, val listener: (page: Int) -> Unit) : DecoratorListener() {
 
     internal var page = 0

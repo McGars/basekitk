@@ -4,9 +4,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.Controller
+import com.google.android.material.internal.Experimental
 import com.mcgars.basekitk.features.decorators.DecoratorListener
 
-
+@Experimental
 class StateMachineDecorator(
         private val stateView: StateView
 ) : DecoratorListener() {

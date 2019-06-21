@@ -14,7 +14,7 @@ import java.util.*
 
 class StickyHeaderDecorator(var adapter: StickyHeaderAdapter<RecyclerView.ViewHolder>, var spanCount: Int = 1) : RecyclerView.ItemDecoration() {
     private val mHeaderCache = HashMap<Long, RecyclerView.ViewHolder>()
-    internal var tempRect = Rect()
+    private var tempRect = Rect()
     private var isCache: Boolean = false
 
     fun setCache(cache: Boolean) {

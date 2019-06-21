@@ -19,7 +19,9 @@ import com.mcgars.basekitk.tools.find
 open class DrawerNavigationDecorator(
         private val viewController: BaseViewController,
         private val pageListener: OnViewLoadPageListener,
-        @MenuRes private val menu: Int) : DecoratorListener() {
+        @MenuRes
+        private val menu: Int
+) : DecoratorListener() {
 
     /**
      * Это котроллер, который выполяет всю логику

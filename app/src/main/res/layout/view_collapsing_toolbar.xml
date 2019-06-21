@@ -48,6 +48,6 @@
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/basekit_view_simple_list" />
+        tools:listitem="@layout/item_list" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
