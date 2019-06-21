@@ -12,10 +12,12 @@ class MainActivity : BaseKitActivity() {
         super.onCreate(savedInstanceState)
         setDoubleBackPressedToExit(true)
 
-        loadPage(SplashViewController())
+        if (savedInstanceState == null) {
+            loadPage(SplashViewController())
 
-        Timer(2000) {
-            loadPage(ListViewController(), false)
-        }.start()
+            Timer(2000) {
+                loadPage(ListViewController(), false)
+            }.start()
+        }
     }
 }

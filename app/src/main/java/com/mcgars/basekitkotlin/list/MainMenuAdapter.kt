@@ -1,9 +1,9 @@
 package com.mcgars.basekitkotlin.list
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.mcgars.basekitk.features.recycler.ListRecycleAdapter
 
 /**
@@ -12,8 +12,8 @@ import com.mcgars.basekitk.features.recycler.ListRecycleAdapter
 class MainMenuAdapter(
         context: Context,
         list: MutableList<MenuItem>,
-        onItemClickListener: ((item: MenuItem, position: Int) -> Unit)?)
-    : ListRecycleAdapter<MenuItem, RecyclerView.ViewHolder>(context, list, android.R.layout.simple_list_item_1, onItemClickListener) {
+        onItemClickListener: ((item: MenuItem, position: Int) -> Unit)?
+) : ListRecycleAdapter<MenuItem, RecyclerView.ViewHolder>(context, list, android.R.layout.simple_list_item_1, onItemClickListener) {
 
     override fun getViewHolder(view: View, type: Int) = object : RecyclerView.ViewHolder(view) {}
 

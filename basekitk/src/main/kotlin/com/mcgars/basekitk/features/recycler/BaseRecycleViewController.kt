@@ -66,26 +66,12 @@ abstract class BaseRecycleViewController(args: Bundle? = null) : BaseViewControl
             val totalItemCount = linearLayoutManager.itemCount
             val lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition()
 
-            if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+            if (!isLoading && hasMoreItems && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                 page++
                 isLoading = true
                 loadData(page)
             }
 
-//
-//
-//            val visibleItemCount = layoutManager!!.childCount
-//            val totalItemCount = layoutManager!!.itemCount
-//            val pastVisiblesItems = layoutManager!!.findFirstVisibleItemPosition()
-//
-//            val lastVisibleItem = visibleItemCount + pastVisiblesItems
-//            if (!isLoading && hasMoreItems) {
-//                if (lastVisibleItem != totalItemCount)
-//                    return
-//                page++
-//                isLoading = true
-//                loadData(page)
-//            }
         }
     }
 

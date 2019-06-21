@@ -92,8 +92,7 @@ class StickyHeaderDecorator(var adapter: StickyHeaderAdapter<RecyclerView.ViewHo
             val hHeader = getHeader(parent, itemPosition)
             if (hHeader != null) {
                 val header = hHeader.itemView
-                if (header != null)
-                    outRect.top = header.height
+                outRect.top = header.height
             }
         }
     }
@@ -238,14 +237,6 @@ class StickyHeaderDecorator(var adapter: StickyHeaderAdapter<RecyclerView.ViewHo
 
     fun drawHeader(recyclerView: RecyclerView, canvas: Canvas, header: View, offset: Rect) {
         canvas.save()
-
-//        if(offset.top == 0) {
-//            header.setBackgroundColor(Color.BLUE)
-////            ViewCompat.setElevation(header, 10f)
-//        } else {
-//            header.setBackgroundColor(Color.WHITE)
-//        }
-
         canvas.translate(offset.left.toFloat(), offset.top.toFloat())
         header.draw(canvas)
         canvas.restore()

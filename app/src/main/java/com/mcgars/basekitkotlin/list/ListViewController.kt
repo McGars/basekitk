@@ -50,12 +50,12 @@ class ListViewController : BaseRecycleViewController() {
     }
 
     companion object {
-        val DRAWER = 0
-        val PULLABLE = 1
-        val TABS = 2
-        val LOADER = 3
-        val SIMPLE = 4
-        val ARROW = 5
-        val COLLAPSINGTOOLBAR = 6
+        const val DRAWER = 0
+        const val PULLABLE = 1
+        const val TABS = 2
+        const val LOADER = 3
+        const val SIMPLE = 4
+        const val ARROW = 5
+        const val COLLAPSINGTOOLBAR = 6
     }
 }

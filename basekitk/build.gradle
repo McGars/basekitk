@@ -45,7 +45,7 @@ android {
 }
 
 ext {
-    conductor = "2.1.4"
+    conductor = "2.1.5"
 }
 
 dependencies {
@@ -65,7 +65,7 @@ if (file(filePatch).exists()) {
     Properties props = new Properties()
     props.load(new FileInputStream(filePatch))
 
-    // это блок будет обработан плагином bintray-release
+    // это блок будwет обработан плагином bintray-release
     publish {
         bintrayUser = props['BINTRAY_USER']
         bintrayKey = props['BINTRAY_KEY']

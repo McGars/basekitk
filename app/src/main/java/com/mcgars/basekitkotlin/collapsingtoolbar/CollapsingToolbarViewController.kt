@@ -7,6 +7,7 @@ import com.mcgars.basekitk.features.base.BaseViewController
 import com.mcgars.basekitk.features.simplerecycler.SimpleListAdapter
 import com.mcgars.basekitk.features.simplerecycler.SimpleListItem
 import com.mcgars.basekitkotlin.R
+import com.mcgars.basekitkotlin.sample.EmptyViewController
 import kotlinx.android.synthetic.main.view_collapsing_toolbar.view.*
 
 /**
@@ -29,7 +30,12 @@ class CollapsingToolbarViewController : BaseViewController() {
     override fun onReady(view: View) {
         view.recycleView.adapter = SimpleListAdapter(activity!!, (0..50).map {
             SimpleListItem("item $it", "description $it")
-        }.toMutableList())
+        }.toMutableList()) { item, _ ->
+            loadPage(EmptyViewController(item.title ?: "emptyView").apply {
+                overridePushHandler(CircularRevealChangeHandlerCompat())
+                overridePopHandler(CircularRevealChangeHandlerCompat())
+            })
+        }
 
         view.ivBack.setImageResource(R.drawable.android)
     }

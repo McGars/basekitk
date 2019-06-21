@@ -24,7 +24,7 @@ interface KitAdapter<T> {
 
     fun getItem(position: Int): T?
 
-    fun set(items: List<T>, diffUtilsCallbackProducer: (List<T>, List<T>) -> DiffUtil.Callback)
+    fun set(items: List<T>, diffUtilsCallbackProducer: (oldList: List<T>, newList: List<T>) -> DiffUtil.Callback)
 
     fun clear()
 
