@@ -14,7 +14,7 @@ buildscript {
 }
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-def versionN = "0.2.3"
+def versionN = "0.3.0"
 
 android {
     compileSdkVersion rootProject.ext.versionSdkCompile
