@@ -10,12 +10,6 @@ import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.ConnectivityManager
 import android.os.Build
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.content.ContextCompat
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
@@ -28,6 +22,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import com.mcgars.basekitk.R
 import java.io.File
 import java.security.MessageDigest
@@ -35,7 +35,8 @@ import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.regex.*
+import java.util.regex.Pattern
+import kotlin.math.roundToInt
 
 /**
  * Created by gars on 02.01.2017.
@@ -146,27 +147,34 @@ fun Context?.showKeyboard(etText: EditText?): Boolean? {
 }
 
 fun Context?.toggleKeyboard() {
-    (this?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)?.run {
+    (this?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.run {
         toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 }
 
+@Deprecated("use int.dp", replaceWith = ReplaceWith("dp.dp"))
 fun dpToPx(dp: Int): Int {
     return Resources.getSystem().displayMetrics.run {
-        Math.round(dp * (xdpi / DisplayMetrics.DENSITY_DEFAULT))
+        (dp * (xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
     }
 }
+
+val Int.dp: Int get() = (this * displayMetrics.density).toInt()
+
+val Int.px: Int get() = (this / displayMetrics.density).toInt()
+
+private val displayMetrics = Resources.getSystem().displayMetrics
 
 fun Context?.isServiceRunning(serviceClass: Class<*>): Boolean {
     return this?.run {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.name == service.service.className) {
-                println("isServiceRunning " + serviceClass.toString() + " true")
+                println("isServiceRunning $serviceClass true")
                 return true
             }
         }
-        println("isServiceRunning " + serviceClass.toString() + " false")
+        println("isServiceRunning $serviceClass false")
         return false
     } ?: false
 }

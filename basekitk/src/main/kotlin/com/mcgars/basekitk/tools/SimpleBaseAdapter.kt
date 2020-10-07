@@ -1,11 +1,11 @@
 package com.mcgars.basekitk.tools
 
 import android.content.Context
-import androidx.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.annotation.LayoutRes
 
 /**
  * Created by Владимир on 01.04.2015.
@@ -27,10 +27,10 @@ abstract class SimpleBaseAdapter<T, H>(context: Context, list: List<T>, @LayoutR
         return layout
     }
 
-    override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
+    override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         var v = view
         val viewHolder: H
-        val item = getItem(position)
+        val item = requireNotNull(getItem(position))
 
         if (v == null) {
             v = inflater.inflate(getLayout(item), parent, false)

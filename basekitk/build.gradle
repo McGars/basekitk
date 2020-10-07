@@ -42,6 +42,15 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 ext {
@@ -54,7 +63,7 @@ dependencies {
         exclude group: 'com.android.support'
     }
     implementation "com.google.android.material:material:${rootProject.ext.versionSdkAndroid}"
-    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkAndroid}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkRecycler}"
 }
 
 def filePatch = "$project.rootDir/keybitray.properties"
