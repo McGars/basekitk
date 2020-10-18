@@ -27,6 +27,7 @@ android {
         versionName versionN
     }
     buildTypes {
+        debug {}
         release {
             minifyEnabled false
             shrinkResources false
@@ -62,7 +63,7 @@ dependencies {
     api ("com.bluelinelabs:conductor-support:$conductor") {
         exclude group: 'com.android.support'
     }
-    implementation "com.google.android.material:material:${rootProject.ext.versionSdkAndroid}"
+    implementation "com.google.android.material:material:${rootProject.ext.material}"
     implementation "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkRecycler}"
 }
 

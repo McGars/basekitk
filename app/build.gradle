@@ -29,6 +29,14 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -39,8 +47,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(":basekitk")
-    implementation "com.google.android.material:material:${rootProject.ext.versionSdkAndroid}"
-    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkAndroid}"
+    implementation "com.google.android.material:material:${rootProject.ext.material}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.versionSdkRecycler}"
 }
 repositories {
     mavenCentral()
